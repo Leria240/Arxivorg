@@ -8,3 +8,7 @@ un logiciel de syndication de contenu provenant de l'archive ouverte arXiv.
 TEAM1
 Léria PAOLI
 Elliott DURR
+
+TEAM2
+- Kouki Khalil
+- ARFAOUI Selma
