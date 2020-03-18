@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Article {
     private String id;
-    private Date updated;
-    private Date published;
+    private String updated;
+    private String published;
     private String title;
     private String summary;
     private Authors authors;
@@ -17,20 +17,18 @@ public class Article {
     private String primaryCategory;
     private boolean favoriteItem;
 
-    public Article(String id, Date updated, Date published, String title,
-                   String summary, Authors authors, String comment,
-                   String URL_pageArxiv, String URL_PDF, List<String> category, String primaryCategory) {
+    public Article(String id, String updated, String published, String title,
+                   String summary, Authors authors,
+                   String URL_pageArxiv, String URL_PDF, List<String> category) {
         this.id = id;
         this.updated = updated;
         this.published = published;
         this.title = title;
         this.summary = summary;
         this.authors = authors;
-        this.comment = comment;
         this.URL_pageArxiv = URL_pageArxiv;
         this.URL_PDF = URL_PDF;
         this.category = category;
-        this.primaryCategory = primaryCategory;
         this.favoriteItem = false;
     }
 
