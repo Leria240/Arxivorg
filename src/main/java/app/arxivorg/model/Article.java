@@ -33,4 +33,12 @@ public class Article {
         this.primaryCategory = primaryCategory;
         this.favoriteItem = false;
     }
+
+    public Authors getAuthors() {
+        return authors;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }

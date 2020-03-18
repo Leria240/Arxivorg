@@ -9,5 +9,10 @@ public class Archive {
 
     public Archive() {
         this.articles = new ArrayList<>();
+
+    }
+
+    public List<Article> getArticles() {
+        return articles;
     }
 }
