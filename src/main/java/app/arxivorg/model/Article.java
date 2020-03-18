@@ -9,7 +9,7 @@ public class Article {
     private Date published;
     private String title;
     private String summary;
-    private List<Authors> authors;
+    private Authors authors;
     private String comment;
     private String URL_pageArxiv;
     private String URL_PDF;
@@ -18,7 +18,7 @@ public class Article {
     private boolean favoriteItem;
 
     public Article(String id, Date updated, Date published, String title,
-                   String summary, List<Authors> authors, String comment,
+                   String summary, Authors authors, String comment,
                    String URL_pageArxiv, String URL_PDF, List<String> category, String primaryCategory) {
         this.id = id;
         this.updated = updated;
