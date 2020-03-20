@@ -47,7 +47,7 @@ public class Archive {
                     final Element article = (Element) entry.item(i);
 
                     //Récupération des id, mises à jour, dates de publication, titres, résumés
-                    final String title = article.getElementsByTagName("title").item(0).getTextContent();
+                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            ","");
                     final String id = article.getElementsByTagName("id").item(0).getTextContent();
                     final String updated = article.getElementsByTagName("updated").item(0).getTextContent();
                     final String published = article.getElementsByTagName("published").item(0).getTextContent();

@@ -10,8 +10,6 @@ import javafx.scene.control.ListView;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
@@ -46,8 +44,7 @@ public class ArxivOrgController implements Initializable {
     private  void displayArticles(){
         Archive archive =  new Archive();
         for(Article article : archive.getArticles()){
-            articles.add(article.getTitle() + "\n" + article.getAuthors().toString());
+            listView.getItems().add("- " + article.getTitle() + "\n\t" + article.getAuthors().toString() + "\n ");
         }
-        listView.getItems().addAll(articles);
     }
 }

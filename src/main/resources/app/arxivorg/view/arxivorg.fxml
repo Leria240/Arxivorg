@@ -4,28 +4,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController">
-    <children>
-        <Button fx:id="helloWorldButton" layoutX="45.0" layoutY="87.0" mnemonicParsing="false" onMouseClicked="#displayHelloWorld" text="Hello World" />
-        <Button fx:id="goodByeWorldButton" layoutX="175.0" layoutY="87.0" mnemonicParsing="false" onMouseClicked="#goodByeWorld" text="Good Bye World" />
-        <Label fx:id="label" layoutX="100.0" layoutY="150.0" prefHeight="25.0" prefWidth="100.0" wrapText="true" />
-        <SplitPane dividerPositions="0.29797979797979796" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                    <children>
-                        <VBox prefHeight="298.0" prefWidth="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <children>
-                                <Label prefHeight="17.0" prefWidth="85.0" text="Articles : ">
-                                    <font>
-                                        <Font name="System Bold Italic" size="12.0" />
-                                    </font>
-                                </Label>
-                                <ListView fx:id="listView" prefHeight="215.0" prefWidth="206.0" />
-                            </children>
-                        </VBox>
-                    </children></AnchorPane>
-            </items>
-        </SplitPane>
-    </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.arxivorg.controller.ArxivOrgController">
+    <Button fx:id="helloWorldButton" layoutX="45.0" layoutY="87.0" mnemonicParsing="false"
+            onMouseClicked="#displayHelloWorld" text="Hello World"/>
+    <Button fx:id="goodByeWorldButton" layoutX="175.0" layoutY="87.0" mnemonicParsing="false"
+            onMouseClicked="#goodByeWorld" text="Good Bye World"/>
+    <Label fx:id="label" layoutX="100.0" layoutY="150.0" prefHeight="25.0" prefWidth="100.0" wrapText="true"/>
+    <SplitPane dividerPositions="0.29797979797979796" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"/>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <VBox prefHeight="298.0" prefWidth="206.0" AnchorPane.bottomAnchor="0.0"
+                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Label prefHeight="17.0" prefWidth="85.0" text="Articles : ">
+                    <font>
+                        <Font name="System Bold Italic" size="12.0"/>
+                    </font>
+                </Label>
+                <ListView fx:id="listView" prefHeight="439.0" prefWidth="838.0"/>
+            </VBox>
+        </AnchorPane>
+    </SplitPane>
 </AnchorPane>
