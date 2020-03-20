@@ -1,7 +1,6 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -15,7 +14,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Archive {
 
@@ -55,18 +53,19 @@ public class Archive {
                     final String published = article.getElementsByTagName("published").item(0).getTextContent();
                     final String summary = article.getElementsByTagName("summary").item(0).getTextContent();
 
+
                     //Récupérations de tous les auteurs pour chaque article
                     List<String> authorslist = new ArrayList<>();
                     for(int j = 0; j < article.getElementsByTagName("author").getLength(); j++){
                         final String author = article.getElementsByTagName("author").item(j).getTextContent();
-                        authorslist.add(author);
+                        authorslist.add(author.trim());
                     }
+
 
                     //Récupération des liens pdf et arxiv
                     String pdf = "";
                     String arxiv = "";
                     for(int k = 0; k < article.getElementsByTagName("link").getLength(); k++){
-                        final String links = article.getElementsByTagName("link").item(k).getAttributes().item(0).getTextContent();
                         arxiv = article.getElementsByTagName("link").item(0).getAttributes().item(0).getTextContent();
                         pdf = article.getElementsByTagName("link").item(1).getAttributes().item(0).getTextContent();
                     }
@@ -75,7 +74,7 @@ public class Archive {
                     List<String> categorylist = new ArrayList<>();
                     for (int l = 0; l < article.getElementsByTagName("category").getLength(); l++){
                         final String category = article.getElementsByTagName("category").item(l).getAttributes().item(0).getTextContent();
-                        categorylist.add(category);
+                        categorylist.add(category.trim());
                     }
 
                     Authors authors = new Authors(authorslist);
@@ -84,15 +83,7 @@ public class Archive {
                 }
             }
         }
-        catch (final ParserConfigurationException e)
-        {
-            e.printStackTrace();
-        }
-        catch (final SAXException e)
-        {
-            e.printStackTrace();
-        }
-        catch (final IOException e)
+        catch (final ParserConfigurationException | SAXException | IOException e)
         {
             e.printStackTrace();
         }
