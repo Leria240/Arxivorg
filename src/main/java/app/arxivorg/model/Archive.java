@@ -30,7 +30,7 @@ public class Archive {
         return articles;
     }
 
-    public void addArticles(final String[] args) {
+    public void addArticles() {
 
         //Récupération d'une instance de la classe "DocumentBuilderFactory"
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
