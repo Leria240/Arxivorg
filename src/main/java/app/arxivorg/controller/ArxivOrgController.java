@@ -43,6 +43,7 @@ public class ArxivOrgController implements Initializable {
     @FXML
     private  void displayArticles(){
         Archive archive =  new Archive();
+        archive.addArticles(new File("atomFile2.xml"));
         for(Article article : archive.getArticles()){
             listView.getItems().add("- " + article.getTitle() + "\n\t" + article.getAuthors().toString() + "\n ");
         }
