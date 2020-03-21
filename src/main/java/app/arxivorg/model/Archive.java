@@ -81,7 +81,7 @@ public class Archive {
 
                     //Récupérations de tous les auteurs pour chaque article
                     for(int j = 0; j < article.getElementsByTagName("author").getLength(); j++){
-                        final String author = article.getElementsByTagName("author").item(j).getTextContent();
+                        final String author = article.getElementsByTagName("author").item(j).getTextContent().trim();
                         authorslist.add(author);
                         //Affichage des auteurs
                         System.out.println(author);
@@ -101,7 +101,7 @@ public class Archive {
                     List<String> categorylist = new ArrayList<>();
                     //Récupération des catégories
                     for (int l = 0; l < article.getElementsByTagName("category").getLength(); l++){
-                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(0).getTextContent();
+                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(1).getTextContent();
                         categorylist.add(category);
                         //Affichage des catégories
                         System.out.println("category : " + category);

@@ -10,11 +10,9 @@ public class Article {
     private String title;
     private String summary;
     private Authors authors;
-    private String comment;
     private String URL_pageArxiv;
     private String URL_PDF;
     private List<String> category;
-    private String primaryCategory;
     private boolean favoriteItem;
 
     public Article(String id, String updated, String published, String title,
@@ -32,11 +30,40 @@ public class Article {
         this.favoriteItem = false;
     }
 
-    public Authors getAuthors() {
-        return authors;
+    public String getId() {
+        return id;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public String getPublished() {
+        return published;
     }
 
     public String getTitle() {
         return title;
     }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public Authors getAuthors() {
+        return authors;
+    }
+
+    public String getURL_pageArxiv() {
+        return URL_pageArxiv;
+    }
+
+    public String getURL_PDF() {
+        return URL_PDF;
+    }
+
+    public List<String> getCategory() {
+        return category;
+    }
+
 }

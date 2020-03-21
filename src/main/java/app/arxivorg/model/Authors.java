@@ -10,6 +10,10 @@ public class Authors {
         this.data = new ArrayList<>(input);
     }
 
+    public ArrayList<String> getData() {
+        return data;
+    }
+
     public String toString() {
         return String.join(", ", data);
     }
