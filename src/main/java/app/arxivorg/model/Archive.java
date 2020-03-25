@@ -1,6 +1,7 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -77,7 +78,7 @@ public class Archive {
                     }
 
                     Authors authors = new Authors(authorslist);
-                    Article article1 = new Article(id,updated,published,title,summary,authors,arxiv,pdf,categorylist);
+                    Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
                     articles.add(article1);
                 }
             }

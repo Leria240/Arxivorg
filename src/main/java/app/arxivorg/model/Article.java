@@ -1,5 +1,6 @@
 package app.arxivorg.model;
 
+import java.net.URL;
 import java.util.List;
 
 public class Article {
@@ -9,14 +10,14 @@ public class Article {
     private String title;
     private String summary;
     private Authors authors;
-    private String URL_pageArxiv;
-    private String URL_PDF;
+    private URL URL_pageArxiv;
+    private URL URL_PDF;
     private List<String> category;
     private boolean favoriteItem;
 
     public Article(String id, String updated, String published, String title,
                    String summary, Authors authors,
-                   String URL_pageArxiv, String URL_PDF, List<String> category) {
+                   URL URL_pageArxiv, URL URL_PDF, List<String> category) {
         this.id = id;
         this.updated = updated;
         this.published = published;
@@ -53,11 +54,11 @@ public class Article {
         return authors;
     }
 
-    public String getURL_pageArxiv() {
+    public URL getURL_pageArxiv() {
         return URL_pageArxiv;
     }
 
-    public String getURL_PDF() {
+    public URL getURL_PDF() {
         return URL_PDF;
     }
 
@@ -80,4 +81,7 @@ public class Article {
         favoriteItem = !favoriteItem;
     }
 
+
+
 }
+
