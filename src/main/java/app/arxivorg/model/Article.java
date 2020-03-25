@@ -1,6 +1,5 @@
 package app.arxivorg.model;
 
-import java.util.Date;
 import java.util.List;
 
 public class Article {
@@ -64,6 +63,13 @@ public class Article {
 
     public List<String> getCategory() {
         return category;
+    }
+
+    public String toString(){
+        return  "Title: " + this.getTitle() + "\n\t" +
+                "Authors: " + this.getAuthors().toString() + "\n\n" +
+                "Summary: " + this.getSummary() + "\n\n" +
+                "un lien vers la page ArXiv: " + getURL_pageArxiv();
     }
 
 }
