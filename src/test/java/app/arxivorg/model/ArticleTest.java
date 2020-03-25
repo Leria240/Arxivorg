@@ -92,4 +92,12 @@ class ArticleTest {
         assertEquals(expected,archive.getArticles().get(0).toString());
     }
 
+    @Test
+    public void testIsFavoriteItem(){
+        assertFalse(article1.isFavoriteItem());
+        assertFalse(article10.isFavoriteItem());
+    }
+
+
+
 }
