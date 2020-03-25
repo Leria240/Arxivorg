@@ -76,4 +76,8 @@ public class Article {
         return favoriteItem;
     }
 
+    public void changeFavoriteItem(){
+        favoriteItem = !favoriteItem;
+    }
+
 }
