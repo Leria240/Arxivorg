@@ -3,6 +3,7 @@ package app.arxivorg.model;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,8 @@ public class ArchiveTest {
     @Test
     public void testAddArticles() {
         Archive archive = new Archive();
-        archive.addArticles();
+        File file = new File("atomFile1.xml");
+        archive.addArticles(file);
 
         assertNotNull(archive.getArticles(), "L'article est vide");
 
@@ -78,8 +80,7 @@ public class ArchiveTest {
         Article article10 = new Article("http://arxiv.org/abs/2003.04195v1",
                 "2020-03-09T15:20:21Z",
                 "2020-03-09T15:20:21Z",
-                "An Empirical Investigation of Pre-Trained Transformer Language Models\n" +
-                        "            for Open-Domain Dialogue Generation",
+                "An Empirical Investigation of Pre-Trained Transformer Language Models for Open-Domain Dialogue Generation",
                 "  We present an empirical investigation of pre-trained Transformer-based\n" +
                         "            auto-regressive language models for the task of open-domain dialogue\n" +
                         "            generation. Training paradigm of pre-training and fine-tuning is employed to\n" +
@@ -113,5 +114,46 @@ public class ArchiveTest {
         assertEquals(archive.getArticles().get(9).getCategory(),article10.getCategory());
 
     }
+
+    @Test
+    public void testCategoryFilter(){
+        Archive archive = new Archive();
+        File file = new File("atomFile1.xml");
+        archive.addArticles(file);
+        List<String> categories = new ArrayList<>();
+        categories.add("cs.LG");
+        categories.add("cs.CL");
+
+        List<Article> result = archive.categoryFilter(categories);
+        assert(!result.isEmpty());
+        for (int i = 0; i<result.size(); i++) {
+            assert (result.get(i).getCategory().containsAll(categories));
+            System.out.println(result.get(i).getTitle());
+            System.out.println(result.get(i).getCategory());
+        }
+    }
+
+    @Test
+    public void testAuthorFilter(){
+        Archive archive = new Archive();
+        File file = new File("atomFile1.xml");
+        archive.addArticles(file);
+
+        List<String> authorslist = new ArrayList<>();
+        authorslist.add("Thomas Bachlechner");
+        authorslist.add("Ira Leviant");
+        authorslist.add("Jiaqing Lin");
+        Authors authors = new Authors(authorslist);
+
+
+        List<Article> result = archive.authorFilter(authors);
+        assert(!result.isEmpty());
+        for (int i = 0; i<result.size(); i++) {
+            assert (result.get(i).getAuthors().getData().containsAll(authors.getData()));
+            System.out.println(result.get(i).getTitle());
+            System.out.println(result.get(i).getAuthors());
+        }
+    }
+
 
 }

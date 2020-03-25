@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javafx.collections.transformation.FilteredList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,7 +48,7 @@ public class Archive {
                     final Element article = (Element) entry.item(i);
 
                     //Récupération des id, mises à jour, dates de publication, titres, résumés
-                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            ","");
+                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            "," ");
                     final String id = article.getElementsByTagName("id").item(0).getTextContent();
                     final String updated = article.getElementsByTagName("updated").item(0).getTextContent();
                     final String published = article.getElementsByTagName("published").item(0).getTextContent();
@@ -73,7 +74,7 @@ public class Archive {
                     //Récupération des catégories
                     List<String> categorylist = new ArrayList<>();
                     for (int l = 0; l < article.getElementsByTagName("category").getLength(); l++){
-                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(0).getTextContent();
+                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(1).getTextContent();
                         categorylist.add(category.trim());
                     }
 
@@ -89,5 +90,30 @@ public class Archive {
         }
 
     }
+
+    public List<Article> categoryFilter (List<String> category){
+        List<Article> result = new ArrayList<>();
+        for (int i = 0; i<articles.size(); i++){
+            if (articles.get(i).getCategory().containsAll(category)) {
+                result.add(articles.get(i));
+            }
+        }
+        return result;
+    }
+
+    public List<Article> authorFilter (Authors authors){
+        List<Article> result = new ArrayList<>();
+        for (int i = 0; i<articles.size(); i++){
+            if (articles.get(i).getAuthors().getData().containsAll(authors.getData())) {
+                result.add(articles.get(i));
+            }
+        }
+        return result;
+    }
+
+
+
+
+
 }
 
