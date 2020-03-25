@@ -13,7 +13,12 @@ public class ArchiveTest {
         File file = new File("atomFile1.xml");
         archive.addArticles(file);
 
+        Archive archive1000 = new Archive();
+        archive1000.addArticles(new File("atomFile3.xml"));
+
         assertNotNull(archive.getArticles(), "L'article est vide");
+        assertEquals(10, archive.getArticles().size());
+        assertEquals(1000,archive1000.getArticles().size());
 
         assertEquals(archive.getArticles().get(0).getId(), ArticleTest.article1.getId());
         assertEquals(archive.getArticles().get(0).getUpdated(), ArticleTest.article1.getUpdated());
