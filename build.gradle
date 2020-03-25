@@ -4,6 +4,7 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.7'
 }
 
+
 version = '0.0.0'
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -13,6 +14,7 @@ test {
     minHeapSize = "128m"
     maxHeapSize = "1024m"
 
+/*
     // Headless test execution (true by default)
     if (project.hasProperty("headless") ? project.headless : true) {
         jvmArgs "-Dtestfx.robot=glass"
@@ -20,6 +22,9 @@ test {
         jvmArgs "-Dprism.order=sw"
         jvmArgs "-Dprism.text=t2k"
     }
+
+ */
+
 
     beforeTest {
         descriptor -> logger.lifecycle("Running test: " + descriptor)

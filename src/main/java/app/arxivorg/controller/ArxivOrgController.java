@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -16,9 +17,9 @@ public class ArxivOrgController implements Initializable {
     @FXML private Button helloWorldButton;
     @FXML private Button goodByeWorldButton;
     @FXML private Label label;
-    @FXML private ListView listView;
+    @FXML private ListView<String> listView;
 
-    //    @Override
+    @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayArticles();
     }
@@ -40,12 +41,11 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    private  void displayArticles(){
+    public  void displayArticles(){
         Archive archive =  new Archive();
+        archive.addArticles(new File("atomFile2.xml"));
         for(Article article : archive.getArticles()){
-            listView.getItems().add(article.getTitle() + "\n" + article.getAuthors().toString());
-
+            listView.getItems().add("- " + article.getTitle() + "\n\t" + article.getAuthors().toString() + "\n ");
         }
-
     }
 }
