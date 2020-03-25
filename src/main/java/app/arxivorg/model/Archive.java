@@ -92,5 +92,9 @@ public class Archive {
     public void deleteArticle(Article article){
         this.articles.remove(article);
     }
+
+    public void addArticle(Article article){
+        this.articles.add(article);
+    }
 }
 
