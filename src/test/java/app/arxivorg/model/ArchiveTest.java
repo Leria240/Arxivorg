@@ -36,4 +36,14 @@ public class ArchiveTest {
         assertEquals(archive.getArticles().get(9).getCategory(),ArticleTest.article10.getCategory());
     }
 
+    @Test
+    public void testAddArticle(){
+        Archive archive = new Archive();
+        assertEquals(0,archive.getArticles().size());
+        archive.addArticle(ArticleTest.article1);
+        assertEquals(1,archive.getArticles().size());
+        assertTrue(archive.getArticles().contains(ArticleTest.article1));
+    }
+
+
 }
