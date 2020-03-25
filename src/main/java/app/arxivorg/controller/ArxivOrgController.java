@@ -45,7 +45,10 @@ public class ArxivOrgController implements Initializable {
         Archive archive =  new Archive();
         archive.addArticles(new File("atomFile2.xml"));
         for(Article article : archive.getArticles()){
-            listView.getItems().add("- " + article.getTitle() + "\n\t" + article.getAuthors().toString() + "\n ");
+            String title = article.getTitle();
+            String authors = "Authors: " + article.getAuthors().toString();
+            String id = "ArXiv: " + article.getId().substring(21);
+            listView.getItems().add("- " + title + "\n\t" + authors + "\n\t" + id);
         }
     }
 }
