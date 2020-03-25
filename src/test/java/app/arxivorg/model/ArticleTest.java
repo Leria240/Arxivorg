@@ -98,6 +98,22 @@ class ArticleTest {
         assertFalse(article10.isFavoriteItem());
     }
 
+    @Test
+    public void testSetFavoriteItem(){
+        assertFalse(article1.isFavoriteItem());
+        assertFalse(article10.isFavoriteItem());
+        article1.changeFavoriteItem();
+        article10.changeFavoriteItem();
+        assertTrue(article1.isFavoriteItem());
+        assertTrue(article10.isFavoriteItem());
+        article1.changeFavoriteItem();
+        article10.changeFavoriteItem();
+        assertFalse(article1.isFavoriteItem());
+        assertFalse(article10.isFavoriteItem());
+    }
+
+
+
 
 
 }
