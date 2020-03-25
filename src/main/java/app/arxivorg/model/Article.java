@@ -72,4 +72,8 @@ public class Article {
                 "un lien vers la page ArXiv: " + getURL_pageArxiv();
     }
 
+    public boolean isFavoriteItem(){
+        return favoriteItem;
+    }
+
 }
