@@ -21,7 +21,6 @@ public class Archive {
 
     public Archive() {
         this.articles = new ArrayList<>();
-
     }
 
     public List<Article> getArticles() {
@@ -47,7 +46,7 @@ public class Archive {
                     final Element article = (Element) entry.item(i);
 
                     //Récupération des id, mises à jour, dates de publication, titres, résumés
-                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            ","");
+                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            "," ");
                     final String id = article.getElementsByTagName("id").item(0).getTextContent();
                     final String updated = article.getElementsByTagName("updated").item(0).getTextContent();
                     final String published = article.getElementsByTagName("published").item(0).getTextContent();
@@ -73,7 +72,7 @@ public class Archive {
                     //Récupération des catégories
                     List<String> categorylist = new ArrayList<>();
                     for (int l = 0; l < article.getElementsByTagName("category").getLength(); l++){
-                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(0).getTextContent();
+                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(1).getTextContent();
                         categorylist.add(category.trim());
                     }
 
@@ -87,7 +86,10 @@ public class Archive {
         {
             e.printStackTrace();
         }
+    }
 
+    public void deleteArticle(Article article){
+        this.articles.remove(article);
     }
 }
 
