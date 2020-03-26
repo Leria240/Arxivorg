@@ -10,7 +10,58 @@
     <Button fx:id="goodByeWorldButton" layoutX="175.0" layoutY="87.0" mnemonicParsing="false" onMouseClicked="#goodByeWorld" text="Good Bye World" />
     <Label fx:id="label" layoutX="100.0" layoutY="150.0" prefHeight="25.0" prefWidth="100.0" wrapText="true" />
     <SplitPane dividerPositions="0.29797979797979796" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <VBox layoutX="102.0" layoutY="183.0" prefHeight="598.0" prefWidth="354.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox prefHeight="14.0" prefWidth="354.0">
+                     <children>
+                        <Label fx:id="filter" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="354.0" text="FILTER" textAlignment="CENTER" textFill="#050117">
+                           <font>
+                              <Font name="Bodoni MT Bold Italic" size="15.0" />
+                           </font>
+                        </Label>
+                        <Separator prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="63.0" prefWidth="258.0" spacing="5.0">
+                     <children>
+                        <Label text="Categories :" />
+                        <ChoiceBox prefWidth="225.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></ChoiceBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="54.0" prefWidth="354.0" spacing="5.0">
+                     <children>
+                        <Label text=" Period :" />
+                        <ChoiceBox prefWidth="225.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></ChoiceBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="135.0" prefWidth="354.0" spacing="5.0">
+                     <children>
+                        <Label text="Authors : " />
+                        <TextArea prefHeight="124.0" prefWidth="354.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="133.0" prefWidth="354.0" spacing="5.0">
+                     <children>
+                        <Label text="Keywords :" />
+                        <TextArea prefHeight="110.0" prefWidth="354.0" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="results" mnemonicParsing="false" prefHeight="33.0" prefWidth="354.0" text="Show results">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children></AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
             <VBox prefHeight="298.0" prefWidth="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <Label prefHeight="17.0" prefWidth="85.0" text="Articles : ">
@@ -18,7 +69,7 @@
                         <Font name="System Bold Italic" size="16.0" />
                     </font>
                 </Label>
-                <ListView fx:id="listView" prefHeight="454.0" prefWidth="838.0" />
+                <ListView fx:id="listView" prefHeight="400.0" prefWidth="838.0" />
             <Label fx:id="details" text="Details : ">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -26,21 +77,22 @@
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TextArea fx:id="articleDetails" editable="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="777.0">
+                  <TextArea fx:id="articleDetails" editable="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="191.0" prefWidth="727.0">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </TextArea>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                  <VBox prefHeight="191.0" prefWidth="168.0" spacing="10.0">
                      <children>
                         <CheckBox fx:id="favorite" mnemonicParsing="false" prefHeight="17.0" prefWidth="137.0" text="Favorite" />
-                        <Button fx:id="download" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Download" />
+                        <Button fx:id="download" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" text="Download" />
+                        <Button fx:id="downloadAll" mnemonicParsing="false" prefHeight="25.0" prefWidth="169.0" text=" Download all" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             </VBox>
-         <TextField fx:id="select" alignment="CENTER" editable="false" layoutY="417.0" prefHeight="181.0" prefWidth="838.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="417.0" />
+         <TextField fx:id="select" alignment="CENTER" editable="false" layoutY="407.0" prefHeight="191.0" prefWidth="838.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="407.0" />
         </AnchorPane>
     </SplitPane>
 </AnchorPane>
