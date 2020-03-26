@@ -1,9 +1,13 @@
 package app.arxivorg.model;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class Article {
@@ -82,21 +86,14 @@ public class Article {
 
     public void changeFavoriteItem(){favoriteItem = !favoriteItem;}
 
-    public void download() {
-        /*
-        try (BufferedInputStream bis = new BufferedInputStream(this.getURL_PDF().openStream());
-             FileOutputStream fos = new FileOutputStream("C:/Users/Arfaoui Selma/Desktop/myfile.txt")) {
-            byte data[] = new byte[1024];
-            int byteContent;
-            System.out.println(this.getURL_PDF());
-            while ((byteContent = bis.read(data, 0, 1024)) != -1) {
-                fos.write(data, 0, byteContent);
-            }
+    public void download(){
+        URL url = this.getURL_PDF();
+        try (InputStream in = url.openStream()) {
+            Files.copy(in, Paths.get("../../someArticle.pdf"), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace(System.out);
+            e.printStackTrace();
         }
-
-         */
     }
 }
+
 

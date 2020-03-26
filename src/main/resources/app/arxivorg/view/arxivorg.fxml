@@ -18,7 +18,7 @@
                         <Font name="System Bold Italic" size="16.0" />
                     </font>
                 </Label>
-                <ListView fx:id="listView" prefHeight="439.0" prefWidth="838.0" />
+                <ListView fx:id="listView" prefHeight="454.0" prefWidth="838.0" />
             <Label fx:id="details" text="Details : ">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -26,7 +26,7 @@
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TextArea fx:id="articleDetails" editable="false" prefHeight="100.0" prefWidth="777.0">
+                  <TextArea fx:id="articleDetails" editable="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="777.0">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -40,7 +40,7 @@
                </children>
             </HBox>
             </VBox>
-         <TextField fx:id="select" alignment="CENTER" editable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="485.0" />
+         <TextField fx:id="select" alignment="CENTER" editable="false" layoutY="417.0" prefHeight="181.0" prefWidth="838.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="417.0" />
         </AnchorPane>
     </SplitPane>
 </AnchorPane>
