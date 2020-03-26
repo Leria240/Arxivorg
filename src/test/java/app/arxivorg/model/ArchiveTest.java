@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,7 +85,7 @@ public class ArchiveTest {
 
         List<Article> result = archive.categoryFilter(categories);
         assert(!result.isEmpty());
-        for (int i = 0; i<result.size(); i++) {
+        for (int i = 0; i < result.size(); i++) {
             assert (result.get(i).getCategory().containsAll(categories));
             System.out.println(result.get(i).getTitle());
             System.out.println(result.get(i).getCategory());
@@ -101,15 +104,74 @@ public class ArchiveTest {
         authorslist.add("Jiaqing Lin");
         Authors authors = new Authors(authorslist);
 
-
         List<Article> result = archive.authorFilter(authors);
         assert(!result.isEmpty());
-        for (int i = 0; i<result.size(); i++) {
-            assert (result.get(i).getAuthors().getData().containsAll(authors.getData()));
+        for (int i = 0; i < result.size(); i++) {
+            assert (result.get(i).getAuthors().getData().contains(authors.getData().get(0)) ||
+                    result.get(i).getAuthors().getData().contains(authors.getData().get(1)) ||
+                    result.get(i).getAuthors().getData().contains(authors.getData().get(2)));
             System.out.println(result.get(i).getTitle());
-            System.out.println(result.get(i).getAuthors());
+            System.out.println(result.get(i).getAuthors() + "\n");
         }
     }
 
+    @Test
+    public void testKeyWordFilter() {
+        Archive archive = new Archive();
+        File file = new File("atomFile1.xml");
+        archive.addArticles(file);
+        String titleKeyword = new String("Cross-Lingual");
+        String titleKeyword2 = new String("Video Caption Dataset");
+        String summaryKeyword = new String("sticker response");
+        String summaryKeyword2 = new String("ReZero-Transformer networks");
+
+        List<Article> result = archive.keyWordFilter(titleKeyword);
+        List<Article> result2 = archive.keyWordFilter(titleKeyword2);
+        List<Article> result3 = archive.keyWordFilter(summaryKeyword);
+        List<Article> result4 = archive.keyWordFilter(summaryKeyword2);
+
+        assert(!result.isEmpty());
+        for (int i = 0; i < result.size(); i++) {
+            assert (result.get(i).getTitle().contains(titleKeyword));
+            System.out.println(result.get(i).getTitle() + '\n');
+        }
+
+        assert(!result2.isEmpty());
+        for(int k = 0; k < result2.size(); k++){
+            assert (result2.get(k).getTitle().contains(titleKeyword2));
+            System.out.println(result2.get(k).getTitle() + '\n');
+        }
+
+        assert(!result3.isEmpty());
+        for(int k = 0; k < result3.size(); k++){
+            assert (result3.get(k).getSummary().contains(summaryKeyword));
+            System.out.println(result3.get(k).getTitle());
+            System.out.println(result3.get(k).getSummary() + '\n');
+        }
+
+        assert(!result4.isEmpty());
+        for(int k = 0; k < result4.size(); k++){
+            assert (result4.get(k).getSummary().contains(summaryKeyword2));
+            System.out.println(result4.get(k).getTitle());
+            System.out.println(result3.get(k).getSummary() + '\n');
+        }
+    }
+
+    @Test
+    public void testDateFilter() throws ParseException {
+        Archive archive = new Archive();
+        File file = new File("atomFile1.xml");
+        archive.addArticles(file);
+
+        List<Article> result = archive.dateFilter("2020-03-08");
+
+        for (int i = 0; i < result.size(); i++) {
+            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(result.get(i).getPublished().substring(0, 10));
+            Date dateLimit = new SimpleDateFormat("dd-MM-yyyy").parse("2020-03-08");
+            assert (dateLimit.before(date) || dateLimit.equals(date));
+            System.out.println(result.get(i).getTitle());
+            System.out.println(result.get(i).getPublished() + '\n');
+        }
+    }
 
 }
