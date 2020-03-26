@@ -4,9 +4,7 @@ import app.arxivorg.model.Archive;
 import app.arxivorg.model.Article;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 
 import java.io.File;
 import java.net.URL;
@@ -18,10 +16,14 @@ public class ArxivOrgController implements Initializable {
     @FXML private Button goodByeWorldButton;
     @FXML private Label label;
     @FXML private ListView<String> listView;
+    @FXML private TextArea articleDetails;
+    @FXML private TextField select;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayArticles();
+        selectArticles();
     }
 
     @FXML
@@ -41,7 +43,7 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    public  void displayArticles(){
+    public Archive displayArticles(){
         Archive archive =  new Archive();
         archive.addArticles(new File("atomFile2.xml"));
         for(Article article : archive.getArticles()){
@@ -50,5 +52,22 @@ public class ArxivOrgController implements Initializable {
             String id = "ArXiv: " + article.getId().substring(21);
             listView.getItems().add("- " + title + "\n\t" + authors + "\n\t" + id);
         }
+        return archive;
+    }
+
+    @FXML
+    public void selectArticles(){
+        select.setText("Click on one of the articles above to see more detail");
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listView.getSelectionModel().selectedIndexProperty().addListener(observable -> {
+            displayDetails(listView.getSelectionModel().getSelectedIndex());
+        });
+    }
+
+    @FXML
+    private void displayDetails(int index) {
+        select.setVisible(false);
+        Archive archive =displayArticles();
+        articleDetails.setText(archive.getArticles().get(index).toString());
     }
 }
