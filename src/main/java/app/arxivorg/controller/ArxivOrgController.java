@@ -63,9 +63,8 @@ public class ArxivOrgController implements Initializable {
     public void selectArticles(){
         select.setText("Click on one of the articles above to see more detail");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listView.getSelectionModel().selectedIndexProperty().addListener(observable -> {
-            displayDetails(listView.getSelectionModel().getSelectedIndex());
-        });
+        listView.getSelectionModel().selectedIndexProperty().addListener(observable ->
+                displayDetails(listView.getSelectionModel().getSelectedIndex()));
     }
 
     @FXML
@@ -77,12 +76,7 @@ public class ArxivOrgController implements Initializable {
     }
 
     public EventHandler<ActionEvent> updateFavoriteItem(int index){
-        return new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                archive.getArticle(index).changeFavoriteItem();
-            }
-        };
+        return actionEvent -> archive.getArticle(index).changeFavoriteItem();
     }
 
 }
