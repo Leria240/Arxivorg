@@ -2,6 +2,8 @@ package app.arxivorg.controller;
 
 import app.arxivorg.model.Archive;
 import app.arxivorg.model.Article;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -18,6 +20,10 @@ public class ArxivOrgController implements Initializable {
     @FXML private ListView<String> listView;
     @FXML private TextArea articleDetails;
     @FXML private TextField select;
+    @FXML private CheckBox favorite;
+    @FXML private Button download;
+    private Archive archive =  new Archive();
+
 
 
     @Override
@@ -42,9 +48,8 @@ public class ArxivOrgController implements Initializable {
             helloWorldButton.setVisible(true);
     }
 
-    @FXML
+    @ FXML
     public Archive displayArticles(){
-        Archive archive =  new Archive();
         archive.addArticles(new File("atomFile2.xml"));
         for(Article article : archive.getArticles()){
             String title = article.getTitle();
@@ -67,7 +72,18 @@ public class ArxivOrgController implements Initializable {
     @FXML
     private void displayDetails(int index) {
         select.setVisible(false);
-        Archive archive =displayArticles();
-        articleDetails.setText(archive.getArticles().get(index).toString());
+        articleDetails.setText(archive.getArticle(index).toString());
+        favorite.setSelected(archive.getArticle(index).isFavoriteItem());
+        favorite.setOnAction(updateFavoriteItem(index));
     }
+
+    public EventHandler<ActionEvent> updateFavoriteItem(int index){
+        return new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                archive.getArticle(index).changeFavoriteItem();
+            }
+        };
+    }
+
 }

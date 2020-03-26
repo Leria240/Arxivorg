@@ -80,11 +80,10 @@ public class Article {
         return favoriteItem;
     }
 
-    public void changeFavoriteItem(){
-        favoriteItem = !favoriteItem;
-    }
+    public void changeFavoriteItem(){favoriteItem = !favoriteItem;}
 
     public void download() {
+        /*
         try (BufferedInputStream bis = new BufferedInputStream(this.getURL_PDF().openStream());
              FileOutputStream fos = new FileOutputStream("C:/Users/Arfaoui Selma/Desktop/myfile.txt")) {
             byte data[] = new byte[1024];
@@ -96,6 +95,8 @@ public class Article {
         } catch (IOException e) {
             e.printStackTrace(System.out);
         }
+
+         */
     }
 }
 

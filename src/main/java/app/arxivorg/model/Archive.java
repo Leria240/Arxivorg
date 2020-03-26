@@ -89,6 +89,10 @@ public class Archive {
         }
     }
 
+    public Article getArticle(int index){
+        return articles.get(index);
+    }
+
     public void deleteArticle(Article article){
         this.articles.remove(article);
     }
