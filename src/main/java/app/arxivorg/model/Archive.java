@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javafx.collections.transformation.FilteredList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -96,5 +97,30 @@ public class Archive {
     public void addArticle(Article article){
         this.articles.add(article);
     }
+
+    public List<Article> categoryFilter (List<String> category){
+        List<Article> result = new ArrayList<>();
+        for (int i = 0; i<articles.size(); i++){
+            if (articles.get(i).getCategory().containsAll(category)) {
+                result.add(articles.get(i));
+            }
+        }
+        return result;
+    }
+
+    public List<Article> authorFilter (Authors authors){
+        List<Article> result = new ArrayList<>();
+        for (int i = 0; i<articles.size(); i++){
+            if (articles.get(i).getAuthors().getData().containsAll(authors.getData())) {
+                result.add(articles.get(i));
+            }
+        }
+        return result;
+    }
+
+
+
+
+
 }
 

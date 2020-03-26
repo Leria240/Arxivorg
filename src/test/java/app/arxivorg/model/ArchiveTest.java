@@ -1,7 +1,11 @@
 package app.arxivorg.model;
 
 import org.junit.jupiter.api.Test;
+
+import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,8 +71,45 @@ public class ArchiveTest {
         assertEquals(1, archive.getArticles().size());
     }
 
+    @Test
+    public void testCategoryFilter(){
+        Archive archive = new Archive();
+        File file = new File("atomFile1.xml");
+        archive.addArticles(file);
+        List<String> categories = new ArrayList<>();
+        categories.add("cs.LG");
+        categories.add("cs.CL");
+
+        List<Article> result = archive.categoryFilter(categories);
+        assert(!result.isEmpty());
+        for (int i = 0; i<result.size(); i++) {
+            assert (result.get(i).getCategory().containsAll(categories));
+            System.out.println(result.get(i).getTitle());
+            System.out.println(result.get(i).getCategory());
+        }
+    }
+
+    @Test
+    public void testAuthorFilter(){
+        Archive archive = new Archive();
+        File file = new File("atomFile1.xml");
+        archive.addArticles(file);
+
+        List<String> authorslist = new ArrayList<>();
+        authorslist.add("Thomas Bachlechner");
+        authorslist.add("Ira Leviant");
+        authorslist.add("Jiaqing Lin");
+        Authors authors = new Authors(authorslist);
 
 
+        List<Article> result = archive.authorFilter(authors);
+        assert(!result.isEmpty());
+        for (int i = 0; i<result.size(); i++) {
+            assert (result.get(i).getAuthors().getData().containsAll(authors.getData()));
+            System.out.println(result.get(i).getTitle());
+            System.out.println(result.get(i).getAuthors());
+        }
+    }
 
 
 }
