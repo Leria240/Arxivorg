@@ -24,7 +24,6 @@ public class Archive {
 
     public Archive() {
         this.articles = new ArrayList<>();
-
     }
 
     public List<Article> getArticles() {
@@ -81,7 +80,7 @@ public class Archive {
                     }
 
                     Authors authors = new Authors(authorslist);
-                    Article article1 = new Article(id,updated,published,title,summary,authors,arxiv,pdf,categorylist);
+                    Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
                     articles.add(article1);
                 }
             }
@@ -90,7 +89,14 @@ public class Archive {
         {
             e.printStackTrace();
         }
+    }
 
+    public void deleteArticle(Article article){
+        this.articles.remove(article);
+    }
+
+    public void addArticle(Article article){
+        this.articles.add(article);
     }
 
     public List<Article> categoryFilter (List<String> category){
