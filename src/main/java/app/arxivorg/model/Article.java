@@ -1,5 +1,8 @@
 package app.arxivorg.model;
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -81,7 +84,18 @@ public class Article {
         favoriteItem = !favoriteItem;
     }
 
-
-
+    public void download() {
+        try (BufferedInputStream bis = new BufferedInputStream(this.getURL_PDF().openStream());
+             FileOutputStream fos = new FileOutputStream("C:/Users/Arfaoui Selma/Desktop/myfile.txt")) {
+            byte data[] = new byte[1024];
+            int byteContent;
+            System.out.println(this.getURL_PDF());
+            while ((byteContent = bis.read(data, 0, 1024)) != -1) {
+                fos.write(data, 0, byteContent);
+            }
+        } catch (IOException e) {
+            e.printStackTrace(System.out);
+        }
+    }
 }
 
