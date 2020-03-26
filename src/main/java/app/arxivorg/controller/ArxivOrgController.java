@@ -49,7 +49,7 @@ public class ArxivOrgController implements Initializable {
     }
 
     @ FXML
-    public Archive displayArticles(){
+    public void displayArticles(){
         archive.addArticles(new File("atomFile2.xml"));
         for(Article article : archive.getArticles()){
             String title = article.getTitle();
@@ -57,7 +57,6 @@ public class ArxivOrgController implements Initializable {
             String id = "ArXiv: " + article.getId().substring(21);
             listView.getItems().add("- " + title + "\n\t" + authors + "\n\t" + id);
         }
-        return archive;
     }
 
     @FXML
