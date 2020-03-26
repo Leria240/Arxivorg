@@ -1,7 +1,9 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +24,7 @@ public class Archive {
 
     public Archive() {
         this.articles = new ArrayList<>();
+
     }
 
     public List<Article> getArticles() {
@@ -78,7 +81,7 @@ public class Archive {
                     }
 
                     Authors authors = new Authors(authorslist);
-                    Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
+                    Article article1 = new Article(id,updated,published,title,summary,authors,arxiv,pdf,categorylist);
                     articles.add(article1);
                 }
             }
@@ -87,18 +90,57 @@ public class Archive {
         {
             e.printStackTrace();
         }
+
     }
 
-    public Article getArticle(int index){
-        return articles.get(index);
+    public List<Article> categoryFilter (List<String> category){
+        List<Article> result = new ArrayList<>();
+        for (int i = 0; i < articles.size(); i++){
+            if (articles.get(i).getCategory().containsAll(category)) {
+                result.add(articles.get(i));
+            }
+        }
+        return result;
     }
 
-    public void deleteArticle(Article article){
-        this.articles.remove(article);
+    public List<Article> authorFilter (Authors authors){
+        List<Article> result = new ArrayList<>();
+        for (int i = 0; i < articles.size(); i++){
+            for(String author : authors.getData()){
+                if (articles.get(i).getAuthors().getData().contains(author)) {
+                    result.add(articles.get(i));
+                }
+            }
+        }
+        return result;
     }
 
-    public void addArticle(Article article){
-        this.articles.add(article);
+    public List<Article> keyWordFilter (String keyword){
+        List<Article> result = new ArrayList<>();
+        for (int i = 0; i < articles.size(); i++){
+            if (articles.get(i).getTitle().contains(keyword)) {
+                result.add(articles.get(i));
+            }
+            if(articles.get(i).getSummary().contains(keyword)){
+                result.add((articles.get(i)));
+            }
+        }
+        return result;
     }
+
+    public List<Article> dateFilter(String stringDate) throws ParseException {
+        List<Article> result = new ArrayList<>();
+        for(int i = 0; i < articles.size(); i++){
+            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(articles.get(i).getPublished().substring(0,10));
+            Date dateLimit = new SimpleDateFormat("dd-MM-yyyy").parse(stringDate);
+            if(dateLimit.before(date) || dateLimit.equals(date)){
+                result.add(articles.get(i));
+            }
+        }
+        return result;
+    }
+
+    //public List<Article> nonListedFilter(String maxDate){}
+
 }
 
