@@ -2,6 +2,7 @@ package app.arxivorg.controller;
 
 import app.arxivorg.model.Archive;
 import app.arxivorg.model.Article;
+import app.arxivorg.model.Authors;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -113,6 +114,7 @@ public class ArxivOrgController implements Initializable {
         archive.selectAll();
         archive.categoryFilter(categories.getValue());
         archive.keyWordFilter(keywords.getText());
+        archive.authorFilter(authors.getText());
         listView.getItems().clear();
         select.setVisible(true);
         displayArticles();

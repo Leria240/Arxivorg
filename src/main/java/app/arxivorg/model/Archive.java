@@ -136,16 +136,16 @@ public class Archive {
         }
     }
 
-    public List<Article> authorFilter (Authors authors){
-        List<Article> result = new ArrayList<>();
+    public void authorFilter (String authors) {
+        authors.replace(","," ");
+        String[] tabAuthors = authors.split(" ");
         for (Article article : articles) {
-            for (String author : authors.getData()) {
-                if (article.getAuthors().getData().contains(author)) {
-                    result.add(article);
+            for(String author: tabAuthors){
+                if (!article.getAuthors().contains(author)) {
+                    article.setSelected(false);
                 }
             }
         }
-        return result;
     }
 
     public void keyWordFilter (String keyword){
