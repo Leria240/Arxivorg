@@ -25,7 +25,6 @@ public class ArxivOrgController implements Initializable {
     private Archive archive =  new Archive();
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayArticles();
@@ -73,10 +72,16 @@ public class ArxivOrgController implements Initializable {
         articleDetails.setText(archive.getArticle(index).toString());
         favorite.setSelected(archive.getArticle(index).isFavoriteItem());
         favorite.setOnAction(updateFavoriteItem(index));
+        download.setOnAction(downloadArticle(index));
     }
 
     public EventHandler<ActionEvent> updateFavoriteItem(int index){
         return actionEvent -> archive.getArticle(index).changeFavoriteItem();
     }
+
+    public EventHandler<ActionEvent> downloadArticle(int index){
+        return actionEvent -> archive.getArticle(index).download();
+    }
+
 
 }
