@@ -93,14 +93,14 @@ public class ArxivOrgController implements Initializable {
     @FXML
     private void displayDetails(int index) {
         select.setVisible(false);
-        articleDetails.setText(archive.getArticle(index).toString());
-        favorite.setSelected(archive.getArticle(index).isFavoriteItem());
+        articleDetails.setText(archive.getSelectedArticle(index).toString());
+        favorite.setSelected(archive.getSelectedArticle(index).isFavoriteItem());
         favorite.setOnAction(updateFavoriteItem(index));
         download.setOnAction(downloadArticle(index));
     }
 
     public EventHandler<ActionEvent> updateFavoriteItem(int index){
-        return actionEvent -> archive.getArticle(index).changeFavoriteItem();
+        return actionEvent -> archive.getSelectedArticle(index).changeFavoriteItem();
     }
 
     public EventHandler<ActionEvent> downloadArticle(int index){
@@ -113,6 +113,7 @@ public class ArxivOrgController implements Initializable {
         archive.selectAll();
         archive.categoryFilter(categories.getValue());
         listView.getItems().clear();
+        select.setVisible(true);
         displayArticles();
     }
 

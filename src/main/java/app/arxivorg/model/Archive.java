@@ -89,6 +89,17 @@ public class Archive {
         }
     }
 
+    public Article getSelectedArticle(int index){
+        int counter = 0;
+        int i;
+        for(i=-1; counter <= index ;i++ ) {
+            if (articles.get(i+1).isSelected()) {
+                counter++;
+            }
+        }
+        return (i<0) ? articles.get(0) : articles.get(i);
+    }
+
     public Article getArticle(int index){
         return articles.get(index);
     }
