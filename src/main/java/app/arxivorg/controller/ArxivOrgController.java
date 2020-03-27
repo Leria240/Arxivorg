@@ -56,6 +56,7 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void initListOfArticles(){
+        select.setVisible(true);
         archive.addArticles(new File("atomFile2.xml"));
         displayArticles();
         results.setOnAction(actionEvent -> applyFilter());
@@ -71,7 +72,6 @@ public class ArxivOrgController implements Initializable {
                 listView.getItems().add("- " + title + "\n\t" + authors + "\n\t" + id);
             }
         }
-        System.out.println("Number of article: " + listView.getItems().size());
     }
 
     @FXML
@@ -112,6 +112,7 @@ public class ArxivOrgController implements Initializable {
     private void applyFilter(){
         archive.selectAll();
         archive.categoryFilter(categories.getValue());
+        archive.keyWordFilter(keywords.getText());
         listView.getItems().clear();
         select.setVisible(true);
         displayArticles();

@@ -148,17 +148,16 @@ public class Archive {
         return result;
     }
 
-    public List<Article> keyWordFilter (String keyword){
-        List<Article> result = new ArrayList<>();
+    public void keyWordFilter (String keyword){
+        keyword.replaceAll(","," ");
+        String[] tabKeyWords = keyword.split(" ");
         for (Article article : articles) {
-            if (article.getTitle().contains(keyword)) {
-                result.add(article);
-            }
-            if (article.getSummary().contains(keyword)) {
-                result.add(article);
+            for(String word: tabKeyWords) {
+                if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
+                    article.setSelected(false);
+                }
             }
         }
-        return result;
     }
 
     public List<Article> dateFilter(String stringDate) throws ParseException {
