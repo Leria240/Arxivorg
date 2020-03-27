@@ -120,13 +120,6 @@ public class Archive {
         return categories;
     }
 
-    public List<String> possiblePeriod(){
-        return Arrays.asList(" All period","Last 1 hour","Last 2 hours","Last 3 hours",
-                "Today","Yesterday","Last Week","Last 2 week",
-                "Last month","Last 2 month","Last 3 month","Last 6 month",
-                "Last year","Last 2 years","Last 3 years","Last 6 years");
-    }
-
     public void categoryFilter (String category){
         if (category.equals(" All categories")) return;
         for (Article article: articles){
@@ -137,7 +130,7 @@ public class Archive {
     }
 
     public void authorFilter (String authors) {
-        authors.replace(","," ");
+        authors.replaceAll(","," ");
         String[] tabAuthors = authors.split(" ");
         for (Article article : articles) {
             for(String author: tabAuthors){
@@ -160,16 +153,20 @@ public class Archive {
         }
     }
 
-    public List<Article> dateFilter(String stringDate) throws ParseException {
-        List<Article> result = new ArrayList<>();
+    public void dateFilter(String stringDate){
         for (Article article : articles) {
-            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(article.getPublished().substring(0, 10));
-            Date dateLimit = new SimpleDateFormat("dd-MM-yyyy").parse(stringDate);
-            if (dateLimit.before(date) || dateLimit.equals(date)) {
-                result.add(article);
+            Date date = null;
+            Date dateLimit = null;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(article.getPublished().substring(0, 10));
+                dateLimit = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (!dateLimit.before(date) && !dateLimit.equals(date)) {
+                article.setSelected(false);
             }
         }
-        return result;
     }
 
     //public List<Article> nonListedFilter(String maxDate){}

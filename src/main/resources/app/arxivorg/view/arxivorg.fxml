@@ -36,10 +36,7 @@
                   <VBox prefHeight="54.0" prefWidth="354.0" spacing="5.0">
                      <children>
                         <Label text=" Period :" />
-                        <ChoiceBox fx:id="period" prefWidth="225.0">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin></ChoiceBox>
+                        <DatePicker fx:id="period" />
                      </children>
                   </VBox>
                   <VBox prefHeight="135.0" prefWidth="354.0" spacing="5.0">
@@ -70,7 +67,7 @@
                     </font>
                 </Label>
                 <ListView fx:id="listView" prefHeight="400.0" prefWidth="838.0" />
-            <Label fx:id="details" text="Details : ">
+            <Label text="Details : ">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

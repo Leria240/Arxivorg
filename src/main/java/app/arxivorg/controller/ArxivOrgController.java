@@ -24,7 +24,7 @@ public class ArxivOrgController implements Initializable {
     @FXML private CheckBox favorite;
     @FXML private Button download;
     @FXML private ChoiceBox<String> categories;
-    @FXML private ChoiceBox<String> period;
+    @FXML private DatePicker period;
     @FXML private TextArea authors;
     @FXML private TextArea keywords;
     @FXML private Button results;
@@ -78,9 +78,7 @@ public class ArxivOrgController implements Initializable {
     @FXML
     private void displayFilter(){
         categories.setValue(" All categories");
-        period.setValue(" All period");
         categories.getItems().addAll(archive.possibleCategories());
-        period.getItems().addAll(archive.possiblePeriod());
     }
 
     @FXML
@@ -115,6 +113,8 @@ public class ArxivOrgController implements Initializable {
         archive.categoryFilter(categories.getValue());
         archive.keyWordFilter(keywords.getText());
         archive.authorFilter(authors.getText());
+        archive.dateFilter(period.getValue().toString());
+        System.out.println(period.getValue().toString());
         listView.getItems().clear();
         select.setVisible(true);
         displayArticles();
