@@ -21,9 +21,8 @@ public class Authors {
     }
 
     public boolean contains(String firstnameOrLastname){
-        String name = firstnameOrLastname.replaceFirst(".",(firstnameOrLastname.charAt(0)+"").toUpperCase());
         for(String author: data){
-            if(author.contains(name))
+            if(author.toLowerCase().contains(firstnameOrLastname.toLowerCase()))
                 return true;
         }
         return false;
