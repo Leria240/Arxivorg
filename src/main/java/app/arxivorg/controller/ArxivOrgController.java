@@ -10,7 +10,6 @@ import javafx.scene.control.*;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
@@ -23,19 +22,18 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextField select;
     @FXML private CheckBox favorite;
     @FXML private Button download;
-    @FXML private ChoiceBox categories;
-    @FXML private ChoiceBox period;
+    @FXML private ChoiceBox<String> categories;
+    @FXML private ChoiceBox<String> period;
     @FXML private TextArea authors;
     @FXML private TextArea keywords;
     @FXML private Button results;
-    @FXML private Label details;
     @FXML private Button downloadAll;
     private Archive archive =  new Archive();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        displayArticles();
+        initListOfArticles();
         selectArticles();
         displayFilter();
     }
@@ -56,19 +54,30 @@ public class ArxivOrgController implements Initializable {
             helloWorldButton.setVisible(true);
     }
 
+    @FXML
+    public void initListOfArticles(){
+        archive.addArticles(new File("atomFile2.xml"));
+        displayArticles();
+        results.setOnAction(actionEvent -> applyFilter());
+    }
+
     @ FXML
     public void displayArticles(){
-        archive.addArticles(new File("atomFile2.xml"));
         for(Article article : archive.getArticles()){
-            String title = article.getTitle();
-            String authors = "Authors: " + article.getAuthors().toString();
-            String id = "ArXiv: " + article.getId().substring(21);
-            listView.getItems().add("- " + title + "\n\t" + authors + "\n\t" + id);
+            if(article.isSelected()) {
+                String title = article.getTitle();
+                String authors = "Authors: " + article.getAuthors().toString();
+                String id = "ArXiv: " + article.getId().substring(21);
+                listView.getItems().add("- " + title + "\n\t" + authors + "\n\t" + id);
+            }
         }
+        System.out.println("Number of article: " + listView.getItems().size());
     }
 
     @FXML
     private void displayFilter(){
+        categories.setValue(" All categories");
+        period.setValue(" All period");
         categories.getItems().addAll(archive.possibleCategories());
         period.getItems().addAll(archive.possiblePeriod());
     }
@@ -100,8 +109,11 @@ public class ArxivOrgController implements Initializable {
 
 
     @FXML
-    private void filterResultPushed(){
-
+    private void applyFilter(){
+        archive.selectAll();
+        archive.categoryFilter(categories.getValue());
+        listView.getItems().clear();
+        displayArticles();
     }
 
 

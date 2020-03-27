@@ -2,9 +2,6 @@ package app.arxivorg.model;
 
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -21,6 +18,7 @@ public class Article {
     private URL URL_PDF;
     private List<String> category;
     private boolean favoriteItem;
+    private boolean selected;
 
     public Article(String id, String updated, String published, String title,
                    String summary, Authors authors,
@@ -35,6 +33,7 @@ public class Article {
         this.URL_PDF = URL_PDF;
         this.category = category;
         this.favoriteItem = false;
+        this.selected = true;
     }
 
     public String getId() {
@@ -71,6 +70,14 @@ public class Article {
 
     public List<String> getCategory() {
         return category;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public String toString(){

@@ -19,11 +19,9 @@ import org.xml.sax.SAXException;
 public class Archive {
 
     private List<Article> articles;
-    private List<Article> filteredArticles;
 
     public Archive() {
         this.articles = new ArrayList<>();
-        this.filteredArticles = new ArrayList<>();
     }
 
     public List<Article> getArticles() {
@@ -82,7 +80,6 @@ public class Archive {
                     Authors authors = new Authors(authorslist);
                     Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
                     articles.add(article1);
-                    filteredArticles.add(article1);
                 }
             }
         }
@@ -96,19 +93,16 @@ public class Archive {
         return articles.get(index);
     }
 
-    public void deleteArticle(Article article){
-        this.articles.remove(article);
+    public void selectAll(){
+        for(Article article: articles){
+            article.setSelected(true);
+        }
     }
-
-    public void addArticle(Article article){
-        this.articles.add(article);
-    }
-
-
 
 
     public Set<String> possibleCategories(){
         Set<String> categories = new TreeSet<>();
+        categories.add(" All categories");
         for(Article article: articles){
             categories.addAll(article.getCategory());
         }
@@ -116,28 +110,27 @@ public class Archive {
     }
 
     public List<String> possiblePeriod(){
-        return Arrays.asList("Last 1 hour","Last 2 hours","Last 3 hours",
+        return Arrays.asList(" All period","Last 1 hour","Last 2 hours","Last 3 hours",
                 "Today","Yesterday","Last Week","Last 2 week",
                 "Last month","Last 2 month","Last 3 month","Last 6 month",
                 "Last year","Last 2 years","Last 3 years","Last 6 years");
     }
 
-    public List<Article> categoryFilter (String category){
-        List<Article> result = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++){
-            if (articles.get(i).getCategory().contains(category)) {
-                result.add(articles.get(i));
+    public void categoryFilter (String category){
+        if (category.equals(" All categories")) return;
+        for (Article article: articles){
+            if (!article.getCategory().contains(category)) {
+                article.setSelected(false);
             }
         }
-        return result;
     }
 
     public List<Article> authorFilter (Authors authors){
         List<Article> result = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++){
-            for(String author : authors.getData()){
-                if (articles.get(i).getAuthors().getData().contains(author)) {
-                    result.add(articles.get(i));
+        for (Article article : articles) {
+            for (String author : authors.getData()) {
+                if (article.getAuthors().getData().contains(author)) {
+                    result.add(article);
                 }
             }
         }
@@ -146,12 +139,12 @@ public class Archive {
 
     public List<Article> keyWordFilter (String keyword){
         List<Article> result = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++){
-            if (articles.get(i).getTitle().contains(keyword)) {
-                result.add(articles.get(i));
+        for (Article article : articles) {
+            if (article.getTitle().contains(keyword)) {
+                result.add(article);
             }
-            if(articles.get(i).getSummary().contains(keyword)){
-                result.add((articles.get(i)));
+            if (article.getSummary().contains(keyword)) {
+                result.add(article);
             }
         }
         return result;
@@ -159,11 +152,11 @@ public class Archive {
 
     public List<Article> dateFilter(String stringDate) throws ParseException {
         List<Article> result = new ArrayList<>();
-        for(int i = 0; i < articles.size(); i++){
-            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(articles.get(i).getPublished().substring(0,10));
+        for (Article article : articles) {
+            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(article.getPublished().substring(0, 10));
             Date dateLimit = new SimpleDateFormat("dd-MM-yyyy").parse(stringDate);
-            if(dateLimit.before(date) || dateLimit.equals(date)){
-                result.add(articles.get(i));
+            if (dateLimit.before(date) || dateLimit.equals(date)) {
+                result.add(article);
             }
         }
         return result;
