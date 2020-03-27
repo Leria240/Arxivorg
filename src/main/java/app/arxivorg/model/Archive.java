@@ -1,10 +1,11 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,7 +25,6 @@ public class Archive {
 
     public Archive() {
         this.articles = new ArrayList<>();
-
     }
 
     public List<Article> getArticles() {
@@ -81,7 +81,7 @@ public class Archive {
                     }
 
                     Authors authors = new Authors(authorslist);
-                    Article article1 = new Article(id,updated,published,title,summary,authors,arxiv,pdf,categorylist);
+                    Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
                     articles.add(article1);
                 }
             }
@@ -90,7 +90,18 @@ public class Archive {
         {
             e.printStackTrace();
         }
+    }
 
+    public Article getArticle(int index){
+        return articles.get(index);
+    }
+
+    public void deleteArticle(Article article){
+        this.articles.remove(article);
+    }
+
+    public void addArticle(Article article){
+        this.articles.add(article);
     }
 
     public List<Article> categoryFilter (List<String> category){
