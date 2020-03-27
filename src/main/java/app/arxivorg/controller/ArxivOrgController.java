@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
@@ -22,6 +23,13 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextField select;
     @FXML private CheckBox favorite;
     @FXML private Button download;
+    @FXML private ChoiceBox categories;
+    @FXML private ChoiceBox period;
+    @FXML private TextArea authors;
+    @FXML private TextArea keywords;
+    @FXML private Button results;
+    @FXML private Label details;
+    @FXML private Button downloadAll;
     private Archive archive =  new Archive();
 
 
@@ -29,6 +37,7 @@ public class ArxivOrgController implements Initializable {
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayArticles();
         selectArticles();
+        displayFilter();
     }
 
     @FXML
@@ -59,6 +68,12 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
+    private void displayFilter(){
+        categories.getItems().addAll(archive.possibleCategories());
+        period.getItems().addAll(archive.possiblePeriod());
+    }
+
+    @FXML
     public void selectArticles(){
         select.setText("Click on one of the articles above to see more detail");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -81,6 +96,12 @@ public class ArxivOrgController implements Initializable {
 
     public EventHandler<ActionEvent> downloadArticle(int index){
         return actionEvent -> archive.getArticle(index).download();
+    }
+
+
+    @FXML
+    private void filterResultPushed(){
+
     }
 
 

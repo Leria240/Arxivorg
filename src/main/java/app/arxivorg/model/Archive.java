@@ -2,10 +2,9 @@ package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+import java.util.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,14 +16,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.util.ArrayList;
-
 public class Archive {
 
     private List<Article> articles;
+    private List<Article> filteredArticles;
 
     public Archive() {
         this.articles = new ArrayList<>();
+        this.filteredArticles = new ArrayList<>();
     }
 
     public List<Article> getArticles() {
@@ -83,6 +82,7 @@ public class Archive {
                     Authors authors = new Authors(authorslist);
                     Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
                     articles.add(article1);
+                    filteredArticles.add(article1);
                 }
             }
         }
@@ -104,10 +104,28 @@ public class Archive {
         this.articles.add(article);
     }
 
-    public List<Article> categoryFilter (List<String> category){
+
+
+
+    public Set<String> possibleCategories(){
+        Set<String> categories = new TreeSet<>();
+        for(Article article: articles){
+            categories.addAll(article.getCategory());
+        }
+        return categories;
+    }
+
+    public List<String> possiblePeriod(){
+        return Arrays.asList("Last 1 hour","Last 2 hours","Last 3 hours",
+                "Today","Yesterday","Last Week","Last 2 week",
+                "Last month","Last 2 month","Last 3 month","Last 6 month",
+                "Last year","Last 2 years","Last 3 years","Last 6 years");
+    }
+
+    public List<Article> categoryFilter (String category){
         List<Article> result = new ArrayList<>();
         for (int i = 0; i < articles.size(); i++){
-            if (articles.get(i).getCategory().containsAll(category)) {
+            if (articles.get(i).getCategory().contains(category)) {
                 result.add(articles.get(i));
             }
         }
