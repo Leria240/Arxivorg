@@ -163,7 +163,7 @@ public class Archive {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if (!dateLimit.before(date) && !dateLimit.equals(date)) {
+            if (dateLimit.before(date) && !dateLimit.equals(date)) {
                 article.setSelected(false);
             }
         }

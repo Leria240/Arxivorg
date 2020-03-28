@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 
 import java.io.File;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
@@ -79,6 +80,7 @@ public class ArxivOrgController implements Initializable {
     private void displayFilter(){
         categories.setValue(" All categories");
         categories.getItems().addAll(archive.possibleCategories());
+        period.setValue(LocalDate.now());
     }
 
     @FXML
@@ -114,11 +116,13 @@ public class ArxivOrgController implements Initializable {
         archive.keyWordFilter(keywords.getText());
         archive.authorFilter(authors.getText());
         archive.dateFilter(period.getValue().toString());
-        System.out.println(period.getValue().toString());
+        System.out.println("date: " + period.getValue().toString());
         listView.getItems().clear();
         select.setVisible(true);
         displayArticles();
     }
+
+
 
 
 }

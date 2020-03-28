@@ -33,10 +33,12 @@
                            </VBox.margin></ChoiceBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="54.0" prefWidth="354.0" spacing="5.0">
+                  <VBox prefHeight="54.0" prefWidth="354.0" spacing="2.0">
                      <children>
                         <Label text=" Period :" />
                         <DatePicker fx:id="period" />
+                        <Label text="After applying the filter," />
+                        <Label prefHeight="17.0" prefWidth="364.0" text="only articles published before this date will be displayed." />
                      </children>
                   </VBox>
                   <VBox prefHeight="135.0" prefWidth="354.0" spacing="5.0">
