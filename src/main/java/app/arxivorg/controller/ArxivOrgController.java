@@ -2,7 +2,6 @@ package app.arxivorg.controller;
 
 import app.arxivorg.model.Archive;
 import app.arxivorg.model.Article;
-import app.arxivorg.model.Authors;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

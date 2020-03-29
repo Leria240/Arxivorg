@@ -33,12 +33,12 @@
                            </VBox.margin></ChoiceBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="54.0" prefWidth="354.0" spacing="2.0">
+                  <VBox prefHeight="54.0" prefWidth="354.0" spacing="5.0">
                      <children>
                         <Label text=" Period :" />
                         <DatePicker fx:id="period" />
                         <Label text="After applying the filter," />
-                        <Label prefHeight="17.0" prefWidth="364.0" text="only articles published before this date will be displayed." />
+                        <Label prefHeight="17.0" prefWidth="364.0" text="only articles published before the date indicated will be published" />
                      </children>
                   </VBox>
                   <VBox prefHeight="135.0" prefWidth="354.0" spacing="5.0">
@@ -53,11 +53,16 @@
                         <TextArea fx:id="keywords" prefHeight="110.0" prefWidth="354.0" />
                      </children>
                   </VBox>
-                  <Button fx:id="results" mnemonicParsing="false" prefHeight="33.0" prefWidth="354.0" text="Show results">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
+                  <VBox prefHeight="55.0" prefWidth="354.0">
+                     <children>
+                        <Button fx:id="results" mnemonicParsing="false" prefHeight="33.0" prefWidth="354.0" text="Show results">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="downloadAll" mnemonicParsing="false" prefHeight="25.0" prefWidth="380.0" text=" Download all" />
+                     </children>
+                  </VBox>
                </children>
             </VBox>
          </children></AnchorPane>
@@ -85,13 +90,12 @@
                      <children>
                         <CheckBox fx:id="favorite" mnemonicParsing="false" prefHeight="17.0" prefWidth="137.0" text="Favorite" />
                         <Button fx:id="download" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" text="Download" />
-                        <Button fx:id="downloadAll" mnemonicParsing="false" prefHeight="25.0" prefWidth="169.0" text=" Download all" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             </VBox>
-         <TextField fx:id="select" alignment="CENTER" editable="false" layoutY="407.0" prefHeight="191.0" prefWidth="838.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="407.0" />
+         <TextField fx:id="select" alignment="CENTER" editable="false" layoutY="407.0" />
         </AnchorPane>
     </SplitPane>
 </AnchorPane>

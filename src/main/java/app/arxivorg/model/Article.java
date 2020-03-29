@@ -84,7 +84,7 @@ public class Article {
         return  "Title: " + this.getTitle() + "\n\t" +
                 "Authors: " + this.getAuthors().toString() + "\n\n" +
                 "Summary: " + this.getSummary() + "\n\n" +
-                "un lien vers la page ArXiv: " + getURL_pageArxiv();
+                "A link to the ArXiv page: " + getURL_pageArxiv();
     }
 
     public boolean isFavoriteItem(){
