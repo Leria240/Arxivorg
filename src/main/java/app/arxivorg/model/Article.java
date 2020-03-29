@@ -1,9 +1,10 @@
 package app.arxivorg.model;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class Article {
@@ -17,6 +18,7 @@ public class Article {
     private URL URL_PDF;
     private List<String> category;
     private boolean favoriteItem;
+    private boolean selected;
 
     public Article(String id, String updated, String published, String title,
                    String summary, Authors authors,
@@ -31,6 +33,7 @@ public class Article {
         this.URL_PDF = URL_PDF;
         this.category = category;
         this.favoriteItem = false;
+        this.selected = true;
     }
 
     public String getId() {
@@ -69,33 +72,35 @@ public class Article {
         return category;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
     public String toString(){
         return  "Title: " + this.getTitle() + "\n\t" +
                 "Authors: " + this.getAuthors().toString() + "\n\n" +
                 "Summary: " + this.getSummary() + "\n\n" +
-                "un lien vers la page ArXiv: " + getURL_pageArxiv();
+                "A link to the ArXiv page: " + getURL_pageArxiv();
     }
 
     public boolean isFavoriteItem(){
         return favoriteItem;
     }
 
-    public void changeFavoriteItem(){
-        favoriteItem = !favoriteItem;
-    }
+    public void changeFavoriteItem(){favoriteItem = !favoriteItem;}
 
-    public void download() {
-        try (BufferedInputStream bis = new BufferedInputStream(this.getURL_PDF().openStream());
-             FileOutputStream fos = new FileOutputStream("C:/Users/Arfaoui Selma/Desktop/myfile.txt")) {
-            byte data[] = new byte[1024];
-            int byteContent;
-            System.out.println(this.getURL_PDF());
-            while ((byteContent = bis.read(data, 0, 1024)) != -1) {
-                fos.write(data, 0, byteContent);
-            }
+    public void download(){
+        URL url = this.getURL_PDF();
+        try (InputStream in = url.openStream()) {
+            Files.copy(in, Paths.get("../../someArticle.pdf"), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace(System.out);
+            e.printStackTrace();
         }
     }
 }
+
 

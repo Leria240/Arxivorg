@@ -4,10 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,15 +16,23 @@ public class ArchiveTest {
     @Test
     public void testAddArticles() {
         Archive archive = new Archive();
-        File file = new File("atomFile1.xml");
-        archive.addArticles(file);
-
-        Archive archive1000 = new Archive();
-        archive1000.addArticles(new File("atomFile3.xml"));
+        archive.addArticles(new File("atomFile1.xml"));
 
         assertNotNull(archive.getArticles(), "L'article est vide");
-        assertEquals(10, archive.getArticles().size());
-        assertEquals(1000,archive1000.getArticles().size());
+
+        List<String> authorlist = new ArrayList<>();
+        authorlist.add("Thomas Bachlechner");
+        authorlist.add("Bodhisattwa Prasad Majumder");
+        authorlist.add("Huanru Henry Mao");
+        authorlist.add("Garrison W. Cottrell");
+        authorlist.add("Julian McAuley");
+        Authors authors = new Authors(authorlist);
+
+        List<String> categorylist = new ArrayList<>();
+        categorylist.add("cs.LG");
+        categorylist.add("cs.CL");
+        categorylist.add("stat.ML");
+
 
         assertEquals(archive.getArticles().get(0).getId(), ArticleTest.article1.getId());
         assertEquals(archive.getArticles().get(0).getUpdated(), ArticleTest.article1.getUpdated());
@@ -165,13 +172,6 @@ public class ArchiveTest {
 
         List<Article> result = archive.dateFilter("2020-03-08");
 
-        for (int i = 0; i < result.size(); i++) {
-            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(result.get(i).getPublished().substring(0, 10));
-            Date dateLimit = new SimpleDateFormat("dd-MM-yyyy").parse("2020-03-08");
-            assert (dateLimit.before(date) || dateLimit.equals(date));
-            System.out.println(result.get(i).getTitle());
-            System.out.println(result.get(i).getPublished() + '\n');
-        }
     }
 
 }

@@ -1,10 +1,19 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
+<<<<<<< src/main/java/app/arxivorg/model/Archive.java
+import java.net.URL;
+import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+=======
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+>>>>>>> src/main/java/app/arxivorg/model/Archive.java
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,8 +24,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import java.util.ArrayList;
 
 public class Archive {
 
@@ -91,59 +98,84 @@ public class Archive {
         }
     }
 
-    public void deleteArticle(Article article){
-        this.articles.remove(article);
-    }
-
-    public void addArticle(Article article){
-        this.articles.add(article);
-    }
-
-    public List<Article> categoryFilter (List<String> category){
-        List<Article> result = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++){
-            if (articles.get(i).getCategory().containsAll(category)) {
-                result.add(articles.get(i));
+    public Article getSelectedArticle(int index){
+        int counter = 0;
+        int i;
+        for(i=-1; counter <= index ;i++ ) {
+            if (articles.get(i+1).isSelected()) {
+                counter++;
             }
         }
-        return result;
+        return (i<0) ? articles.get(0) : articles.get(i);
     }
 
-    public List<Article> authorFilter (Authors authors){
-        List<Article> result = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++){
-            for(String author : authors.getData()){
-                if (articles.get(i).getAuthors().getData().contains(author)) {
-                    result.add(articles.get(i));
+    public Article getArticle(int index){
+        return articles.get(index);
+    }
+
+    public void selectAll(){
+        for(Article article: articles){
+            article.setSelected(true);
+        }
+    }
+
+
+    public Set<String> possibleCategories(){
+        Set<String> categories = new TreeSet<>();
+        categories.add(" All categories");
+        for(Article article: articles){
+            categories.addAll(article.getCategory());
+        }
+        return categories;
+    }
+
+    public void categoryFilter (String category){
+        if (category.equals(" All categories")) return;
+        for (Article article: articles){
+            if (!article.getCategory().contains(category)) {
+                article.setSelected(false);
+            }
+        }
+    }
+
+    public void authorFilter (String authors) {
+        authors.replaceAll(","," ");
+        String[] tabAuthors = authors.split(" ");
+        for (Article article : articles) {
+            for(String author: tabAuthors){
+                if (!article.getAuthors().contains(author)) {
+                    article.setSelected(false);
                 }
             }
         }
-        return result;
     }
 
-    public List<Article> keyWordFilter (String keyword){
-        List<Article> result = new ArrayList<>();
-        for (int i = 0; i < articles.size(); i++){
-            if (articles.get(i).getTitle().contains(keyword)) {
-                result.add(articles.get(i));
-            }
-            if(articles.get(i).getSummary().contains(keyword)){
-                result.add((articles.get(i)));
+    public void keyWordFilter (String keyword){
+        keyword.replaceAll(","," ");
+        String[] tabKeyWords = keyword.split(" ");
+        for (Article article : articles) {
+            for(String word: tabKeyWords) {
+                if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
+                    article.setSelected(false);
+                }
             }
         }
-        return result;
     }
 
-    public List<Article> dateFilter(String stringDate) throws ParseException {
-        List<Article> result = new ArrayList<>();
-        for(int i = 0; i < articles.size(); i++){
-            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(articles.get(i).getPublished().substring(0,10));
-            Date dateLimit = new SimpleDateFormat("dd-MM-yyyy").parse(stringDate);
-            if(dateLimit.before(date) || dateLimit.equals(date)){
-                result.add(articles.get(i));
+    public void dateFilter(String stringDate){
+        for (Article article : articles) {
+            Date date = null;
+            Date dateLimit = null;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(article.getPublished().substring(0, 10));
+                dateLimit = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (dateLimit.before(date) && !dateLimit.equals(date)) {
+                article.setSelected(false);
             }
         }
-        return result;
     }
 
     //public List<Article> nonListedFilter(String maxDate){}

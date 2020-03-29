@@ -24,9 +24,9 @@ public class ArxivOrgCLI {
         List<String> category = new ArrayList<>();
         category.add("cs.CL");
 
-         if(args[1].equals(archive.categoryFilter(category))){
-             System.out.println(archive.categoryFilter(category));
-         }
+       //  if(args[1].equals(archive.categoryFilter(category))){
+        //     System.out.println(archive.categoryFilter(category));
+        // }
 
         System.out.println("Sorry, I can't do anything yet ! (Read: " + scanner.nextLine() + ")");
         scanner.close();
