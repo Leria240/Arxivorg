@@ -55,31 +55,8 @@ public class ArchiveTest {
         assertEquals(archive.getArticles().get(9).getCategory(),ArticleTest.article10.getCategory());
     }
 
-    @Test
-    public void testAddArticle(){
-        Archive archive = new Archive();
-        assertEquals(0,archive.getArticles().size());
-        archive.addArticle(ArticleTest.article1);
-        assertEquals(1,archive.getArticles().size());
-        assertTrue(archive.getArticles().contains(ArticleTest.article1));
-    }
 
-    @Test
-    public void testDeleteArticle(){
-        Archive archive = new Archive();
-        archive.addArticle(ArticleTest.article1);
-        archive.addArticle(ArticleTest.article10);
 
-        assertTrue(archive.getArticles().contains(ArticleTest.article1));
-        assertTrue(archive.getArticles().contains(ArticleTest.article10));
-        assertEquals(2,archive.getArticles().size());
-
-        archive.deleteArticle(ArticleTest.article1);
-
-        assertFalse(archive.getArticles().contains(ArticleTest.article1));
-        assertTrue(archive.getArticles().contains(ArticleTest.article10));
-        assertEquals(1, archive.getArticles().size());
-    }
 
     @Test
     public void testCategoryFilter(){

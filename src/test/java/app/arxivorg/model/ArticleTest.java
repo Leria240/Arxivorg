@@ -87,7 +87,7 @@ class ArticleTest {
         String expected = "Title: " + title1 + "\n\t" +
                 "Authors: " + authors1.toString() + "\n\n" +
                 "Summary: " + summary1 + "\n\n" +
-                "un lien vers la page ArXiv: " + page1;
+                "A link to the ArXiv page: " + page1;
 
         assertEquals(expected,archive.getArticles().get(0).toString());
     }

@@ -1,19 +1,16 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
-<<<<<<< src/main/java/app/arxivorg/model/Archive.java
 import java.net.URL;
 import java.util.*;
 import java.util.Date;
 import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-=======
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
->>>>>>> src/main/java/app/arxivorg/model/Archive.java
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -120,7 +117,7 @@ public class Archive {
     }
 
 
-    public Set<String> possibleCategories(){
+    public Set<String> getPossibleCategories(){
         Set<String> categories = new TreeSet<>();
         categories.add(" All categories");
         for(Article article: articles){
