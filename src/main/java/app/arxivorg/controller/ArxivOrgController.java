@@ -115,7 +115,6 @@ public class ArxivOrgController implements Initializable {
         archive.keyWordFilter(keywords.getText());
         archive.authorFilter(authors.getText());
         archive.dateFilter(period.getValue().toString());
-        System.out.println("date: " + period.getValue().toString());
         listView.getItems().clear();
         select.setVisible(true);
         displayArticles();
