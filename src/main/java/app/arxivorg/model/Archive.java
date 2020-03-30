@@ -148,13 +148,27 @@ public class Archive {
     }
 
     public void keyWordFilter (String keyword){
-        keyword.replaceAll(","," ");
-        String[] tabKeyWords = keyword.split(" ");
-        for (Article article : articles) {
-            for(String word: tabKeyWords) {
-                if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
-                    article.setSelected(false);
+        if (keyword.contains(",")){
+            keyword.replaceAll(","," ");
+            String[] tabKeyWords = keyword.split(" ");
+            for (Article article : articles) {
+                for(String word: tabKeyWords) {
+                    if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
+                        article.setSelected(false);
+                    }
+                    if (!article.isSelected() && article.getSummary().toLowerCase().contains(word.toLowerCase())){
+                        article.setSelected(true);
+                    }
                 }
+            }
+        }
+        for (Article article : articles) {
+            if (!article.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                article.setSelected(false);
+            }
+
+            if (!article.isSelected() && article.getSummary().toLowerCase().contains(keyword.toLowerCase())) {
+                article.setSelected(true);
             }
         }
     }
@@ -169,7 +183,7 @@ public class Archive {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if (dateLimit.before(date) && !dateLimit.equals(date)) {
+            if (dateLimit.after(date) && !dateLimit.equals(date)) {
                 article.setSelected(false);
             }
         }
