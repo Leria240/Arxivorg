@@ -19,8 +19,7 @@ public class ArxivOrgController implements Initializable {
     @FXML private Button goodByeWorldButton;
     @FXML private Label label;
     @FXML private ListView<String> listView;
-    @FXML private TextArea articleDetails;
-    @FXML private TextField select;
+    @FXML private TextArea metadata;
     @FXML private CheckBox favorite;
     @FXML private Button download;
     @FXML private ChoiceBox<String> categories;
@@ -35,7 +34,6 @@ public class ArxivOrgController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         initListOfArticles();
-        selectArticles();
         displayFilter();
     }
 
@@ -57,10 +55,13 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void initListOfArticles(){
-        select.setVisible(true);
+        metadata.setText("Click on one of the articles above to see more detail");
         archive.addArticles(new File("atomFile2.xml"));
         displayArticles();
         results.setOnAction(actionEvent -> applyFilter());
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listView.getSelectionModel().selectedIndexProperty().addListener(observable ->
+                displayDetails(listView.getSelectionModel().getSelectedIndex()));
     }
 
     @ FXML
@@ -82,18 +83,10 @@ public class ArxivOrgController implements Initializable {
         period.setValue(LocalDate.now());
     }
 
-    @FXML
-    public void selectArticles(){
-        select.setText("Click on one of the articles above to see more detail");
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listView.getSelectionModel().selectedIndexProperty().addListener(observable ->
-                displayDetails(listView.getSelectionModel().getSelectedIndex()));
-    }
 
     @FXML
     private void displayDetails(int index) {
-        select.setVisible(false);
-        articleDetails.setText(archive.getSelectedArticle(index).toString());
+        metadata.setText(archive.getSelectedArticle(index).toString());
         favorite.setSelected(archive.getSelectedArticle(index).isFavoriteItem());
         favorite.setOnAction(updateFavoriteItem(index));
         download.setOnAction(downloadArticle(index));
@@ -116,7 +109,7 @@ public class ArxivOrgController implements Initializable {
         archive.authorFilter(authors.getText());
         archive.dateFilter(period.getValue().toString());
         listView.getItems().clear();
-        select.setVisible(true);
+        metadata.setText("Click on one of the articles above to see more detail");
         displayArticles();
     }
 
