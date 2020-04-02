@@ -21,12 +21,11 @@ public class ArxivOrgCLI {
         System.out.println("Input your command: ");
         Scanner scanner = new Scanner(System.in);
 
-        List<String> category = new ArrayList<>();
-        category.add("cs.CL");
-
-       //  if(args[1].equals(archive.categoryFilter(category))){
-        //     System.out.println(archive.categoryFilter(category));
-        // }
+        for (int i = 0; i<archive.getArticles().size();i++){
+           if(args[1].equals(archive.getArticle(i).getCategory())){
+               System.out.println(archive.getArticle(i).toString());
+           }
+        }
 
         System.out.println("Sorry, I can't do anything yet ! (Read: " + scanner.nextLine() + ")");
         scanner.close();
