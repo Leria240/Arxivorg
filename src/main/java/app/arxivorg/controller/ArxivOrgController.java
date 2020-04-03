@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -28,7 +27,7 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextArea keywords;
     @FXML private Button results;
     @FXML private Button downloadAll;
-    private Archive archive =  new Archive();
+    private Archive archive =  Archive.archiveFile2;
 
 
     @Override
@@ -55,23 +54,18 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void initListOfArticles(){
-        metadata.setText("Click on one of the articles above to see more detail");
-        archive.addArticles(new File("atomFile2.xml"));
+        metadata.setText("Click on one of the articles above to see more details");
         displayArticles();
-        results.setOnAction(actionEvent -> applyFilter());
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listView.getSelectionModel().selectedIndexProperty().addListener(observable ->
-                displayDetails(listView.getSelectionModel().getSelectedIndex()));
+                displayMetadata(listView.getSelectionModel().getSelectedIndex()));
     }
 
     @ FXML
     public void displayArticles(){
         for(Article article : archive.getArticles()){
             if(article.isSelected()) {
-                String title = article.getTitle();
-                String authors = "Authors: " + article.getAuthors().toString();
-                String id = "ArXiv: " + article.getId().substring(21);
-                listView.getItems().add("- " + title + "\n\t" + authors + "\n\t" + id);
+                listView.getItems().add(article.mainInformations());
             }
         }
     }
@@ -81,11 +75,12 @@ public class ArxivOrgController implements Initializable {
         categories.setValue(" All categories");
         categories.getItems().addAll(archive.possibleCategories());
         period.setValue(LocalDate.now());
+        results.setOnAction(actionEvent -> applyFilter());
     }
 
 
     @FXML
-    private void displayDetails(int index) {
+    private void displayMetadata(int index) {
         metadata.setText(archive.getSelectedArticle(index).toString());
         favorite.setSelected(archive.getSelectedArticle(index).isFavoriteItem());
         favorite.setOnAction(updateFavoriteItem(index));
@@ -103,17 +98,13 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     private void applyFilter(){
+        metadata.setText("Click on one of the articles above to see more details");
         archive.selectAll();
         archive.categoryFilter(categories.getValue());
         archive.keyWordFilter(keywords.getText());
         archive.authorFilter(authors.getText());
         archive.dateFilter(period.getValue().toString());
         listView.getItems().clear();
-        metadata.setText("Click on one of the articles above to see more detail");
         displayArticles();
     }
-
-
-
-
 }

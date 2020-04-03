@@ -19,9 +19,16 @@ import org.xml.sax.SAXException;
 public class Archive {
 
     private List<Article> articles;
+    static public Archive archiveFile2 =  new Archive(new File("atomFile2.xml"));
+
 
     public Archive() {
         this.articles = new ArrayList<>();
+    }
+
+    public Archive(File file){
+        this.articles = new ArrayList<>();
+        addArticles(file);
     }
 
     public List<Article> getArticles() {
