@@ -36,6 +36,7 @@ class ArxivOrgControllerTest {
         Assertions.assertThat(listView).isVisible();
     }
 
+
     @Test
     public void initListOfArticlesTest(FxRobot robot){
         ListView<String> listView = robot.lookup("#listView").queryListView();

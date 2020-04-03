@@ -71,7 +71,7 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    private void displayFilter(){
+    public void displayFilter(){
         categories.setValue(" All categories");
         categories.getItems().addAll(archive.possibleCategories());
         period.setValue(LocalDate.now());
@@ -80,7 +80,7 @@ public class ArxivOrgController implements Initializable {
 
 
     @FXML
-    private void displayMetadata(int index) {
+    public void displayMetadata(int index) {
         metadata.setText(archive.getSelectedArticle(index).toString());
         favorite.setSelected(archive.getSelectedArticle(index).isFavoriteItem());
         favorite.setOnAction(updateFavoriteItem(index));
@@ -97,7 +97,7 @@ public class ArxivOrgController implements Initializable {
 
 
     @FXML
-    private void applyFilter(){
+    public void applyFilter(){
         metadata.setText("Click on one of the articles above to see more details");
         archive.selectAll();
         archive.categoryFilter(categories.getValue());
