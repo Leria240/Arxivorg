@@ -106,7 +106,7 @@ class ArxivOrgControllerTest {
         Assertions.assertThat(robot.lookup("#results").query().isVisible());
         Assertions.assertThat(categories.getItems()).hasSize(numOfCategories);
         Assertions.assertThat(categories.getValue()).isEqualTo(" All categories");
-        Assertions.assertThat(period.getValue()).isEqualTo(LocalDate.now());
+        Assertions.assertThat(period.getValue()).isEqualTo(LocalDate.now().minusYears(50));
         Assertions.assertThat(keywords).isVisible();
         Assertions.assertThat(keywords.getText()).isEmpty();
         Assertions.assertThat(authors).isVisible();

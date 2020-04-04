@@ -95,7 +95,6 @@
                </children>
             </HBox>
             </VBox>
-         <TextField fx:id="select" alignment="CENTER" editable="false" layoutY="407.0" prefHeight="197.0" prefWidth="838.0" />
         </AnchorPane>
     </SplitPane>
 </AnchorPane>
