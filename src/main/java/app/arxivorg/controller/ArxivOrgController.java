@@ -74,7 +74,7 @@ public class ArxivOrgController implements Initializable {
     public void displayFilter(){
         categories.setValue(" All categories");
         categories.getItems().addAll(archive.getPossibleCategories());
-        period.setValue(LocalDate.now());
+        period.setValue(LocalDate.now().minusYears(50));
         results.setOnAction(actionEvent -> applyFilter());
     }
 

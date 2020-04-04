@@ -67,7 +67,7 @@ class ArxivOrgControllerTest {
         Assertions.assertThat(listView).hasExactlyNumItems(numberOfArticlesSelected);
         //Assertions.assertThat(listView).doesNotHaveExactlyNumItems(numberOfArticles);
         keywords.clear();
-        robot.clickOn(results);
+        //robot.clickOn(results);
         Assertions.assertThat(listView).hasExactlyNumItems(numberOfArticles);
     }
 
@@ -87,7 +87,7 @@ class ArxivOrgControllerTest {
         listView.getSelectionModel().select(0);
         Assertions.assertThat(listView.getSelectionModel().getSelectedIndex()).isEqualTo(0);
         Assertions.assertThat(metadata).hasText(archive.getArticle(0).toString());
-        robot.clickOn(favorite);
+        //robot.clickOn(favorite);
         Assertions.assertThat(favorite.isIndeterminate()).isNotEqualTo(archive.getArticle(0).isSelected());
 
     }
@@ -141,7 +141,7 @@ class ArxivOrgControllerTest {
         //Assertions.assertThat(metadata).hasText("Click on one of the articles above to see more details");
 
         keywords.clear();
-        robot.clickOn(results);
+        //robot.clickOn(results);
     }
 
 
