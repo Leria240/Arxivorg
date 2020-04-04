@@ -73,7 +73,7 @@ public class ArxivOrgController implements Initializable {
     @FXML
     public void displayFilter(){
         categories.setValue(" All categories");
-        categories.getItems().addAll(archive.possibleCategories());
+        categories.getItems().addAll(archive.getPossibleCategories());
         period.setValue(LocalDate.now());
         results.setOnAction(actionEvent -> applyFilter());
     }

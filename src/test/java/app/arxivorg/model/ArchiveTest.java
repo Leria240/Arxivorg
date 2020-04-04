@@ -55,48 +55,17 @@ public class ArchiveTest {
         assertEquals(archive.getArticles().get(9).getCategory(),ArticleTest.article10.getCategory());
     }
 
-    @Test
-    public void testAddArticle(){
-        Archive archive = new Archive();
-        assertEquals(0,archive.getArticles().size());
-        archive.addArticle(ArticleTest.article1);
-        assertEquals(1,archive.getArticles().size());
-        assertTrue(archive.getArticles().contains(ArticleTest.article1));
-    }
 
-    @Test
-    public void testDeleteArticle(){
-        Archive archive = new Archive();
-        archive.addArticle(ArticleTest.article1);
-        archive.addArticle(ArticleTest.article10);
 
-        assertTrue(archive.getArticles().contains(ArticleTest.article1));
-        assertTrue(archive.getArticles().contains(ArticleTest.article10));
-        assertEquals(2,archive.getArticles().size());
-
-        archive.deleteArticle(ArticleTest.article1);
-
-        assertFalse(archive.getArticles().contains(ArticleTest.article1));
-        assertTrue(archive.getArticles().contains(ArticleTest.article10));
-        assertEquals(1, archive.getArticles().size());
-    }
 
     @Test
     public void testCategoryFilter(){
         Archive archive = new Archive();
         File file = new File("atomFile1.xml");
         archive.addArticles(file);
-        List<String> categories = new ArrayList<>();
-        categories.add("cs.LG");
-        categories.add("cs.CL");
-
-        List<Article> result = archive.categoryFilter(categories);
-        assert(!result.isEmpty());
-        for (int i = 0; i < result.size(); i++) {
-            assert (result.get(i).getCategory().containsAll(categories));
-            System.out.println(result.get(i).getTitle());
-            System.out.println(result.get(i).getCategory());
-        }
+        archive.categoryFilter("cs.LG");
+        assert (archive.getArticle(0).isSelected());
+        assert (!archive.getArticle(1).isSelected());
     }
 
     @Test
@@ -104,22 +73,9 @@ public class ArchiveTest {
         Archive archive = new Archive();
         File file = new File("atomFile1.xml");
         archive.addArticles(file);
-
-        List<String> authorslist = new ArrayList<>();
-        authorslist.add("Thomas Bachlechner");
-        authorslist.add("Ira Leviant");
-        authorslist.add("Jiaqing Lin");
-        Authors authors = new Authors(authorslist);
-
-        List<Article> result = archive.authorFilter(authors);
-        assert(!result.isEmpty());
-        for (int i = 0; i < result.size(); i++) {
-            assert (result.get(i).getAuthors().getData().contains(authors.getData().get(0)) ||
-                    result.get(i).getAuthors().getData().contains(authors.getData().get(1)) ||
-                    result.get(i).getAuthors().getData().contains(authors.getData().get(2)));
-            System.out.println(result.get(i).getTitle());
-            System.out.println(result.get(i).getAuthors() + "\n");
-        }
+        archive.authorFilter("Thomas Bachlechner");
+        assert (archive.getArticle(0).isSelected());
+        assert (!archive.getArticle(1).isSelected());
     }
 
     @Test
@@ -132,46 +88,40 @@ public class ArchiveTest {
         String summaryKeyword = new String("sticker response");
         String summaryKeyword2 = new String("ReZero-Transformer networks");
 
-        List<Article> result = archive.keyWordFilter(titleKeyword);
-        List<Article> result2 = archive.keyWordFilter(titleKeyword2);
-        List<Article> result3 = archive.keyWordFilter(summaryKeyword);
-        List<Article> result4 = archive.keyWordFilter(summaryKeyword2);
+        archive.keyWordFilter(titleKeyword);
+        assert (archive.getArticle(1).isSelected());
+        assert (!archive.getArticle(2).isSelected());
 
-        assert(!result.isEmpty());
-        for (int i = 0; i < result.size(); i++) {
-            assert (result.get(i).getTitle().contains(titleKeyword));
-            System.out.println(result.get(i).getTitle() + '\n');
-        }
+        Archive archive2 = new Archive();
+        File file2 = new File("atomFile1.xml");
+        archive2.addArticles(file2);
+        archive2.keyWordFilter(titleKeyword2);
+        assert (archive2.getArticle(2).isSelected());
+        assert (!archive2.getArticle(0).isSelected());
 
-        assert(!result2.isEmpty());
-        for(int k = 0; k < result2.size(); k++){
-            assert (result2.get(k).getTitle().contains(titleKeyword2));
-            System.out.println(result2.get(k).getTitle() + '\n');
-        }
+        Archive archive3 = new Archive();
+        File file3 = new File("atomFile1.xml");
+        archive3.addArticles(file3);
+        archive3.keyWordFilter(summaryKeyword);
+        assert (archive3.getArticle(5).isSelected());
+        assert (!archive3.getArticle(0).isSelected());
 
-        assert(!result3.isEmpty());
-        for(int k = 0; k < result3.size(); k++){
-            assert (result3.get(k).getSummary().contains(summaryKeyword));
-            System.out.println(result3.get(k).getTitle());
-            System.out.println(result3.get(k).getSummary() + '\n');
-        }
-
-        assert(!result4.isEmpty());
-        for(int k = 0; k < result4.size(); k++){
-            assert (result4.get(k).getSummary().contains(summaryKeyword2));
-            System.out.println(result4.get(k).getTitle());
-            System.out.println(result3.get(k).getSummary() + '\n');
-        }
+        Archive archive4 = new Archive();
+        File file4 = new File("atomFile1.xml");
+        archive4.addArticles(file4);
+        archive4.keyWordFilter(summaryKeyword2);
+        assert (archive4.getArticle(0).isSelected());
+        assert (!archive4.getArticle(1).isSelected());
     }
 
     @Test
-    public void testDateFilter() throws ParseException {
+    public void testDateFilter(){
         Archive archive = new Archive();
         File file = new File("atomFile1.xml");
         archive.addArticles(file);
-
-        List<Article> result = archive.dateFilter("2020-03-08");
-
+        archive.dateFilter("2020-03-10");
+        assert (archive.getArticle(0).isSelected());
+        assert (!archive.getArticle(9).isSelected());
     }
 
 }

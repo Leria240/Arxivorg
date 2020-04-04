@@ -2,34 +2,74 @@ package app.arxivorg;
 
 import app.arxivorg.model.Archive;
 
+import app.arxivorg.model.Article;
+import javafx.concurrent.Task;
+import org.apache.commons.cli.*;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ArxivOrgCLI {
-    public static void main(String[] args) {
-
-        Archive archive = new Archive();
-        File file = new File("atomFile1.xml");
-        archive.addArticles(file);
+    public static void main(String[] args) throws ParseException{
 
         System.out.println("Welcome to the arXiv organizer!");
-
-        System.out.println("You requested command '" + args[0] + "' with parameter '" + args[1] + "'");
-
         System.out.println("Input your command: ");
         Scanner scanner = new Scanner(System.in);
 
-        List<String> category = new ArrayList<>();
-        category.add("cs.CL");
+        args = scanner.nextLine().split(" ");
+        //System.out.println("You requested command '" + args[0] + "' with parameter '" + args[1] + "'");
 
-       //  if(args[1].equals(archive.categoryFilter(category))){
-        //     System.out.println(archive.categoryFilter(category));
-        // }
+        final Option periodOption = Option.builder("p")
+                .longOpt("period")
+                .hasArg(true)
+                .desc("period of articles")
+                .required(false)
+                .build();
 
-        System.out.println("Sorry, I can't do anything yet ! (Read: " + scanner.nextLine() + ")");
+        final Option categoryOption = Option.builder("c")
+                .longOpt("category")
+                .hasArg(true)
+                .desc("category of articles")
+                .required(false)
+                .build();
+
+        final Options options = new Options();
+        options.addOption(periodOption);
+        options.addOption(categoryOption);
+
+        final CommandLineParser parser = new DefaultParser();
+
+        try {
+
+            final CommandLine line = parser.parse(options, args);
+
+            Archive archive = new Archive();
+            File file = new File("atomFile1.xml");
+            archive.addArticles(file);
+            if (line.hasOption("p")) {
+                final String date = line.getOptionValue("p");
+                archive.dateFilter(date);
+            }
+
+            if (line.hasOption("c")) {
+                String category = line.getOptionValue("c");
+                archive.categoryFilter(category);
+            }
+
+            for (int i = 0; i < archive.getArticles().size(); i++) {
+                if (archive.getArticle(i).isSelected()) {
+                    System.out.println(i+1 + ". " + archive.getArticle(i).getTitle());
+                    System.out.println("Authors: " + archive.getArticle(i).getAuthors().getData());
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //System.out.println("Sorry, I can't do anything yet ! (Read: " + scanner.nextLine() + ")");
         scanner.close();
-
     }
 }
