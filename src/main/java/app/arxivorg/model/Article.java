@@ -80,6 +80,12 @@ public class Article {
         this.selected = selected;
     }
 
+    public String mainInformations(){
+        String authors = "Authors: " + getAuthors().toString();
+        String id = "ArXiv: " + getId().substring(21);
+        return "- " + title + "\n\t" + authors + "\n\t" + id;
+    }
+
     public String toString(){
         return  "Title: " + this.getTitle() + "\n\t" +
                 "Authors: " + this.getAuthors().toString() + "\n\n" +

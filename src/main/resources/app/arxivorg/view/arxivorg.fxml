@@ -81,7 +81,7 @@
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TextArea fx:id="articleDetails" editable="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="191.0" prefWidth="727.0">
+                  <TextArea fx:id="metadata" editable="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="191.0" prefWidth="727.0">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
