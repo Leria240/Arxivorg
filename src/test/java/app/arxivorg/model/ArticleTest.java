@@ -89,7 +89,7 @@ class ArticleTest {
                 "Summary: " + summary1 + "\n\n" +
                 "A link to the ArXiv page: " + page1;
 
-        assertEquals(expected,archive.getArticles().get(0).toString());
+        assertEquals(expected,archive.getAllArticles().get(0).toString());
     }
 
     @Test

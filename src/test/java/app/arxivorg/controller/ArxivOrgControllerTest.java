@@ -22,7 +22,7 @@ import java.util.List;
 class ArxivOrgControllerTest {
 
     Archive archive = Archive.archiveFile2;
-    int numberOfArticles = archive.getArticles().size();
+    int numberOfArticles = archive.getAllArticles().size();
     ArxivOrgController controller = new ArxivOrgController();
 
 
@@ -56,7 +56,7 @@ class ArxivOrgControllerTest {
         keywords.setText("void");
 
         int numberOfArticlesSelected = 0;
-        for(Article article: archive.getArticles()){
+        for(Article article: archive.getAllArticles()){
             if(article.isSelected()){
                 numberOfArticlesSelected++;
             }
@@ -128,7 +128,7 @@ class ArxivOrgControllerTest {
         //robot.clickOn(results);
 
         List<Article> articleSelected = new ArrayList<>();
-        for(Article article: archive.getArticles()){
+        for(Article article: archive.getAllArticles()){
             if(article.isSelected()){
                 articleSelected.add(article);
             }

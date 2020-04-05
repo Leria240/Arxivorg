@@ -63,10 +63,9 @@ public class ArxivOrgController implements Initializable {
 
     @ FXML
     public void displayArticles(){
-        for(Article article : archive.getArticles()){
-            if(article.isSelected()) {
+        listView.getItems().clear();
+        for(Article article : archive.getSelectedArticles()){
                 listView.getItems().add(article.mainInformations());
-            }
         }
     }
 
@@ -104,7 +103,6 @@ public class ArxivOrgController implements Initializable {
         archive.keyWordFilter(keywords.getText());
         archive.authorFilter(authors.getText());
         archive.dateFilter(period.getValue().toString());
-        listView.getItems().clear();
         displayArticles();
     }
 }

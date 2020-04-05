@@ -37,8 +37,18 @@ public class Archive {
         addArticles(file);
     }
 
-    public List<Article> getArticles() {
+    public List<Article> getAllArticles() {
         return articles;
+    }
+
+    public List<Article> getSelectedArticles(){
+        List<Article> selectedArticles = new ArrayList<>();
+        for(Article article : articles) {
+            if (article.isSelected()) {
+                selectedArticles.add(article);
+            }
+        }
+        return selectedArticles;
     }
 
 
@@ -143,8 +153,7 @@ public class Archive {
     }
 
     public void authorFilter (String authors) {
-        authors.replaceAll(","," ");
-        String[] tabAuthors = authors.split(" ");
+        String[] tabAuthors = authors.split(",");
         for (Article article : articles) {
             for(String author: tabAuthors){
                 if (!article.getAuthors().contains(author)) {
