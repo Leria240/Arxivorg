@@ -10,10 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ArchiveTest {
 
+    Archive archive = Archive.archiveFile1;
+
+
     @Test
     public void testAddArticles() {
-        Archive archive = new Archive();
-        archive.addArticles(new File("atomFile1.xml"));
 
         assertNotNull(archive.getAllArticles(), "L'article est vide");
 
@@ -57,18 +58,15 @@ public class ArchiveTest {
 
     @Test
     public void testCategoryFilter(){
-        Archive archive = new Archive();
-        File file = new File("atomFile1.xml");
-        archive.addArticles(file);
         archive.categoryFilter("cs.LG");
         assert (archive.getArticle(0).isSelected());
         assert (!archive.getArticle(1).isSelected());
+
+        archive.selectAll();
     }
 
     @Test
     public void testAuthorFilter(){
-        Archive archive = new Archive();
-        archive.addArticles(new File("atomFile1.xml"));
 
         archive.authorFilter("Thomas Bachlechner");
         assert (archive.getArticle(0).isSelected());
@@ -79,52 +77,70 @@ public class ArchiveTest {
         assertEquals(2, Archive.archiveFile2.getSelectedArticles().size());
         assert (Archive.archiveFile2.getArticle(933).isSelected());
         assert (Archive.archiveFile2.getArticle(747).isSelected());
+
+        Archive.archiveFile2.selectAll();
+        archive.selectAll();
+
+
     }
 
-    @Test
-    public void testKeyWordFilter() {
-        Archive archive = new Archive();
-        File file = new File("atomFile1.xml");
-        archive.addArticles(file);
-        String titleKeyword = new String("Cross-Lingual");
-        String titleKeyword2 = new String("Video Caption Dataset");
-        String summaryKeyword = new String("sticker response");
-        String summaryKeyword2 = new String("ReZero-Transformer networks");
 
-        archive.keyWordFilter(titleKeyword);
+    @Test
+    public void testTitleKeyWordFilter() {
+        String titleKeyword = "cross-lingual";
+        String titleKeyword2 = "Video Caption Dataset";
+        String titleKeyword3 = "void";
+
+        archive.keyWordFilter(titleKeyword,"title");
+        assertEquals(1,archive.getSelectedArticles().size());
         assert (archive.getArticle(1).isSelected());
         assert (!archive.getArticle(2).isSelected());
 
-        Archive archive2 = new Archive();
-        File file2 = new File("atomFile1.xml");
-        archive2.addArticles(file2);
-        archive2.keyWordFilter(titleKeyword2);
-        assert (archive2.getArticle(2).isSelected());
-        assert (!archive2.getArticle(0).isSelected());
+        archive.selectAll();
 
-        Archive archive3 = new Archive();
-        File file3 = new File("atomFile1.xml");
-        archive3.addArticles(file3);
-        archive3.keyWordFilter(summaryKeyword);
-        assert (archive3.getArticle(5).isSelected());
-        assert (!archive3.getArticle(0).isSelected());
+        archive.keyWordFilter(titleKeyword2,"title");
+        assertEquals(1,archive.getSelectedArticles().size());
+        assert (archive.getArticle(2).isSelected());
+        assert (!archive.getArticle(0).isSelected());
 
-        Archive archive4 = new Archive();
-        File file4 = new File("atomFile1.xml");
-        archive4.addArticles(file4);
-        archive4.keyWordFilter(summaryKeyword2);
-        assert (archive4.getArticle(0).isSelected());
-        assert (!archive4.getArticle(1).isSelected());
+        Archive.archiveFile2.keyWordFilter(titleKeyword3,"title");
+        assertEquals(2,Archive.archiveFile2.getSelectedArticles().size());
+        assert (Archive.archiveFile2.getArticle(34).isSelected());
+        assert (Archive.archiveFile2.getArticle(622).isSelected());
+
+        Archive.archiveFile2.selectAll();
+        archive.selectAll();
+
     }
 
     @Test
+    public void testSummaryKeyWordFilter() {
+        String summaryKeyword = "semantic";
+        String summaryKeyword2 = "Rezero-transformer networks faster";
+
+        archive.keyWordFilter(summaryKeyword,"summary");
+        assertEquals(3,archive.getSelectedArticles().size());
+        assert (archive.getArticle(1).isSelected());
+        assert (archive.getArticle(5).isSelected());
+        assert (archive.getArticle(7).isSelected());
+
+        archive.selectAll();
+
+        archive.keyWordFilter(summaryKeyword2,"summary");
+        assertEquals(1, archive.getSelectedArticles().size());
+        assert (archive.getArticle(0).isSelected());
+
+        archive.selectAll();
+    }
+
+
+    @Test
     public void testDateFilter(){
-        Archive archive = new Archive();
-        File file = new File("atomFile1.xml");
-        archive.addArticles(file);
         archive.dateFilter("2020-03-10");
         assert (archive.getArticle(0).isSelected());
         assert (!archive.getArticle(9).isSelected());
+
+        archive.selectAll();
     }
 
 }
