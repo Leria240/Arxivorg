@@ -24,7 +24,8 @@ public class ArxivOrgController implements Initializable {
     @FXML private ChoiceBox<String> categories;
     @FXML private DatePicker period;
     @FXML private TextArea authors;
-    @FXML private TextArea keywords;
+    @FXML private TextArea TitleKeyword;
+    @FXML private TextArea SummaryKeyword;
     @FXML private Button results;
     @FXML private Button downloadAll;
     private Archive archive =  Archive.archiveFile2;
@@ -65,7 +66,7 @@ public class ArxivOrgController implements Initializable {
     public void displayArticles(){
         listView.getItems().clear();
         for(Article article : archive.getSelectedArticles()){
-                listView.getItems().add(article.mainInformations());
+            listView.getItems().add(article.mainInformations());
         }
     }
 
@@ -91,7 +92,7 @@ public class ArxivOrgController implements Initializable {
     }
 
     public EventHandler<ActionEvent> downloadArticle(int index){
-        return actionEvent -> archive.getArticle(index).download();
+        return actionEvent -> archive.getArticle(index).downloadIO();
     }
 
 
@@ -100,7 +101,8 @@ public class ArxivOrgController implements Initializable {
         metadata.setText("Click on one of the articles above to see more details");
         archive.selectAll();
         archive.categoryFilter(categories.getValue());
-        archive.keyWordFilter(keywords.getText());
+        archive.keyWordFilter(TitleKeyword.getText(), "title");
+        archive.keyWordFilter(SummaryKeyword.getText(), "summary");
         archive.authorFilter(authors.getText());
         archive.dateFilter(period.getValue().toString());
         displayArticles();

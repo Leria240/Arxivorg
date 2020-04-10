@@ -153,6 +153,7 @@ public class Archive {
     }
 
     public void authorFilter (String authors) {
+        if(authors.equals(""))return;
         String[] tabAuthors = authors.split(",");
         for (Article article : articles) {
             for(String author: tabAuthors){
@@ -208,4 +209,3 @@ public class Archive {
     //public List<Article> nonListedFilter(String maxDate){}
 
 }
-

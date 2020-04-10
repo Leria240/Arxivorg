@@ -49,7 +49,7 @@ dependencies {
     compile 'org.codehaus.griffon:griffon-javafx:2.15.1'
     compile 'org.controlsfx:controlsfx:11.0.0-RC2'
     compile 'commons-cli:commons-cli:1.4'
-
+    compile 'commons-io:commons-io:2.5'
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.4.0"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"

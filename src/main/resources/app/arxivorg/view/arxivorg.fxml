@@ -50,8 +50,13 @@
                   </VBox>
                   <VBox prefHeight="133.0" prefWidth="354.0" spacing="5.0">
                      <children>
-                        <Label text="Keywords :" />
-                        <TextArea fx:id="keywords" prefHeight="110.0" prefWidth="354.0" />
+                        <Label text="Title keywords :                                Summary keywords :" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextArea fx:id="TitleKeyword" prefHeight="110.0" prefWidth="354.0" />
+                              <TextArea fx:id="SummaryKeyword" layoutX="10.0" layoutY="10.0" prefHeight="110.0" prefWidth="354.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                   <VBox prefHeight="55.0" prefWidth="354.0">
