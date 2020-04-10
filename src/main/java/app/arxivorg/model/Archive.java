@@ -25,7 +25,9 @@ import org.xml.sax.SAXException;
 public class Archive {
 
     private List<Article> articles;
+    static public Archive archiveFile1 =  new Archive(new File("atomFile1.xml"));
     static public Archive archiveFile2 =  new Archive(new File("atomFile2.xml"));
+
 
 
     public Archive() {
@@ -43,10 +45,13 @@ public class Archive {
 
     public List<Article> getSelectedArticles(){
         List<Article> selectedArticles = new ArrayList<>();
+        int i =0;
         for(Article article : articles) {
             if (article.isSelected()) {
                 selectedArticles.add(article);
+                System.out.println("selected" + i);
             }
+            i++;
         }
         return selectedArticles;
     }
@@ -164,31 +169,36 @@ public class Archive {
         }
     }
 
-    public void keyWordFilter (String keyword){
-        if (keyword.contains(",")){
-            keyword.replaceAll(","," ");
-            String[] tabKeyWords = keyword.split(" ");
-            for (Article article : articles) {
-                for(String word: tabKeyWords) {
-                    if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
-                        article.setSelected(false);
-                    }
-                    if (!article.isSelected() && article.getSummary().toLowerCase().contains(word.toLowerCase())){
-                        article.setSelected(true);
-                    }
-                }
-            }
-        }
+    public void keyWordFilter(String keyword,String target){
+        keyword.replaceAll(","," ");
+        String[] tabKeyWord = keyword.split(" ");
         for (Article article : articles) {
-            if (!article.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
-                article.setSelected(false);
-            }
+            if(target == "title")
+                titleKeyWordFilter(tabKeyWord,article);
+            if(target == "summary")
+                summaryKeyWordFilter(tabKeyWord,article);
+        }
+    }
 
-            if (!article.isSelected() && article.getSummary().toLowerCase().contains(keyword.toLowerCase())) {
-                article.setSelected(true);
+    public void titleKeyWordFilter (String[] tabKeyWord, Article article){
+        for (String word : tabKeyWord) {
+            if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
+                article.setSelected(false);
+                break;
             }
         }
     }
+
+    public void summaryKeyWordFilter (String[] tabKeyWord, Article article){
+        for (String word : tabKeyWord) {
+            if (!article.getSummary().toLowerCase().contains(word.toLowerCase())) {
+                article.setSelected(false);
+                break;
+            }
+        }
+    }
+
+
 
     public void dateFilter(String stringDate){
         for (Article article : articles) {
