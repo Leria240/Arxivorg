@@ -118,7 +118,7 @@ public class Article {
         File dir = directoryChooser.showDialog(null);
 
         if (dir == null) return;
-        String destination = dir.getAbsolutePath() + "\\article.pdf";
+        String destination = dir.getAbsolutePath() + "\\"+this.title+".pdf";
 
         InputStream in = null;
         String urlString = "https://" + URL_PDF.toString().substring(7);

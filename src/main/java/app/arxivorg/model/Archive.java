@@ -1,7 +1,11 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +20,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javafx.stage.DirectoryChooser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -213,6 +218,28 @@ public class Archive {
         }
     }
 
-    //public List<Article> nonListedFilter(String maxDate){}
 
+    public void downloadArticles(List<Article> articles){
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select some directory");
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File dir = directoryChooser.showDialog(null);
+
+        if (dir == null) return;
+
+        for(Article article: articles) {
+            String destination = dir.getAbsolutePath() + "\\" + article.getTitle() + ".pdf";
+            InputStream in = null;
+            String urlString = "https://" + article.getURL_PDF().toString().substring(7);
+
+            try {
+                in = new URL(urlString).openStream();
+                Files.copy(in, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
