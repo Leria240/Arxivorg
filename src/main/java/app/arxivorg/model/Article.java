@@ -1,12 +1,15 @@
 package app.arxivorg.model;
 
 
+import javafx.stage.DirectoryChooser;
+
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -106,17 +109,28 @@ public class Article {
     }
 
 
-        public void download (String destination){
-            String urlString = "https://" + URL_PDF.toString().substring(7);
-            URL url = null;
-            System.out.println(urlString);
-            try (InputStream in = url.openStream()) {
-                url = new URL(urlString);
-                Files.copy(in, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+    public void download (){
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select some directory");
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File dir = directoryChooser.showDialog(null);
+
+        if (dir == null) return;
+        String destination = dir.getAbsolutePath() + "\\article.pdf";
+
+        InputStream in = null;
+        String urlString = "https://" + URL_PDF.toString().substring(7);
+
+        try {
+            in = new URL(urlString).openStream();
+            Files.copy(in, Paths.get(destination),StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
 
 

@@ -45,13 +45,10 @@ public class Archive {
 
     public List<Article> getSelectedArticles(){
         List<Article> selectedArticles = new ArrayList<>();
-        int i =0;
         for(Article article : articles) {
             if (article.isSelected()) {
                 selectedArticles.add(article);
-                System.out.println("selected" + i);
             }
-            i++;
         }
         return selectedArticles;
     }
