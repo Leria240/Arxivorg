@@ -1,11 +1,18 @@
 package app.arxivorg.model;
 
-import java.io.*;
+
+import javafx.stage.DirectoryChooser;
+
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class Article {
     private String id;
@@ -80,33 +87,55 @@ public class Article {
         this.selected = selected;
     }
 
-    public String mainInformations(){
+    public String mainInformations() {
         String authors = "Authors: " + getAuthors().toString();
         String id = "ArXiv: " + getId().substring(21);
         return "- " + title + "\n\t" + authors + "\n\t" + id;
     }
 
-    public String toString(){
-        return  "Title: " + this.getTitle() + "\n\t" +
+    public String toString() {
+        return "Title: " + this.getTitle() + "\n\t" +
                 "Authors: " + this.getAuthors().toString() + "\n\n" +
                 "Summary: " + this.getSummary() + "\n\n" +
                 "A link to the ArXiv page: " + getURL_pageArxiv();
     }
 
-    public boolean isFavoriteItem(){
+    public boolean isFavoriteItem() {
         return favoriteItem;
     }
 
-    public void changeFavoriteItem(){favoriteItem = !favoriteItem;}
+    public void changeFavoriteItem() {
+        favoriteItem = !favoriteItem;
+    }
 
-    public void download(){
-        URL url = this.getURL_PDF();
-        try (InputStream in = url.openStream()) {
-            Files.copy(in, Paths.get("../../someArticle.pdf"), StandardCopyOption.REPLACE_EXISTING);
+
+
+    public void download (){
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select some directory");
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File dir = directoryChooser.showDialog(null);
+
+        if (dir == null) return;
+        String title_syntaxValid = getTitle().replaceAll(":", " ");
+        String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
+
+        InputStream in = null;
+        String urlString = "https://" + URL_PDF.toString().substring(7);
+
+        try {
+            in = new URL(urlString).openStream();
+            Files.copy(in, Paths.get(destination),StandardCopyOption.REPLACE_EXISTING);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
 }
+
 
 

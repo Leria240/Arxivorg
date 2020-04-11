@@ -1,7 +1,11 @@
 package app.arxivorg.model;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +20,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javafx.stage.DirectoryChooser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,7 +30,9 @@ import org.xml.sax.SAXException;
 public class Archive {
 
     private List<Article> articles;
+    static public Archive archiveFile1 =  new Archive(new File("atomFile1.xml"));
     static public Archive archiveFile2 =  new Archive(new File("atomFile2.xml"));
+
 
 
     public Archive() {
@@ -37,8 +44,18 @@ public class Archive {
         addArticles(file);
     }
 
-    public List<Article> getArticles() {
+    public List<Article> getAllArticles() {
         return articles;
+    }
+
+    public List<Article> getSelectedArticles(){
+        List<Article> selectedArticles = new ArrayList<>();
+        for(Article article : articles) {
+            if (article.isSelected()) {
+                selectedArticles.add(article);
+            }
+        }
+        return selectedArticles;
     }
 
 
@@ -143,8 +160,8 @@ public class Archive {
     }
 
     public void authorFilter (String authors) {
-        authors.replaceAll(","," ");
-        String[] tabAuthors = authors.split(" ");
+        if(authors.equals(""))return;
+        String[] tabAuthors = authors.split(",");
         for (Article article : articles) {
             for(String author: tabAuthors){
                 if (!article.getAuthors().contains(author)) {
@@ -154,31 +171,36 @@ public class Archive {
         }
     }
 
-    public void keyWordFilter (String keyword){
-        if (keyword.contains(",")){
-            keyword.replaceAll(","," ");
-            String[] tabKeyWords = keyword.split(" ");
-            for (Article article : articles) {
-                for(String word: tabKeyWords) {
-                    if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
-                        article.setSelected(false);
-                    }
-                    if (!article.isSelected() && article.getSummary().toLowerCase().contains(word.toLowerCase())){
-                        article.setSelected(true);
-                    }
-                }
-            }
-        }
+    public void keyWordFilter(String keyword,String target){
+        keyword.replaceAll(","," ");
+        String[] tabKeyWord = keyword.split(" ");
         for (Article article : articles) {
-            if (!article.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
-                article.setSelected(false);
-            }
+            if(target == "title")
+                titleKeyWordFilter(tabKeyWord,article);
+            if(target == "summary")
+                summaryKeyWordFilter(tabKeyWord,article);
+        }
+    }
 
-            if (!article.isSelected() && article.getSummary().toLowerCase().contains(keyword.toLowerCase())) {
-                article.setSelected(true);
+    public void titleKeyWordFilter (String[] tabKeyWord, Article article){
+        for (String word : tabKeyWord) {
+            if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
+                article.setSelected(false);
+                break;
             }
         }
     }
+
+    public void summaryKeyWordFilter (String[] tabKeyWord, Article article){
+        for (String word : tabKeyWord) {
+            if (!article.getSummary().toLowerCase().contains(word.toLowerCase())) {
+                article.setSelected(false);
+                break;
+            }
+        }
+    }
+
+
 
     public void dateFilter(String stringDate){
         for (Article article : articles) {
@@ -196,7 +218,29 @@ public class Archive {
         }
     }
 
-    //public List<Article> nonListedFilter(String maxDate){}
 
+    public void downloadArticles(List<Article> articles){
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select some directory");
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File dir = directoryChooser.showDialog(null);
+
+        if (dir == null) return;
+
+        for(Article article: articles) {
+            String title_syntaxValid = article.getTitle().replaceAll(":", " ");
+            String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
+            InputStream in = null;
+            String urlString = "https://" + article.getURL_PDF().toString().substring(7);
+
+            try {
+                in = new URL(urlString).openStream();
+                Files.copy(in, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
-

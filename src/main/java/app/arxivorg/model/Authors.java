@@ -1,7 +1,6 @@
 package app.arxivorg.model;
 
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +19,38 @@ public class Authors {
         return String.join(", ", data);
     }
 
-    public boolean contains(String firstnameOrLastname){
+
+
+    public boolean contains(String input){
+        String[] name = input.toLowerCase().trim().split(" ");
         for(String author: data){
-            if(author.toLowerCase().contains(firstnameOrLastname.toLowerCase()))
+            boolean defaultValue = true;
+            String[] authorName = getNameInTab(author);
+            if(name.length > authorName.length) continue;
+            for(String inputName: name){
+                if(!containsSamePartName(authorName,inputName)) {
+                    defaultValue = false;
+                    break;
+                }
+            }
+            if (defaultValue) return true;
+        }
+        return false;
+    }
+
+    private boolean containsSamePartName(String[] authorName, String partNameInput){
+        for(String author: authorName){
+            if(partNameInput.equals(author))
                 return true;
         }
         return false;
     }
+
+
+    private String[] getNameInTab(String fullname) {
+        String name = fullname.toLowerCase().trim();
+        return name.split(" ");
+    }
+
+
 }

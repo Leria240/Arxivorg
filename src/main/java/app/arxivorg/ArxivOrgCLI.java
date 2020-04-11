@@ -2,15 +2,9 @@ package app.arxivorg;
 
 import app.arxivorg.model.Archive;
 
-import app.arxivorg.model.Article;
-import javafx.concurrent.Task;
 import org.apache.commons.cli.*;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ArxivOrgCLI {
@@ -60,7 +54,7 @@ public class ArxivOrgCLI {
                 archive.categoryFilter(category);
             }
 
-            for (int i = 0; i < archive.getArticles().size(); i++) {
+            for (int i = 0; i < archive.getAllArticles().size(); i++) {
                 if (archive.getArticle(i).isSelected()) {
                     System.out.println(i+1 + ". " + archive.getArticle(i).getTitle());
                     System.out.println("Authors: " + archive.getArticle(i).getAuthors().getData());
