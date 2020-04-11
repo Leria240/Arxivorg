@@ -9,6 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
@@ -92,6 +94,16 @@ public class ArxivOrgController implements Initializable {
 
     public EventHandler<ActionEvent> downloadArticle(int index){
         return actionEvent -> archive.getArticle(index).download();
+    }
+
+    @FXML
+    public void downloadSelectedArticles(){
+        List<Integer> indices = listView.getSelectionModel().getSelectedIndices();
+        List<Article> articles = new ArrayList<>();
+        for(Integer index: indices){
+            articles.add(archive.getSelectedArticle(index));
+        }
+        archive.downloadArticles(articles);
     }
 
 

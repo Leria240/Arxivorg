@@ -66,7 +66,7 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Button>
-                        <Button fx:id="downloadAll" mnemonicParsing="false" prefHeight="25.0" prefWidth="380.0" text=" Download all" />
+                        <Button fx:id="downloadAll" mnemonicParsing="false" prefHeight="25.0" prefWidth="380.0" onMouseClicked="#downloadSelectedArticles" text=" Download all" />
                      </children>
                   </VBox>
                </children>
