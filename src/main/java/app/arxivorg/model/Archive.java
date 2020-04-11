@@ -229,7 +229,8 @@ public class Archive {
         if (dir == null) return;
 
         for(Article article: articles) {
-            String destination = dir.getAbsolutePath() + "\\" + article.getTitle() + ".pdf";
+            String title_syntaxValid = article.getTitle().replaceAll(":", " ");
+            String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
             InputStream in = null;
             String urlString = "https://" + article.getURL_PDF().toString().substring(7);
 
