@@ -119,7 +119,7 @@ public class Article {
 
         if (dir == null) return;
         String title_syntaxValid = getTitle().replaceAll(":", " ");
-        String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
+        String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + "article.pdf";
 
         InputStream in = null;
         String urlString = "https://" + URL_PDF.toString().substring(7);

@@ -1,11 +1,10 @@
 package app.arxivorg;
 
 import app.arxivorg.model.Archive;
-
 import org.apache.commons.cli.*;
+import org.w3c.dom.Document;
 
-import java.io.File;
-import java.util.*;
+import java.util.Scanner;
 
 public class ArxivOrgCLI {
     public static void main(String[] args) throws ParseException{
@@ -40,10 +39,13 @@ public class ArxivOrgCLI {
         try {
 
             final CommandLine line = parser.parse(options, args);
-
             Archive archive = new Archive();
-            File file = new File("atomFile1.xml");
-            archive.addArticles(file);
+            //File file = new File("atomFile1.xml");
+            //archive.addArticles(file);
+            HttpURLConnectionArxivorg http = new HttpURLConnectionArxivorg();
+            Document document = http.sendGet("http://export.arxiv.org/api/query?search_query=cat:cs.CL&start=0&max_results=10");
+            archive.addArticlesDocument(document);
+
             if (line.hasOption("p")) {
                 final String date = line.getOptionValue("p");
                 archive.dateFilter(date);
@@ -53,14 +55,29 @@ public class ArxivOrgCLI {
                 String category = line.getOptionValue("c");
                 archive.categoryFilter(category);
             }
-
-            for (int i = 0; i < archive.getAllArticles().size(); i++) {
-                if (archive.getArticle(i).isSelected()) {
-                    System.out.println(i+1 + ". " + archive.getArticle(i).getTitle());
-                    System.out.println("Authors: " + archive.getArticle(i).getAuthors().getData());
+            int j = 0;
+            if (args[0].equals("list")) {
+                for (int i = 0; i < archive.getAllArticles().size(); i++) {
+                    if (archive.getArticle(i).isSelected()) {
+                        System.out.println(i + 1 + ". " + archive.getArticle(i).getTitle());
+                        System.out.println("Authors: " + archive.getArticle(i).getAuthors().getData().toString()
+                                .replaceAll("\\[", "")
+                                .replaceAll("]", ""));
+                    }
                 }
             }
-        } catch (ParseException e) {
+
+            if(args[0].equals("download")){
+                for (int i = 0; i < archive.getAllArticles().size(); i++) {
+                    if (archive.getArticle(i).isSelected()) {
+                        j++;
+                    }
+                }
+                archive.downloadArticles(archive.getSelectedArticles());
+                System.out.println("Download " + j + " files to ~/Documents/ArXiv/");
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //System.out.println("Sorry, I can't do anything yet ! (Read: " + scanner.nextLine() + ")");
