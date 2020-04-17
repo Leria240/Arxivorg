@@ -243,4 +243,14 @@ public class Archive {
             }
         }
     }
+
+
+    public List<Article> articlesPublishedBy(String authorNAme){
+        List<Article> articleList = new ArrayList<>();
+        for(Article article: articles){
+            if(article.getAuthors().contains(authorNAme))
+                articleList.add(article);
+        }
+        return articleList;
+    }
 }

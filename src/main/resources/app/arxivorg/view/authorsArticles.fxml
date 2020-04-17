@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.view.ArticleByAuthors">
+<AnchorPane prefHeight="593.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.AuthorsArticlesController">
    <children>
       <SplitPane dividerPositions="0.09547738693467336" layoutX="47.0" layoutY="14.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -15,7 +15,7 @@
                         <Font name="Arial Black" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="authorName" layoutX="330.0" layoutY="5.0" prefHeight="25.0" prefWidth="166.0" text="authorName">
+                  <Label fx:id="name" layoutX="330.0" layoutY="5.0" prefHeight="25.0" prefWidth="166.0" text="authorName">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
@@ -28,12 +28,12 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <ListView fx:id="articles" layoutX="151.0" layoutY="-18.0" prefHeight="196.0" prefWidth="596.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <ListView fx:id="listView" layoutX="151.0" layoutY="-18.0" prefHeight="196.0" prefWidth="596.0" onMouseClicked="#displayMetadata" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <VBox layoutX="-1.0" prefHeight="153.0" prefWidth="598.0">
+                              <VBox layoutX="-1.0" prefHeight="230.0" prefWidth="976.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <Label prefHeight="31.0" prefWidth="152.0" text="Details : ">
                                        <font>
@@ -41,11 +41,11 @@
                                        </font></Label>
                                     <HBox prefHeight="134.0" prefWidth="598.0">
                                        <children>
-                                          <TextArea fx:id="metadata" prefHeight="128.0" prefWidth="509.0" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                          <TextArea fx:id="metadata" onMouseClicked="#displayMetadata" prefHeight="134.0" prefWidth="965.0" />
+                                          <VBox prefHeight="128.0" prefWidth="194.0" spacing="10.0">
                                              <children>
-                                                <CheckBox fx:id="favorite" mnemonicParsing="false" text="Favorite" />
-                                                <Button fx:id="download" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Download" />
+                                                <CheckBox fx:id="favorite" mnemonicParsing="false" onAction="#updateFavoriteItem" text="Favorite" />
+                                                <Button fx:id="download" mnemonicParsing="false" onAction="#downloadArticle" prefHeight="25.0" prefWidth="100.0" text="Download" />
                                              </children>
                                           </VBox>
                                        </children>
