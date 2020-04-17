@@ -20,7 +20,7 @@ public class Authors {
     public ArrayList<Hyperlink> getDataLink(){
         ArrayList<Hyperlink> links = new ArrayList<>();
         for(String autor: data){
-            links.add(new Hyperlink(autor + "  "));
+            links.add(new Hyperlink(autor));
         }
         return links;
     }

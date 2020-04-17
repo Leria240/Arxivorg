@@ -8,16 +8,16 @@
    <children>
       <SplitPane dividerPositions="0.09547738693467336" layoutX="47.0" layoutY="14.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="9.0" prefWidth="978.0">
                <children>
-                  <Label layoutX="172.0" layoutY="5.0" prefHeight="25.0" prefWidth="158.0" text="Articles products by ">
+                  <Label layoutX="172.0" layoutY="12.0" prefHeight="25.0" prefWidth="158.0" text="Articles products by ">
                      <font>
                         <Font name="Arial Black" size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="name" layoutX="330.0" layoutY="5.0" prefHeight="25.0" prefWidth="166.0" text="authorName">
+                  <Label fx:id="name" layoutX="330.0" layoutY="14.0" prefHeight="25.0" prefWidth="166.0" text="authorName">
                      <font>
-                        <Font name="Arial" size="12.0" />
+                        <Font name="Calibri" size="14.0" />
                      </font>
                   </Label>
                </children>
@@ -28,7 +28,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <ListView fx:id="listView" layoutX="151.0" layoutY="-18.0" prefHeight="196.0" prefWidth="596.0" onMouseClicked="#displayMetadata" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <ListView fx:id="listView" layoutX="151.0" layoutY="-18.0" onMouseClicked="#displayMetadata" prefHeight="196.0" prefWidth="596.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -39,9 +39,9 @@
                                        <font>
                                           <Font name="System Bold" size="16.0" />
                                        </font></Label>
-                                    <HBox prefHeight="134.0" prefWidth="598.0">
+                                    <HBox prefHeight="206.0" prefWidth="976.0">
                                        <children>
-                                          <TextArea fx:id="metadata" onMouseClicked="#displayMetadata" prefHeight="134.0" prefWidth="965.0" />
+                                          <TextArea fx:id="metadata" onMouseClicked="#displayMetadata" prefHeight="203.0" prefWidth="874.0" />
                                           <VBox prefHeight="128.0" prefWidth="194.0" spacing="10.0">
                                              <children>
                                                 <CheckBox fx:id="favorite" mnemonicParsing="false" onAction="#updateFavoriteItem" text="Favorite" />
