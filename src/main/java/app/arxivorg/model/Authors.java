@@ -1,6 +1,8 @@
 package app.arxivorg.model;
 
 
+import javafx.scene.control.Hyperlink;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,16 @@ public class Authors {
         return data;
     }
 
+    public ArrayList<Hyperlink> getDataLink(){
+        ArrayList<Hyperlink> links = new ArrayList<>();
+        for(String autor: data){
+            links.add(new Hyperlink(autor));
+        }
+        return links;
+    }
+
+
+
     public String toString() {
         return String.join(", ", data);
     }
@@ -28,7 +40,7 @@ public class Authors {
             String[] authorName = getNameInTab(author);
             if(name.length > authorName.length) continue;
             for(String inputName: name){
-                if(!containsSamePartName(authorName,inputName)) {
+                if(!containsPartName(authorName,inputName)) {
                     defaultValue = false;
                     break;
                 }
@@ -38,7 +50,7 @@ public class Authors {
         return false;
     }
 
-    private boolean containsSamePartName(String[] authorName, String partNameInput){
+    private boolean containsPartName(String[] authorName, String partNameInput){
         for(String author: authorName){
             if(partNameInput.equals(author))
                 return true;

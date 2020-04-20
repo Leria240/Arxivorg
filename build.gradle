@@ -14,6 +14,14 @@ test {
     minHeapSize = "128m"
     maxHeapSize = "1024m"
 
+    if (project.hasProperty('headless')) {
+        jvmArgs "-Dtestfx.robot=glass"
+        jvmArgs "-Dtestfx.headless=true"
+        jvmArgs "-Dprism.order=sw"
+        jvmArgs "-Dprism.text=t2k"
+    }
+
+
 /*
     // Headless test execution (true by default)
     if (project.hasProperty("headless") ? project.headless : true) {
