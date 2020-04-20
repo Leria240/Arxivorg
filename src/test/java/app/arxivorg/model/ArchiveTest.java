@@ -2,11 +2,11 @@ package app.arxivorg.model;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ArchiveTest {
 
@@ -135,12 +135,13 @@ public class ArchiveTest {
 
 
     @Test
-    public void testDateFilter(){
+    public void testDateFilter() {
         archive.dateFilter("2020-03-10");
         assert (archive.getArticle(0).isSelected());
         assert (!archive.getArticle(9).isSelected());
 
         archive.selectAll();
     }
+
 
 }

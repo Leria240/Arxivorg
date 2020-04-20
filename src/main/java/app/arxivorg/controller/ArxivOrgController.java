@@ -5,6 +5,8 @@ import app.arxivorg.model.Article;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -64,8 +66,8 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    public void downloadSelectedArticles(){
-        archive.downloadArticles(archive.getSelectedArticles());
+    public void downloadSelectedArticles() throws IOException {
+        archive.downloadArticles(archive.getSelectedArticles(), "");
     }
 
 
