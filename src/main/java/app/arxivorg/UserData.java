@@ -1,36 +1,83 @@
 package app.arxivorg;
 
-import java.io.BufferedWriter;
+import app.arxivorg.model.Archive;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
+import java.io.FileOutputStream;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class UserData {
-    public static void main(final String[] args) throws IOException, IOException {
+
+    static Element racine = new Element("user");
+    static org.jdom2.Document document = new Document(racine);
+
+    //Création de la date utilisateur (avec la date actuelle)
+    DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    LocalDateTime currentDate = LocalDateTime.now();
+    String theDate = date.format(currentDate);
+
+    static void display() {
+        try {
+            XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+            sortie.output(document, System.out);
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void save() {
+        try {
+            XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+            sortie.output(document, new FileOutputStream("userData.xml"));
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(File file){
+        Archive archive = new Archive();
+        for(int i = 0; i < archive.getSelectedArticles().size(); i++){
+            racine.getChild("lastDateConnexion").setText(theDate);
+        }
+    }
+
+    public static void main(final String[] args) {
 
         //Création de la date utilisateur (avec la date actuelle)
-        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate currentDate = LocalDate.now();
-        System.out.println(date.format(currentDate));
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String theDate = date.format(currentDate);
+        System.out.println(theDate);
 
-        File file = new File("userData.txt");
-
-        //Créer le fichier s'il n'existe pas
-        if(!file.exists()){
-            file.createNewFile();
+        //Création article favoris
+        Archive archive = new Archive();
+        for(int i = 0; i < archive.getSelectedArticles().size(); i++){
+            boolean bool = archive.getArticle(i).isFavoriteItem();
+            String str = String.valueOf(bool);
         }
 
-        //Ecriture dans ce fichier de la date créée
-        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(String.valueOf(currentDate));
-        bw.close();
+        Element lastDateConnexion = new Element("lastDateConnexion");
+        lastDateConnexion.setText(theDate);
+        racine.addContent(lastDateConnexion);
 
-        System.out.println("Modifications terminées !");
+        Element isFavorite = new Element("isFavorite");
+        isFavorite.setText("true");
+        racine.addContent(isFavorite);
 
-        //Il faut ensuite que ce fichier soit actualisé à chaque démarrage du logiciel (ou récupération d'articles) !!!
+        display();
+        save();
+
+        System.out.println("File updated !");
 
     }
+
+
+
 }

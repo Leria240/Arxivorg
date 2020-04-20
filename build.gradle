@@ -58,6 +58,7 @@ dependencies {
     compile 'org.controlsfx:controlsfx:11.0.0-RC2'
     compile 'commons-cli:commons-cli:1.4'
     compile 'commons-io:commons-io:2.5'
+    compile 'org.jdom:jdom:2.0.2'
 
     testCompile "org.junit.jupiter:junit-jupiter-api:5.4.0"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"

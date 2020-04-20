@@ -1,4 +1,5 @@
 package app.arxivorg.model;
+import app.arxivorg.UserData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -8,11 +9,10 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
@@ -250,8 +250,6 @@ public class Archive {
         }
     }
 
-
-
     public void dateFilter(String stringDate){
         for (Article article : articles) {
             Date date = null;
@@ -268,12 +266,25 @@ public class Archive {
         }
     }
 
+    public void nonListedFilter() throws IOException {
+        File file = new File("userData.xml");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String s = br.readLine();
+        UserData user = new UserData();
+        user.update(file);
+        dateFilter(s);
+        br.close();
+    }
 
-    public void downloadArticles(List<Article> articles){
+    public void downloadArticles(List<Article> articles, String path) throws IOException {
 
         for(Article article: articles) {
+            Path path1 = Paths.get(path);
+            if(!Files.exists(path1)){
+                Files.createDirectory(path1);
+            }
             String title_syntaxValid = article.getTitle().replaceAll(":", " ");
-            String destination = title_syntaxValid + ".pdf";
+            String destination = path + title_syntaxValid + ".pdf";
             InputStream in = null;
             String urlString = "https://" + article.getURL_PDF().toString().substring(7);
 

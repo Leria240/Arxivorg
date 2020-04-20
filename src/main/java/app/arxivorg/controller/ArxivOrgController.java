@@ -141,8 +141,8 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    public void downloadSelectedArticles(){
-        archive.downloadArticles(archive.getSelectedArticles());
+    public void downloadSelectedArticles() throws IOException {
+        archive.downloadArticles(archive.getSelectedArticles(), "");
     }
 
 

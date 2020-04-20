@@ -3,15 +3,14 @@ package app.arxivorg.model;
 
 import javafx.stage.DirectoryChooser;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 
 public class Article {
@@ -108,9 +107,7 @@ public class Article {
         favoriteItem = !favoriteItem;
     }
 
-
-
-    public void download (){
+    public void download () {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select some directory");
@@ -132,8 +129,6 @@ public class Article {
             e.printStackTrace();
         }
     }
-
-
 
 }
 

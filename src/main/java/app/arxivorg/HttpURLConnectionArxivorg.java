@@ -13,13 +13,6 @@ import java.net.URL;
 
 public class HttpURLConnectionArxivorg {
 
-    public static void main(String[]args) throws Exception {
-
-        HttpURLConnectionArxivorg http = new HttpURLConnectionArxivorg();
-        http.sendGet("http://export.arxiv.org/api/query?search_query=cat:cs.CL&start=0&max_results=10");
-
-    }
-
     public Document sendGet(String url) throws Exception {
 
         URL obj = new URL(url);
