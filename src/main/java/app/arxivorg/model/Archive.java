@@ -24,6 +24,8 @@ public class Archive {
     private List<Article> articles;
     static public Archive archiveFile1 =  new Archive(new File("atomFile1.xml"));
     static public Archive archiveFile2 =  new Archive(new File("atomFile2.xml"));
+    static public Archive archiveFile3 =  new Archive(new File("atomFile3.xml"));
+
 
 
 
@@ -294,5 +296,15 @@ public class Archive {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    public List<Article> articlesPublishedBy(String authorNAme){
+        List<Article> articleList = new ArrayList<>();
+        for(Article article: articles){
+            if(article.getAuthors().contains(authorNAme))
+                articleList.add(article);
+        }
+        return articleList;
     }
 }
