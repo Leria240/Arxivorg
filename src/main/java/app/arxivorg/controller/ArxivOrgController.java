@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -83,7 +82,7 @@ public class ArxivOrgController implements Initializable {
     }
 
 
-    public void displayAuthorArticles(String authorName) {
+    public void displayAuthorArticles(String authorName){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/arxivorg/view/authorsArticles.fxml"));
             Parent root = loader.load();
@@ -98,7 +97,7 @@ public class ArxivOrgController implements Initializable {
     }
 
 
-        @FXML
+    @FXML
     public void displayMetadata() {
         int index = listView.getSelectionModel().getSelectedIndex();
         metadata.setText(archive.getSelectedArticle(index).toString());

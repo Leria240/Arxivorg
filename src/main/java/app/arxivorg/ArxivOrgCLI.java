@@ -71,7 +71,7 @@ public class ArxivOrgCLI extends Application {
                 }
             }
             if(args[0].equals("download")){
-                launch(args);
+                launch(ArxivOrgCLI.class);
                 String path = archive.downloadArticles(archive.getSelectedArticles());
                 System.out.println("Download " + archive.getSelectedArticles().size() + " files to " + path);
             }
