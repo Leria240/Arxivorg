@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -82,9 +83,8 @@ public class ArxivOrgController implements Initializable {
     }
 
 
-    public void displayAuthorArticles(String authorName){
+    public void displayAuthorArticles(String authorName) {
         try {
-            System.out.println(authorName+" ok");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/arxivorg/view/authorsArticles.fxml"));
             Parent root = loader.load();
             AuthorsArticlesController secController = loader.getController();
@@ -96,29 +96,6 @@ public class ArxivOrgController implements Initializable {
             e.printStackTrace();
         }
     }
-
-    /*
-    public EventHandler handleLinks() {
-        EventHandler eventHandler = new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                Parent parent = null;
-                try {
-                    parent = FXMLLoader.load(getClass().getResource("AuthorsArticles.fxml"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene scene = new Scene(parent);
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                window.setScene(scene);
-                window.show();
-
-            }
-        };
-        return eventHandler;
-    }
-
-     */
 
 
         @FXML
@@ -142,7 +119,7 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void downloadSelectedArticles() throws IOException {
-        archive.downloadArticles(archive.getSelectedArticles(), "");
+        archive.downloadArticles(archive.getSelectedArticles());
     }
 
 

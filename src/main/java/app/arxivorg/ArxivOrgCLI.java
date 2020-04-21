@@ -1,12 +1,19 @@
 package app.arxivorg;
 
 import app.arxivorg.model.Archive;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import org.apache.commons.cli.*;
 import org.w3c.dom.Document;
 
 import java.util.Scanner;
 
-public class ArxivOrgCLI {
+public class ArxivOrgCLI extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+    }
+
     public static void main(String[] args) throws ParseException{
 
         System.out.println("Welcome to the arXiv organizer!");
@@ -63,16 +70,16 @@ public class ArxivOrgCLI {
                             .replaceAll("]", ""));
                 }
             }
-
             if(args[0].equals("download")){
-                archive.downloadArticles(archive.getSelectedArticles(), args[args.length-1]);
-                System.out.println("Download " + archive.getSelectedArticles().size() + " files to " + args[args.length-1]);
+                launch(args);
+                String path = archive.downloadArticles(archive.getSelectedArticles());
+                System.out.println("Download " + archive.getSelectedArticles().size() + " files to " + path);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         //System.out.println("Sorry, I can't do anything yet ! (Read: " + scanner.nextLine() + ")");
         scanner.close();
     }
+
 }
