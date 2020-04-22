@@ -7,12 +7,9 @@ public class Statistic {
 
     public Map<String, Integer> countArticlesByCategory(Archive archive){
         Map<String, Integer> numberOfArticlesByCategory = new HashMap<>();
-        for(String category : archive.getPossibleCategories()){
-            numberOfArticlesByCategory.put(category,0);
-        }
         for(Article article : archive.getSelectedArticles()){
             for(String category : article.getCategory()){
-                int count = numberOfArticlesByCategory.get(category);
+                int count = numberOfArticlesByCategory.getOrDefault(category,0);
                 numberOfArticlesByCategory.put(category,count + 1);
             }
         }

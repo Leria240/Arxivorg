@@ -93,6 +93,7 @@
                             <children>
                                 <CheckBox fx:id="favorite" mnemonicParsing="false" onMouseClicked="#updateFavoriteItem" prefHeight="17.0" prefWidth="137.0" text="Favorite" />
                                 <Button fx:id="download" mnemonicParsing="false" onMouseClicked="#downloadArticle" prefHeight="25.0" prefWidth="145.0" text="Download" />
+                        <Button fx:id="categoryStatistic" mnemonicParsing="false" onAction="#displayCategoryStatistic" prefHeight="25.0" prefWidth="179.0" text="category statistic" />
                             </children>
                         </VBox>
                     </children>
