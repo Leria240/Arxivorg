@@ -13,6 +13,11 @@ import java.net.URL;
 
 public class HttpURLConnectionArxivorg {
 
+    String url1 = "http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=10";
+    String url2 = "http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=10";
+    String url3 = "http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=10";
+    String url4 = "http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=10";
+
     public Document sendGet(String url) throws Exception {
 
         URL obj = new URL(url);
@@ -35,7 +40,7 @@ public class HttpURLConnectionArxivorg {
                 response.append(line);
             }
 
-            System.out.println(response.toString());
+            //System.out.println(response.toString());
 
             //créer un document xml à partir du string
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

@@ -1,6 +1,8 @@
 package app.arxivorg.model;
 
+import app.arxivorg.HttpURLConnectionArxivorg;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +137,6 @@ public class ArchiveTest {
         archive1.selectAll();
     }
 
-
     @Test
     public void testDateFilter(){
         archive1.dateFilter("2020-03-10");
@@ -145,5 +146,14 @@ public class ArchiveTest {
         archive1.selectAll();
     }
 
+    @Test
+    public void testNonListedFilter() throws Exception {
+        archive1.nonListedFilter();
+
+        HttpURLConnectionArxivorg http = new HttpURLConnectionArxivorg();
+        Document document = http.sendGet("http://export.arxiv.org/api/query?search_query=all&title=computers&date_range:from2020-04-22to2020-04-23&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending");
+
+
+    }
 
 }

@@ -1,12 +1,14 @@
 package app.arxivorg;
 
 import app.arxivorg.model.Archive;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import org.apache.commons.cli.*;
 import org.w3c.dom.Document;
 
 import java.util.Scanner;
 
-public class ArxivOrgCLI {
+public class ArxivOrgCLI extends Application {
     public static void main(String[] args) throws ParseException{
 
         System.out.println("Welcome to the arXiv organizer!");
@@ -74,5 +76,10 @@ public class ArxivOrgCLI {
         }
         //System.out.println("Sorry, I can't do anything yet ! (Read: " + scanner.nextLine() + ")");
         scanner.close();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 }
