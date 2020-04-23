@@ -7,21 +7,7 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="547.0" prefWidth="1143.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.StatisticController">
-    <children>
-          <BarChart fx:id="barChart" legendSide="RIGHT" legendVisible="false" prefHeight="445.0" prefWidth="1071.0" title="Number of articles published by categories" visible="false" AnchorPane.bottomAnchor="42.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="0.0">
-              <xAxis>
-                  <CategoryAxis fx:id="categoryAxis" animated="false" endMargin="10.0" label="Catégories" pickOnBounds="false" prefHeight="20.0" prefWidth="441.0" startMargin="10.0" tickLabelGap="15.0">
-               <tickLabelFont>
-                  <Font size="9.0" />
-               </tickLabelFont></CategoryAxis>
-              </xAxis>
-              <yAxis>
-                  <NumberAxis fx:id="numberAxis" label="number of articles published" prefHeight="207.0" prefWidth="51.0" side="LEFT" />
-              </yAxis>
-         <padding>
-            <Insets bottom="200.0" />
-         </padding>
-          </BarChart>
+   <children>
       <VBox fx:id="statistics" layoutX="3.0" layoutY="3.0" prefHeight="547.0" prefWidth="1143.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label prefHeight="43.0" prefWidth="1150.0" text="                                 Choose the statistics that interest you" textAlignment="CENTER">
@@ -49,7 +35,7 @@
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Button fx:id="author" mnemonicParsing="false" prefHeight="25.0" prefWidth="154.0" text="Author statistic">
+                  <Button fx:id="author" mnemonicParsing="false" onAction="#displayAuthorStatistic" prefHeight="25.0" prefWidth="154.0" text="Author statistic">
                      <VBox.margin>
                         <Insets left="30.0" />
                      </VBox.margin>
@@ -89,5 +75,29 @@
             </VBox>
          </children>
       </VBox>
-    </children>
+      <BarChart fx:id="barChart" legendSide="RIGHT" legendVisible="false" prefHeight="445.0" prefWidth="1071.0" title="Number of articles published by categories" visible="false" AnchorPane.bottomAnchor="42.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="0.0">
+         <xAxis>
+            <CategoryAxis fx:id="categoryAxis" animated="false" endMargin="10.0" label="Catégories" pickOnBounds="false" prefHeight="20.0" prefWidth="441.0" startMargin="10.0" tickLabelGap="15.0">
+               <tickLabelFont>
+                  <Font size="9.0" />
+               </tickLabelFont></CategoryAxis>
+         </xAxis>
+         <yAxis>
+            <NumberAxis fx:id="numberAxis" label="number of articles published" prefHeight="207.0" prefWidth="51.0" side="LEFT" />
+         </yAxis>
+         <padding>
+            <Insets bottom="200.0" />
+         </padding>
+      </BarChart>
+      <VBox fx:id="authorStatistic" layoutX="227.0" layoutY="127.0" prefHeight="547.0" prefWidth="1143.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <PieChart fx:id="authorsPieChart" labelLineLength="10.0" legendVisible="false" prefHeight="726.0" prefWidth="1143.0" title="Most Productive authors" />
+            <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="205.0" text="Other statistics" />
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+   </children>
 </AnchorPane>
