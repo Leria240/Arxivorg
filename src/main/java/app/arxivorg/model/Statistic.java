@@ -29,6 +29,17 @@ public class Statistic {
         return sortedByValue_descendingOrder(numberOfArticlesByAuthors);
     }
 
+    public List<Integer> nbExpressionsAppear(Archive archive, String expression){
+        List<Integer> nbExpressionsAppear = Arrays.asList(0,0);
+        for(Article article : archive.getSelectedArticles()){
+            if (article.getTitle().toLowerCase().contains(expression.toLowerCase().trim()))
+                nbExpressionsAppear.set(0,nbExpressionsAppear.get(0) + 1);
+            if (article.getTitle().toLowerCase().contains(expression.toLowerCase().trim()))
+                nbExpressionsAppear.set(1,nbExpressionsAppear.get(1) + 1);
+        }
+        return nbExpressionsAppear;
+    }
+
 
 
     public static HashMap<String, Integer> sortedByValue_descendingOrder(HashMap<String, Integer> map){
@@ -39,6 +50,8 @@ public class Statistic {
             sorted_map.put( entry.getKey(), entry.getValue() );
         return sorted_map;
     }
+
+
 
 
 
