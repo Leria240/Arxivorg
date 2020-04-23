@@ -7,27 +7,35 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class StatisticController implements Initializable {
 
     @FXML public BarChart<String,Integer> barChart;
     @FXML public CategoryAxis categoryAxis;
     @FXML public NumberAxis numberAxis;
-    @FXML public VBox statistics;
     @FXML public Button author;
     @FXML public Button date;
-    @FXML public ListView<String> expressionsList;
-    @FXML public Button expressions;
     @FXML public PieChart authorsPieChart;
+    @FXML public StackedBarChart<String, Integer> expressionStackedBarChart;
+    @FXML public VBox statistics;
     @FXML public VBox authorStatistic;
+    @FXML public VBox expressionStatistic;
+    @FXML public TextArea textAreaExpression;
+    @FXML public ListView<String> listExpressions;
+
+
+
+
+
 
 
     public Archive archive;
@@ -36,10 +44,12 @@ public class StatisticController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        displayStatisticGUI();
     }
 
     public void displayCategoryBarChart() {
-        XYChart.Series<String,Integer> setOfCategories = new XYChart.Series<>();
+        barChart.getData().clear();
+        Series<String,Integer> setOfCategories = new Series<>();
         Map<String, Integer> categoriesData = statistic.countArticlesByCategory(archive);
         for (Map.Entry<String,Integer> data : categoriesData.entrySet()) {
             setOfCategories.getData().add(new XYChart.Data<>(data.getKey(),data.getValue()));
@@ -50,6 +60,7 @@ public class StatisticController implements Initializable {
     }
 
     public void displayAuthorStatistic(){
+        authorsPieChart.getData().clear();
         int nbAuthors_max = 15;
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         Map<String,Integer> authorsData = statistic.mostProductiveAuthors(archive);
@@ -57,7 +68,6 @@ public class StatisticController implements Initializable {
             pieChartData.add(new PieChart.Data(data.getKey() + " (" + data.getValue() + ")",data.getValue()));
             nbAuthors_max --;
             if(nbAuthors_max == 0) break;
-            System.out.println(data.getKey() + " " + data.getValue());
         }
         authorsPieChart.setData(pieChartData);
         statistics.setVisible(false);
@@ -71,6 +81,43 @@ public class StatisticController implements Initializable {
 
     }
 
-    public void displayExpressionsStatistic(){}
+
+    public void displayExpressionsStatistic() {
+        expressionStackedBarChart.getData().clear();
+        Series<String, Integer> title = new Series<>();
+        Series<String, Integer> summary = new Series<>();
+        title.setName("Title");
+        summary.setName("Summary");
+        for(String expression: listExpressions.getItems()){
+            List<Integer> data = statistic.nbExpressionsAppear(archive, expression);
+            title.getData().add(new XYChart.Data<>(expression, data.get(0)));
+            summary.getData().add(new XYChart.Data<>(expression, data.get(1)));
+        }
+        expressionStackedBarChart.getData().add(title);
+        expressionStackedBarChart.getData().add(summary);
+        statistics.setVisible(false);
+        expressionStatistic.setVisible(true);
+    }
+
+    public void displayStatisticGUI(){
+        statistics.setVisible(true);
+        authorStatistic.setVisible(false);
+        expressionStatistic.setVisible(false);
+        listExpressions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        //textAreaExpression.setText("Enter an expression then push \nthe \"save expression\" button");
+    }
+
+
+    public void deleteExpression(){
+        int index = listExpressions.getSelectionModel().getSelectedIndex();
+        listExpressions.getItems().remove(index);
+    }
+
+
+    public void addExpression(){
+        String expression = textAreaExpression.getText();
+        listExpressions.getItems().add(expression);
+        textAreaExpression.clear();
+    }
 
 }

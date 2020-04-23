@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="547.0" prefWidth="1143.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.StatisticController">
    <children>
-      <VBox fx:id="statistics" layoutX="3.0" layoutY="3.0" prefHeight="547.0" prefWidth="1143.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="statistics" layoutX="3.0" layoutY="3.0" prefHeight="557.0" prefWidth="1153.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label prefHeight="43.0" prefWidth="1150.0" text="                                 Choose the statistics that interest you" textAlignment="CENTER">
                <font>
@@ -57,16 +57,27 @@
             </VBox>
             <VBox prefHeight="280.0" prefWidth="1143.0" spacing="15.0">
                <children>
-                  <Label prefHeight="21.0" prefWidth="652.0" text="Enter your expressions and discover the statistics of the most used ones in the title and summary">
+                  <Label prefHeight="21.0" prefWidth="999.0" text="Enter your expressions, save them one by one, and discover the statistics of the most used ones in the title and summary">
                      <font>
                         <Font size="15.0" />
                      </font></Label>
                   <HBox prefHeight="132.0" prefWidth="1143.0" spacing="30.0">
                      <children>
-                        <ListView fx:id="expressionsList" editable="true" prefHeight="117.0" prefWidth="269.0" />
+                        <TextArea fx:id="textAreaExpression" prefHeight="200.0" prefWidth="200.0" />
+                        <StackPane prefHeight="127.0" prefWidth="190.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#addExpression" prefHeight="25.0" prefWidth="160.0" text="Save the expression" />
+                           </children>
+                        </StackPane>
+                        <VBox prefHeight="127.0" prefWidth="298.0">
+                           <children>
+                              <ListView fx:id="listExpressions" prefHeight="200.0" prefWidth="200.0" />
+                              <Button mnemonicParsing="false" onAction="#deleteExpression" prefHeight="25.0" prefWidth="332.0" text="Delete expression" />
+                           </children>
+                        </VBox>
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="expressions" mnemonicParsing="false" text="Expressions statistic" />
+                              <Button mnemonicParsing="false" onAction="#displayExpressionsStatistic" text="Expressions statistic" />
                            </children>
                         </StackPane>
                      </children>
@@ -94,7 +105,24 @@
             <PieChart fx:id="authorsPieChart" labelLineLength="10.0" legendVisible="false" prefHeight="726.0" prefWidth="1143.0" title="Most Productive authors" />
             <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="205.0" text="Other statistics" />
+                  <Button mnemonicParsing="false" onAction="#displayStatisticGUI" prefHeight="25.0" prefWidth="205.0" text="Other statistics" />
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+      <VBox fx:id="expressionStatistic" layoutX="10.0" layoutY="10.0" prefHeight="547.0" prefWidth="1143.0" visible="false">
+         <children>
+            <StackedBarChart fx:id="expressionStackedBarChart" prefHeight="689.0" prefWidth="1143.0" title="Number of articles where the expressions appear in the title or the summary">
+              <xAxis>
+                <CategoryAxis animated="false" focusTraversable="true" label="Expressions" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis label="Number of articles where appears the expression" side="LEFT" />
+              </yAxis>
+            </StackedBarChart>
+            <StackPane alignment="BOTTOM_RIGHT" prefHeight="25.0" prefWidth="1168.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#displayStatisticGUI" prefHeight="25.0" prefWidth="205.0" text="Other statistics" />
                </children>
             </StackPane>
          </children>
