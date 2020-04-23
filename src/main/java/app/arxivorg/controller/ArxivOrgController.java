@@ -96,12 +96,12 @@ public class ArxivOrgController implements Initializable {
         }
     }
 
-    public void displayCategoryStatistic(){
+    public void displayStatistics(){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/arxivorg/view/statistic.fxml"));
             Parent root = loader.load();
            StatisticController secController = loader.getController();
-            secController.fillStatisticData(archive);
+            secController.archive = archive;
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
