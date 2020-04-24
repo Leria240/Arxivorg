@@ -20,15 +20,18 @@ import java.util.*;
 public class StatisticController implements Initializable {
 
     @FXML public BarChart<String,Integer> barChart;
-    @FXML public CategoryAxis categoryAxis;
-    @FXML public NumberAxis numberAxis;
     @FXML public Button author;
     @FXML public Button date;
     @FXML public PieChart authorsPieChart;
-    @FXML public StackedBarChart<String, Integer> expressionStackedBarChart;
     @FXML public VBox statistics;
+    @FXML public VBox categoryStatistic;
     @FXML public VBox authorStatistic;
     @FXML public VBox expressionStatistic;
+    @FXML public VBox dateStatistic;
+
+    @FXML public LineChart<String,Integer> dateLineChart;
+
+    @FXML public StackedBarChart<String, Integer> expressionStackedBarChart;
     @FXML public TextArea textAreaExpression;
     @FXML public ListView<String> listExpressions;
 
@@ -56,7 +59,7 @@ public class StatisticController implements Initializable {
         }
         barChart.getData().add(setOfCategories);
         statistics.setVisible(false);
-        barChart.setVisible(true);
+        categoryStatistic.setVisible(true);
     }
 
     public void displayAuthorStatistic(){
@@ -76,9 +79,15 @@ public class StatisticController implements Initializable {
 
 
 
-
     public void displayDateStatistic(){
-
+        Series<String, Integer> series2Data = new Series<>();
+        Map<String,Integer> dateData = statistic.nbPublicationPerDay(archive);
+        for(Map.Entry<String,Integer> data : dateData.entrySet()) {
+            series2Data.getData().add(new XYChart.Data<>(data.getKey(), data.getValue()));
+        }
+        dateLineChart.getData().add(series2Data);
+        statistics.setVisible(false);
+        dateStatistic.setVisible(true);
     }
 
 

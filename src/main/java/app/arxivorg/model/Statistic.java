@@ -29,6 +29,19 @@ public class Statistic {
         return sortedByValue_descendingOrder(numberOfArticlesByAuthors);
     }
 
+
+
+    public TreeMap<String,Integer> nbPublicationPerDay(Archive archive){
+        TreeMap<String, Integer> nbPublicationPerDay = new TreeMap<>();
+        for(Article article : archive.getSelectedArticles()) {
+            String dateOfPublication = article.getPublished().substring(0, 10);
+            int count = nbPublicationPerDay.getOrDefault(dateOfPublication, 0);
+            nbPublicationPerDay.put(dateOfPublication, count + 1);
+        }
+        return nbPublicationPerDay;
+    }
+
+
     public List<Integer> nbExpressionsAppear(Archive archive, String expression){
         List<Integer> nbExpressionsAppear = Arrays.asList(0,0);
         for(Article article : archive.getSelectedArticles()){
@@ -56,4 +69,10 @@ public class Statistic {
 
 
 
+
+
 }
+
+
+
+
