@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController" onMouseExited="#updateXMLDocumentUserData">
     <SplitPane dividerPositions="0.29797979797979796" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
             <children>
@@ -91,7 +91,7 @@
                         </TextArea>
                         <VBox prefHeight="191.0" prefWidth="168.0" spacing="10.0">
                             <children>
-                                <CheckBox fx:id="favorite" mnemonicParsing="true" onMouseClicked="#updateFavoriteItem" prefHeight="17.0" prefWidth="137.0" text="Favorite" />
+                                <CheckBox fx:id="favorite" mnemonicParsing="false" onMouseClicked="#updateFavoriteItem" prefHeight="17.0" prefWidth="137.0" text="Favorite" />
                                 <Button fx:id="download" mnemonicParsing="false" onMouseClicked="#downloadArticle" prefHeight="25.0" prefWidth="145.0" text="Download" />
                             </children>
                         </VBox>

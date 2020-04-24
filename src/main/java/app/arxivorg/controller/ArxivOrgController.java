@@ -16,14 +16,18 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ArxivOrgController implements Initializable {
 
@@ -41,92 +45,85 @@ public class ArxivOrgController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayGUI();
-        createXMLDocumentUserData();
+        getPreviousFavorites();
+
     }
 
     //Creation XML document
     static Element racine = new Element("user");
     static org.jdom2.Document document = new Document(racine);
+    private Map<String, String> favoritesArticles = new HashMap<>();
 
-    public void createXMLDocumentUserData(){
-        racine.removeContent();
-        //The last connexion date
-        //Save the last connection date in the XML file
-        Element lastConnexionDate = new Element("lastConnexionDate");
-        racine.addContent(lastConnexionDate);
+    public void getPreviousFavorites() {
+        //Cette méthode ajoute les favoris de la session précédente à la Map favoritesArticles
+        //afin de pouvoir les conserver chaque fois qu'on utilise l'interface graphique
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-        //The archive containing all the articles
-
-        //Save the favorites articles in the XML file
-        Element favorites = new Element("favorites");
-
-
-        racine.addContent(favorites);
-
-        display();
-        save();
-
-        System.out.println("File updated !");
-    }
-
-    public void updateXMLDocumentUserData(){
-        racine.getChild("favorites").removeContent();
-        LocalDate currentDate = LocalDate.now();
-        racine.getChild("lastConnexionDate").setText(currentDate.toString());
-        racine.getChild("favorites").removeContent();
-        if (!racine.getChild("favorites").removeChild("article")) {
-            for(int i = 0; i < archive.getAllArticles().size(); i++){
-                if(archive.getArticle(i).isFavoriteItem()){
-                    Element article = new Element("article");
-                    Element articleTitle = new Element("title");
-                    Element url_pdf = new Element("link");
-
-                    articleTitle.setText(archive.getArticle(i).getTitle());
-                    url_pdf.addContent(String.valueOf(archive.getArticle(i).getURL_PDF()));
-                    article.addContent(articleTitle);
-                    article.addContent(url_pdf);
-                    racine.getChild("favorites").addContent(article);
-                }
-            }
-        } else
-        for (int i = 0; i<racine.getChild("favorites").getChildren("article").size(); i++){
-            for (int j = 0; j < archive.getAllArticles().size(); j++) {
-                if (!racine.getChild("favorites").getChildren("article").get(i).getChild("title").getText().equals(archive.getArticle(j).getTitle())) {
-                    Element article = new Element("article");
-                    Element articleTitle = new Element("title");
-                    Element url_pdf = new Element("link");
-
-                    articleTitle.addContent(archive.getArticle(j).getTitle());
-                    url_pdf.addContent(String.valueOf(archive.getArticle(j).getURL_PDF()));
-                    article.addContent(articleTitle);
-                    article.addContent(url_pdf);
-                    racine.getChild("favorites").addContent(article);
-                }
-            }
-        }
-
-
-
-        save();
-
-    }
-
-
-
-    static void display() {
         try {
-            XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-            sortie.output(document, System.out);
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            File file = new File("userData.xml");
+            org.w3c.dom.Document document = builder.parse(file);
+            NodeList article = document.getElementsByTagName("article");
 
-        } catch (java.io.IOException e) {
+            for (int i = 0; i < article.getLength(); i++){
+                org.w3c.dom.Element articlei = (org.w3c.dom.Element) article.item(i);
+                String string = articlei.getElementsByTagName("id").item(0).getTextContent();
+                favoritesArticles.put("id "+i, string);
+            }
+        } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addToFavorites(int i) {
+        if (!favoritesArticles.containsValue(archive.getSelectedArticle(i).getId().substring(0, 31))){
+            favoritesArticles.put("id" + i, archive.getSelectedArticle(i).getId().substring(0, 31));
+        }
+    }
+
+    @FXML
+    public void updateXMLDocumentUserData(){
+        racine.removeContent();
+
+        //The last date connexion
+        LocalDate theDate = LocalDate.now();
+
+        //Save the last connection date in the XML file
+        Element lastConnexionDate = new Element("LastConnexionDate");
+        lastConnexionDate.setText(String.valueOf(theDate));
+        racine.addContent(lastConnexionDate);
+
+        Collection<String> values = favoritesArticles.values();
+        Iterator<String> it = values.iterator();
+        for (; it.hasNext(); ) {
+            String s = it.next();
+            it.remove();
+            for (int i = 0; i< archive.getSelectedArticles().size(); i++){
+                if (archive.getSelectedArticle(i).getId().substring(0,31).equals(s)){
+                    Element id_articles = new Element("id");
+                    Element article = new Element("article");
+                    Element articleTitle = new Element("title");
+                    Element url_pdf = new Element("link");
+
+                    id_articles.addContent(archive.getSelectedArticle(i).getId().substring(0,31));
+                    articleTitle.addContent(archive.getSelectedArticle(i).getTitle());
+                    url_pdf.addContent(String.valueOf(archive.getSelectedArticle(i).getURL_PDF()));
+                    article.addContent(id_articles);
+                    article.addContent(articleTitle);
+                    article.addContent(url_pdf);
+
+                    racine.addContent(article);
+                }
+            }
+        }
+        save();
     }
 
     static void save() {
         try {
             XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
             sortie.output(document, new FileOutputStream("userData.xml"));
+            System.out.println("File updated !");
 
         } catch (java.io.IOException e) {
             e.printStackTrace();
@@ -227,9 +224,9 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void updateFavoriteItem(){
-        int index = listView.getSelectionModel().getSelectedIndex();
+        int index = listView.getSelectionModel().getSelectedIndex();;
         archive.getSelectedArticle(index).changeFavoriteItem();
-        updateXMLDocumentUserData();
+        addToFavorites(index);
     }
 
     @FXML
