@@ -49,42 +49,69 @@ public class ArxivOrgController implements Initializable {
     static org.jdom2.Document document = new Document(racine);
 
     public void createXMLDocumentUserData(){
-
+        racine.removeContent();
         //The last connexion date
-        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime currentDate = LocalDateTime.now();
-        String theDate = date.format(currentDate);
-
         //Save the last connection date in the XML file
-        Element lastConnexionDate = new Element("LastConnexionDate");
-        lastConnexionDate.setText(theDate);
+        Element lastConnexionDate = new Element("lastConnexionDate");
         racine.addContent(lastConnexionDate);
 
         //The archive containing all the articles
 
         //Save the favorites articles in the XML file
-        Element Favorites = new Element("Favorites");
-        for(int i = 0; i < archive.getAllArticles().size(); i++){
-            if(archive.getSelectedArticle(i).isFavoriteItem()){
-                Element article = new Element("article");
-                Element articleTitle = new Element("title");
-                Element url_pdf = new Element("link");
+        Element favorites = new Element("favorites");
 
-                articleTitle.addContent(archive.getArticle(i).getTitle());
-                url_pdf.addContent(String.valueOf(archive.getArticle(i).getURL_PDF()));
-                article.addContent(articleTitle);
-                article.addContent(url_pdf);
 
-                Favorites.addContent(article);
-            }
-        }
-        racine.addContent(Favorites);
+        racine.addContent(favorites);
 
         display();
         save();
 
         System.out.println("File updated !");
     }
+
+    public void updateXMLDocumentUserData(){
+        racine.getChild("favorites").removeContent();
+        LocalDate currentDate = LocalDate.now();
+        racine.getChild("lastConnexionDate").setText(currentDate.toString());
+        racine.getChild("favorites").removeContent();
+        if (!racine.getChild("favorites").removeChild("article")) {
+            for(int i = 0; i < archive.getAllArticles().size(); i++){
+                if(archive.getArticle(i).isFavoriteItem()){
+                    Element article = new Element("article");
+                    Element articleTitle = new Element("title");
+                    Element url_pdf = new Element("link");
+
+                    articleTitle.setText(archive.getArticle(i).getTitle());
+                    url_pdf.addContent(String.valueOf(archive.getArticle(i).getURL_PDF()));
+                    article.addContent(articleTitle);
+                    article.addContent(url_pdf);
+                    racine.getChild("favorites").addContent(article);
+                }
+            }
+        } else
+        for (int i = 0; i<racine.getChild("favorites").getChildren("article").size(); i++){
+            for (int j = 0; j < archive.getAllArticles().size(); j++) {
+                if (!racine.getChild("favorites").getChildren("article").get(i).getChild("title").getText().equals(archive.getArticle(j).getTitle())) {
+                    Element article = new Element("article");
+                    Element articleTitle = new Element("title");
+                    Element url_pdf = new Element("link");
+
+                    articleTitle.addContent(archive.getArticle(j).getTitle());
+                    url_pdf.addContent(String.valueOf(archive.getArticle(j).getURL_PDF()));
+                    article.addContent(articleTitle);
+                    article.addContent(url_pdf);
+                    racine.getChild("favorites").addContent(article);
+                }
+            }
+        }
+
+
+
+        save();
+
+    }
+
+
 
     static void display() {
         try {
@@ -202,6 +229,7 @@ public class ArxivOrgController implements Initializable {
     public void updateFavoriteItem(){
         int index = listView.getSelectionModel().getSelectedIndex();
         archive.getSelectedArticle(index).changeFavoriteItem();
+        updateXMLDocumentUserData();
     }
 
     @FXML

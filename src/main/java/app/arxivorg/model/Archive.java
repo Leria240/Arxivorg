@@ -264,32 +264,15 @@ public class Archive {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
         try {
-
-            File file = new File("userData.xml");
-
             final DocumentBuilder builder = factory.newDocumentBuilder();
-            final Document document = builder.parse(file);
-
-            final Element racine = document.getDocumentElement();
-            final NodeList entry = racine.getElementsByTagName("user");
-
-            if (entry.item(0).getNodeType() == Node.ELEMENT_NODE) {
-                final Element user = (Element) entry.item(0);
-                final String lastConnexionDate = user.getElementsByTagName("LastConnexionDate").item(0).getTextContent();
-                dateFilter(lastConnexionDate);
-            }
-
-            /*
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String s = br.readLine();
-            dateFilter();
-            br.close();
-             */
-
+            File file = new File("userData.xml");
+            Document document = builder.parse(file);
+            NodeList r = document.getElementsByTagName("lastConnexionDate");
+            String s = r.item(0).getTextContent();
+            dateFilter(s);
         } catch (ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-
     }
 
     public void downloadArticles(List<Article> articles, String path) throws IOException {
