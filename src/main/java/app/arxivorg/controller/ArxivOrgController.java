@@ -12,10 +12,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class ArxivOrgController implements Initializable {
@@ -34,6 +41,69 @@ public class ArxivOrgController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayGUI();
+        createXMLDocumentUserData();
+    }
+
+    //Creation XML document
+    static Element racine = new Element("user");
+    static org.jdom2.Document document = new Document(racine);
+
+    public void createXMLDocumentUserData(){
+
+        //The last connexion date
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String theDate = date.format(currentDate);
+
+        //Save the last connection date in the XML file
+        Element lastConnexionDate = new Element("LastConnexionDate");
+        lastConnexionDate.setText(theDate);
+        racine.addContent(lastConnexionDate);
+
+        //The archive containing all the articles
+
+        //Save the favorites articles in the XML file
+        Element Favorites = new Element("Favorites");
+        for(int i = 0; i < archive.getAllArticles().size(); i++){
+            if(archive.getSelectedArticle(i).isFavoriteItem()){
+                Element article = new Element("article");
+                Element articleTitle = new Element("title");
+                Element url_pdf = new Element("link");
+
+                articleTitle.addContent(archive.getArticle(i).getTitle());
+                url_pdf.addContent(String.valueOf(archive.getArticle(i).getURL_PDF()));
+                article.addContent(articleTitle);
+                article.addContent(url_pdf);
+
+                Favorites.addContent(article);
+            }
+        }
+        racine.addContent(Favorites);
+
+        display();
+        save();
+
+        System.out.println("File updated !");
+    }
+
+    static void display() {
+        try {
+            XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+            sortie.output(document, System.out);
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void save() {
+        try {
+            XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+            sortie.output(document, new FileOutputStream("userData.xml"));
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void displayGUI(){
@@ -134,7 +204,6 @@ public class ArxivOrgController implements Initializable {
     public void downloadSelectedArticles() throws IOException {
         archive.downloadArticles(archive.getSelectedArticles());
     }
-
 
     @FXML
     public void applyFilter(){

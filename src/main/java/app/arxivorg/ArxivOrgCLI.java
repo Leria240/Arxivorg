@@ -9,11 +9,6 @@ import org.w3c.dom.Document;
 import java.util.Scanner;
 
 public class ArxivOrgCLI extends Application {
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-    }
-
     public static void main(String[] args) throws ParseException{
 
         System.out.println("Welcome to the arXiv organizer!");
@@ -82,4 +77,8 @@ public class ArxivOrgCLI extends Application {
         scanner.close();
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }
