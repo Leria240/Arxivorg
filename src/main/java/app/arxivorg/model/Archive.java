@@ -1,4 +1,7 @@
 package app.arxivorg.model;
+import com.sun.syndication.feed.synd.*;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,6 +53,11 @@ public class Archive {
         addArticles(file);
     }
 
+    public Archive(URL url){
+        this.articles = new ArrayList<>();
+        initializeArticlesFromURL(url);
+    }
+
     public List<Article> getAllArticles() {
         return articles;
     }
@@ -65,62 +73,50 @@ public class Archive {
     }
 
 
-    public void addArticles(File file) {
-
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
+    public void initializeArticlesFromURL(URL feedUrl){
         try {
 
-            final DocumentBuilder builder = factory.newDocumentBuilder();
-            final Document document = builder.parse(file);
-            final Element racine = document.getDocumentElement();
-            final NodeList entry = racine.getElementsByTagName("entry");
-            final int nbRacineNoeuds = entry.getLength();
+            SyndFeedInput input = new SyndFeedInput();
+            SyndFeed feed = input.build(new XmlReader(feedUrl));
 
+            for (SyndEntry entry : (List<SyndEntry>) feed.getEntries()) {
 
-            for (int i = 0; i < nbRacineNoeuds; i++) {
-                if (entry.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    final Element article = (Element) entry.item(i);
+                articles = new ArrayList<>();
+                final String title = entry.getTitle();
+                final String id = entry.getUri();
+                final Date updated = entry.getUpdatedDate();
+                final Date published = entry.getPublishedDate();
+                final String summary = entry.getDescription().getValue();
 
-                    //Récupération des id, mises à jour, dates de publication, titres, résumés
-                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            ", " ");
-                    final String id = article.getElementsByTagName("id").item(0).getTextContent();
-                    final String updated = article.getElementsByTagName("updated").item(0).getTextContent();
-                    final String published = article.getElementsByTagName("published").item(0).getTextContent();
-                    final String summary = article.getElementsByTagName("summary").item(0).getTextContent();
-
-
-                    //Récupérations de tous les auteurs pour chaque article
-                    List<String> authorslist = new ArrayList<>();
-                    for (int j = 0; j < article.getElementsByTagName("author").getLength(); j++) {
-                        final String author = article.getElementsByTagName("author").item(j).getTextContent();
-                        authorslist.add(author.trim());
-                    }
-
-
-                    //Récupération des liens pdf et arxiv
-                    String pdf = "";
-                    String arxiv = "";
-                    for (int k = 0; k < article.getElementsByTagName("link").getLength(); k++) {
-                        arxiv = article.getElementsByTagName("link").item(0).getAttributes().item(0).getTextContent();
-                        pdf = article.getElementsByTagName("link").item(1).getAttributes().item(0).getTextContent();
-                    }
-
-                    //Récupération des catégories
-                    List<String> categorylist = new ArrayList<>();
-                    for (int l = 0; l < article.getElementsByTagName("category").getLength(); l++) {
-                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(1).getTextContent();
-                        categorylist.add(category.trim());
-                    }
-
-                    Authors authors = new Authors(authorslist);
-                    Article article1 = new Article(id, updated, published, title, summary, authors, new URL(arxiv), new URL(pdf), categorylist);
-                    articles.add(article1);
+                List<String> authorslist = new ArrayList<>();
+                for(SyndPersonImpl author : (List<SyndPersonImpl>) entry.getAuthors()){
+                    authorslist.add(author.getName());
                 }
+
+                List<String> links = new ArrayList<>();
+                for (SyndLinkImpl link : (List<SyndLinkImpl>) entry.getLinks()) {
+                    links.add(link.getHref());
+                }
+
+                List<String> categories = new ArrayList<>();
+                for (SyndCategoryImpl category : (List<SyndCategoryImpl>) entry.getCategories()) {
+                    categories.add(category.getName());
+                }
+                Authors authors = new Authors(authorslist);
+                Article article = new Article(id,updated.toString(),published.toString(),title,summary,authors,new URL(links.get(0)),new URL(links.get(1)),categories);
+                articles.add(article);
+
+                System.out.println(article.mainInformations());
             }
-        } catch (final ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println("Error : " + ex.getMessage());
         }
+    }
+
+
+
+
+    public void addArticles(File file) {
     }
 
 
