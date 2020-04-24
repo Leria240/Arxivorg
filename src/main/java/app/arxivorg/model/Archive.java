@@ -8,10 +8,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.xml.crypto.Data;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,24 +40,9 @@ import org.xml.sax.SAXException;
 public class Archive {
 
     private List<Article> articles;
-    static public Archive archiveFile1 = new Archive(new File("atomFile1.xml"));
-    static public Archive archiveFile2 = new Archive(new File("atomFile2.xml"));
-    static public Archive archiveFile3 = new Archive(new File("atomFile3.xml"));
-
 
     public Archive() {
-        this.articles = new ArrayList<>();
-    }
-
-
-    public Archive(File file) {
-        this.articles = new ArrayList<>();
-        addArticles(file);
-    }
-
-    public Archive(URL url){
-        this.articles = new ArrayList<>();
-        initializeArticlesFromURL(url);
+        this.articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=100");
     }
 
     public List<Article> getAllArticles() {
@@ -73,20 +60,25 @@ public class Archive {
     }
 
 
-    public void initializeArticlesFromURL(URL feedUrl){
-        try {
+    public List<Article> getArticlesFromAPI(String url){
 
+        List<Article> articlesFromAPI = new ArrayList<>();
+        URL feedUrl = null;
+
+        try {
+            feedUrl = new URL(url);
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(new XmlReader(feedUrl));
 
             for (SyndEntry entry : (List<SyndEntry>) feed.getEntries()) {
 
-                articles = new ArrayList<>();
-                final String title = entry.getTitle();
+                final String title = entry.getTitle().replaceAll("\n\t"," ");
                 final String id = entry.getUri();
-                final Date updated = entry.getUpdatedDate();
-                final Date published = entry.getPublishedDate();
+                final String updated = entry.getUpdatedDate().toString();
+                final String published = entry.getPublishedDate().toString();
                 final String summary = entry.getDescription().getValue();
+
+
 
                 List<String> authorslist = new ArrayList<>();
                 for(SyndPersonImpl author : (List<SyndPersonImpl>) entry.getAuthors()){
@@ -103,14 +95,15 @@ public class Archive {
                     categories.add(category.getName());
                 }
                 Authors authors = new Authors(authorslist);
-                Article article = new Article(id,updated.toString(),published.toString(),title,summary,authors,new URL(links.get(0)),new URL(links.get(1)),categories);
-                articles.add(article);
-
-                System.out.println(article.mainInformations());
+                Article article = new Article(id,updated,published,title,summary,authors,new URL(links.get(0)),new URL(links.get(1)),categories);
+                articlesFromAPI.add(article);
             }
-        } catch (Exception ex) {
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+    } catch (Exception ex) {
             System.out.println("Error : " + ex.getMessage());
         }
+        return articlesFromAPI;
     }
 
 
@@ -192,14 +185,19 @@ public class Archive {
     }
 
 
-    public Set<String> getPossibleCategories() {
+    public Set<String> getAllCategories() {
         Set<String> categories = new TreeSet<>();
         categories.add(" All categories");
-        for (Article article : articles) {
+        List<Article> cat = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+        for (Article article : cat) {
             categories.addAll(article.getCategory());
         }
         return categories;
     }
+
+
+
+
 
     public void categoryFilter(String category) {
         if (category.equals(" All categories")) return;
@@ -209,6 +207,7 @@ public class Archive {
             }
         }
     }
+
 
     public void authorFilter(String authors) {
         if (authors.equals("")) return;
@@ -308,10 +307,10 @@ public class Archive {
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         File dir = directoryChooser.showDialog(null);
 
-        if (dir == null) return "Ca n'a pas fonctionné";
+        if (dir == null) return " ";
 
         for (Article article : articles) {
-            String title_syntaxValid = article.getTitle().replaceAll(":", " ");
+            String title_syntaxValid = article.getTitle().replaceAll("\\p{Punct}", " ");
             String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
             InputStream in = null;
             String urlString = "https://" + article.getURL_PDF().toString().substring(7);

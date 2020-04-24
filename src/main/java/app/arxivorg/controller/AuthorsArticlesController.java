@@ -19,7 +19,7 @@ public class AuthorsArticlesController implements Initializable {
     @FXML private CheckBox favorite;
     @FXML public Label name;
     private List<Article> articles = new ArrayList<>();
-    private Archive archive =  Archive.archiveFile2;
+    private Archive archive =  new Archive();
 
 
     @Override

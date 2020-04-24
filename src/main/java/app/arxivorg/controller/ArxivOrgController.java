@@ -35,7 +35,7 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextArea authors;
     @FXML private TextArea TitleKeyword;
     @FXML private TextArea SummaryKeyword;
-    private Archive archive =  Archive.archiveFile2;
+    private Archive archive = new Archive();
 
 
     @Override
@@ -110,14 +110,14 @@ public class ArxivOrgController implements Initializable {
         metadata.setText("Click on one of the articles above to see more details");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         categories.setValue(" All categories");
-        categories.getItems().addAll(archive.getPossibleCategories());
+        categories.getItems().addAll(archive.getAllCategories());
         period.setValue(LocalDate.now().minusYears(50));
         displayArticles();
     }
 
     public void displayArticles(){
         listView.getItems().clear();
-        for(Article article : archive.getSelectedArticles()){
+        for(Article article : archive.getAllArticles()){
             listView.getItems().add(constructCell(article));
         }
     }
@@ -184,8 +184,8 @@ public class ArxivOrgController implements Initializable {
     @FXML
     public void displayMetadata() {
         int index = listView.getSelectionModel().getSelectedIndex();
-        metadata.setText(archive.getSelectedArticle(index).toString());
-        favorite.setSelected(archive.getSelectedArticle(index).isFavoriteItem());
+        metadata.setText(archive.getArticle(index).toString());
+        favorite.setSelected(archive.getArticle(index).isFavoriteItem());
     }
 
     @FXML
