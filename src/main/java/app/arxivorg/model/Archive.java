@@ -40,9 +40,10 @@ import org.xml.sax.SAXException;
 public class Archive {
 
     private List<Article> articles;
+    public static List<Article> recentArticles =  getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=100");
 
     public Archive() {
-        this.articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=100");
+        this.articles = recentArticles;
     }
 
     public List<Article> getAllArticles() {
@@ -60,7 +61,7 @@ public class Archive {
     }
 
 
-    public List<Article> getArticlesFromAPI(String url){
+    public static List<Article> getArticlesFromAPI(String url){
 
         List<Article> articlesFromAPI = new ArrayList<>();
         URL feedUrl = null;
@@ -197,7 +198,7 @@ public class Archive {
 
 
 
-
+/*
 
     public void categoryFilter(String category) {
         if (category.equals(" All categories")) return;
@@ -248,6 +249,53 @@ public class Archive {
                 break;
             }
         }
+    }
+
+ */
+
+
+    public void categoryFilter(String category) {
+        if (!category.equals(" All categories")) {
+            articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=cat:" + category +
+                    "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+        } else {
+            articles = recentArticles;
+        }
+    }
+
+
+    public void authorFilter(String authors) {
+        authors.replaceAll(",", " ");
+        String[] tabKeyWord = authors.split(" ");
+        String param = new String();
+        for (String word : tabKeyWord) {
+            param += "au:" + word + "+AND+";
+        }
+        articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=" + param.substring(0,param.length()-5) +
+                "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+    }
+
+
+    public void titleKeyWordFilter(String keyword) {
+        keyword.replaceAll(",", " ");
+        String[] tabKeyWord = keyword.split(" ");
+        String param = new String();
+        for (String word : tabKeyWord) {
+            param += "ti:" + word + "+AND+";
+        }
+        articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=" + param.substring(0,param.length()-5) +
+                "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+    }
+
+    public void summaryKeyWordFilter(String keyword) {
+        keyword.replaceAll(",", " ");
+        String[] tabKeyWord = keyword.split(" ");
+        String param = new String();
+        for (String word : tabKeyWord) {
+            param += "abs:" + word + "+AND+";
+        }
+        articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=" + param.substring(0,param.length()-5) +
+                "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
     }
 
 

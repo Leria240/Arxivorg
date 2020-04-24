@@ -210,10 +210,10 @@ public class ArxivOrgController implements Initializable {
         metadata.setText("Click on one of the articles above to see more details");
         archive.selectAll();
         archive.categoryFilter(categories.getValue());
-        archive.keyWordFilter(TitleKeyword.getText(), "title");
-        archive.keyWordFilter(SummaryKeyword.getText(), "summary");
+        archive.titleKeyWordFilter(TitleKeyword.getText());
+        archive.summaryKeyWordFilter(SummaryKeyword.getText());
         archive.authorFilter(authors.getText());
-        archive.dateFilter(period.getValue().toString());
+        //archive.dateFilter(period.getValue().toString());
         displayArticles();
     }
 
