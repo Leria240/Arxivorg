@@ -65,12 +65,11 @@ public class ArxivOrgCLI extends Application {
                             .replaceAll("]", ""));
                 }
             }
-
             if(args[0].equals("download")){
-                archive.downloadArticles(archive.getSelectedArticles(), args[args.length-1]);
-                System.out.println("Download " + archive.getSelectedArticles().size() + " files to " + args[args.length-1]);
+                launch(ArxivOrgCLI.class);
+                String path = archive.downloadArticles(archive.getSelectedArticles());
+                System.out.println("Download " + archive.getSelectedArticles().size() + " files to " + path);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
