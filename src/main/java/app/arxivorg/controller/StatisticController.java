@@ -112,6 +112,8 @@ public class StatisticController implements Initializable {
         statistics.setVisible(true);
         authorStatistic.setVisible(false);
         expressionStatistic.setVisible(false);
+        categoryStatistic.setVisible(false);
+        dateStatistic.setVisible(false);
         listExpressions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         //textAreaExpression.setText("Enter an expression then push \nthe \"save expression\" button");
     }

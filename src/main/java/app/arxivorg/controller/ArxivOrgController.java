@@ -39,7 +39,7 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextArea authors;
     @FXML private TextArea TitleKeyword;
     @FXML private TextArea SummaryKeyword;
-    private Archive archive =  Archive.archiveFile2;
+    private Archive archive = new Archive();
 
 
     @Override
@@ -103,16 +103,16 @@ public class ArxivOrgController implements Initializable {
         lastConnexionDate.setText(String.valueOf(theDate));
         racine.addContent(lastConnexionDate);
 
-        for (int i = 0; i< archive.getSelectedArticles().size(); i++){
-            if (archive.getSelectedArticle(i).isFavoriteItem()){
+        for (int i = 0; i< archive.getAllArticles().size(); i++){
+            if (archive.getArticle(i).isFavoriteItem()){
                 Element id_articles = new Element("id");
                 Element article = new Element("favouriteArticle");
                 Element articleTitle = new Element("title");
                 Element url_pdf = new Element("link");
 
-                id_articles.addContent(archive.getSelectedArticle(i).getId().substring(0,31));
-                articleTitle.addContent(archive.getSelectedArticle(i).getTitle());
-                url_pdf.addContent(String.valueOf(archive.getSelectedArticle(i).getURL_PDF()));
+                id_articles.addContent(archive.getArticle(i).getId().substring(0,31));
+                articleTitle.addContent(archive.getArticle(i).getTitle());
+                url_pdf.addContent(String.valueOf(archive.getArticle(i).getURL_PDF()));
                 article.addContent(id_articles);
                 article.addContent(articleTitle);
                 article.addContent(url_pdf);
@@ -138,14 +138,15 @@ public class ArxivOrgController implements Initializable {
         metadata.setText("Click on one of the articles above to see more details");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         categories.setValue(" All categories");
-        categories.getItems().addAll(archive.getPossibleCategories());
-        period.setValue(LocalDate.now().minusYears(50));
+        categories.getItems().addAll(archive.getAllCategories());
+        period.setValue(LocalDate.now().minusYears(2));
         displayArticles();
     }
 
+
     public void displayArticles(){
         listView.getItems().clear();
-        for(Article article : archive.getSelectedArticles()){
+        for(Article article : archive.getAllArticles()){
             listView.getItems().add(constructCell(article));
         }
     }
@@ -212,14 +213,14 @@ public class ArxivOrgController implements Initializable {
     @FXML
     public void displayMetadata() {
         int index = listView.getSelectionModel().getSelectedIndex();
-        metadata.setText(archive.getSelectedArticle(index).toString());
-        favorite.setSelected(archive.getSelectedArticle(index).isFavoriteItem());
+        metadata.setText(archive.getArticle(index).toString());
+        favorite.setSelected(archive.getArticle(index).isFavoriteItem());
     }
 
     @FXML
     public void updateFavoriteItem(){
         int index = listView.getSelectionModel().getSelectedIndex();;
-        archive.getSelectedArticle(index).changeFavoriteItem();
+        archive.getArticle(index).changeFavoriteItem();
         addToFavorites(index);
     }
 
@@ -230,20 +231,18 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    public void downloadSelectedArticles() throws IOException {
-        archive.downloadArticles(archive.getSelectedArticles());
+    public void downloadSelectedArticles(){
+        archive.downloadArticles(archive.getAllArticles());
     }
 
     @FXML
     public void applyFilter(){
         metadata.setText("Click on one of the articles above to see more details");
-        archive.selectAll();
-        archive.categoryFilter(categories.getValue());
-        archive.keyWordFilter(TitleKeyword.getText(), "title");
-        archive.keyWordFilter(SummaryKeyword.getText(), "summary");
-        archive.authorFilter(authors.getText());
-        archive.dateFilter(period.getValue().toString());
+        archive.filters(categories.getValue(),authors.getText(),
+                TitleKeyword.getText(),SummaryKeyword.getText());
+        archive.dateFilter(period.getValue());
         displayArticles();
+        System.out.println(archive.getAllArticles().size());
     }
 
 }

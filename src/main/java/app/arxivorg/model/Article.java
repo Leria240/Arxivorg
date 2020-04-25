@@ -24,7 +24,6 @@ public class Article {
     private URL URL_PDF;
     private List<String> category;
     private boolean favoriteItem;
-    private boolean selected;
 
     public Article(String id, String updated, String published, String title,
                    String summary, Authors authors,
@@ -39,7 +38,6 @@ public class Article {
         this.URL_PDF = URL_PDF;
         this.category = category;
         this.favoriteItem = false;
-        this.selected = true;
     }
 
     public String getId() {
@@ -78,13 +76,6 @@ public class Article {
         return category;
     }
 
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
 
     public String mainInformations() {
         String authors = "Authors: " + getAuthors().toString();

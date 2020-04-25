@@ -60,6 +60,8 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'org.jdom:jdom:2.0.2'
 
+    compile group: 'net.java.dev.rome' , name:'rome-fetcher', version: '1.0.0'
+
     testCompile "org.junit.jupiter:junit-jupiter-api:5.4.0"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"
 
