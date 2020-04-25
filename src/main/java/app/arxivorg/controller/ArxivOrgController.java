@@ -40,99 +40,17 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextArea TitleKeyword;
     @FXML private TextArea SummaryKeyword;
     private Archive archive = new Archive();
+    static Map<String, String> favoritesArticles = new HashMap<>();
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayGUI();
-        getPreviousFavorites();
+        //getPreviousFavorites();
 
     }
 
-    //Creation XML document
-    static Element racine = new Element("user");
-    static org.jdom2.Document document = new Document(racine);
-    static Map<String, String> favoritesArticles = new HashMap<>();
-
-    public void getPreviousFavorites() {
-        //Cette méthode ajoute les favoris de la session précédente à la Map favoritesArticles
-        //afin de pouvoir les conserver chaque fois qu'on utilise l'interface graphique
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-        try {
-            final DocumentBuilder builder = factory.newDocumentBuilder();
-            File file = new File("userData.xml");
-            org.w3c.dom.Document document = builder.parse(file);
-            NodeList article = document.getElementsByTagName("favouriteArticle");
-
-            for (int i = 0; i < article.getLength(); i++){
-                org.w3c.dom.Element articlei = (org.w3c.dom.Element) article.item(i);
-                String string = articlei.getElementsByTagName("id").item(0).getTextContent();
-                favoritesArticles.put("id "+i, string);
-            }
-            //On ajoute les articles dans userData.xml au favoris
-            Collection<String> values = favoritesArticles.values();
-            Iterator<String> it = values.iterator();
-            for (; it.hasNext(); ) {
-                String s = it.next();
-                for (int i = 0; i< archive.getSelectedArticles().size(); i++) {
-                    if (archive.getSelectedArticle(i).getId().substring(0, 31).equals(s)) {
-                        archive.getSelectedArticle(i).changeFavoriteItem();
-                    }
-                }
-            }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addToFavorites(int i) {
-        if (!favoritesArticles.containsValue(archive.getSelectedArticle(i).getId().substring(0, 31))){
-            favoritesArticles.put("id" + i, archive.getSelectedArticle(i).getId().substring(0, 31));
-        }
-    }
-
-    @FXML
-    public void updateXMLDocumentUserData(){
-        racine.removeContent();
-        //The last connexion date
-        LocalDate theDate = LocalDate.now();
-
-        //Save the last connection date in the XML file
-        Element lastConnexionDate = new Element("LastConnexionDate");
-        lastConnexionDate.setText(String.valueOf(theDate));
-        racine.addContent(lastConnexionDate);
-
-        for (int i = 0; i< archive.getAllArticles().size(); i++){
-            if (archive.getArticle(i).isFavoriteItem()){
-                Element id_articles = new Element("id");
-                Element article = new Element("favouriteArticle");
-                Element articleTitle = new Element("title");
-                Element url_pdf = new Element("link");
-
-                id_articles.addContent(archive.getArticle(i).getId().substring(0,31));
-                articleTitle.addContent(archive.getArticle(i).getTitle());
-                url_pdf.addContent(String.valueOf(archive.getArticle(i).getURL_PDF()));
-                article.addContent(id_articles);
-                article.addContent(articleTitle);
-                article.addContent(url_pdf);
-
-                racine.addContent(article);
-            }
-        }
-        save();
-    }
-
-    static void save() {
-        try {
-            XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-            sortie.output(document, new FileOutputStream("userData.xml"));
-            System.out.println("File updated !");
-
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void displayGUI(){
         metadata.setText("Click on one of the articles above to see more details");
@@ -219,13 +137,17 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void updateFavoriteItem(){
-        int index = listView.getSelectionModel().getSelectedIndex();;
+        if(listView.getSelectionModel().getSelectedItems().isEmpty())
+            return;
+        int index = listView.getSelectionModel().getSelectedIndex();
         archive.getArticle(index).changeFavoriteItem();
         addToFavorites(index);
     }
 
     @FXML
     public void downloadArticle(){
+        if(listView.getSelectionModel().getSelectedItems().isEmpty())
+            return;
         int index = listView.getSelectionModel().getSelectedIndex();
         archive.getArticle(index).download();
     }
@@ -242,7 +164,86 @@ public class ArxivOrgController implements Initializable {
                 TitleKeyword.getText(),SummaryKeyword.getText());
         archive.dateFilter(period.getValue());
         displayArticles();
-        System.out.println(archive.getAllArticles().size());
+    }
+
+
+    @FXML
+    public void updateXMLDocumentUserData(){
+        Element racine = new Element("user");
+        org.jdom2.Document document = new Document(racine);
+        racine.removeContent();
+        //The last connexion date
+        LocalDate theDate = LocalDate.now();
+
+        //Save the last connection date in the XML file
+        Element lastConnexionDate = new Element("LastConnexionDate");
+        lastConnexionDate.setText(String.valueOf(theDate));
+        racine.addContent(lastConnexionDate);
+
+        for (int i = 0; i< archive.getAllArticles().size(); i++){
+            if (archive.getArticle(i).isFavoriteItem()){
+                Element id_articles = new Element("id");
+                Element article = new Element("favouriteArticle");
+                Element articleTitle = new Element("title");
+                Element url_pdf = new Element("link");
+
+                id_articles.addContent(archive.getArticle(i).getId().substring(0,31));
+                articleTitle.addContent(archive.getArticle(i).getTitle());
+                url_pdf.addContent(String.valueOf(archive.getArticle(i).getURL_PDF()));
+                article.addContent(id_articles);
+                article.addContent(articleTitle);
+                article.addContent(url_pdf);
+
+                racine.addContent(article);
+            }
+        }
+        try {
+            XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+            sortie.output(document, new FileOutputStream("userData.xml"));
+            System.out.println("File updated !");
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getPreviousFavorites() {
+        //Cette méthode ajoute les favoris de la session précédente à la Map favoritesArticles
+        //afin de pouvoir les conserver chaque fois qu'on utilise l'interface graphique
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        try {
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            File file = new File("userData.xml");
+            org.w3c.dom.Document document = builder.parse(file);
+            NodeList article = document.getElementsByTagName("favouriteArticle");
+
+            for (int i = 0; i < article.getLength(); i++){
+                org.w3c.dom.Element article_i = (org.w3c.dom.Element) article.item(i);
+                String string = article_i.getElementsByTagName("id").item(0).getTextContent();
+                favoritesArticles.put("id "+i, string);
+            }
+            //On ajoute les articles dans userData.xml au favoris
+            Collection<String> values = favoritesArticles.values();
+            Iterator<String> it = values.iterator();
+            for (; it.hasNext(); ) {
+                String s = it.next();
+                for (int i = 0; i< archive.getAllArticles().size(); i++) {
+                    if (archive.getArticle(i).getId().substring(0, 31).equals(s)) {
+                        archive.getArticle(i).changeFavoriteItem();
+                    }
+                }
+            }
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void addToFavorites(int i) {
+        if (!favoritesArticles.containsValue(archive.getArticle(i).getId().substring(0, 31))){
+            favoritesArticles.put("id" + i, archive.getArticle(i).getId().substring(0, 31));
+        }
     }
 
 }

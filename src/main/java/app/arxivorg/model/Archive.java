@@ -225,7 +225,6 @@ public class Archive {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(article.getPublished().substring(0, 10),formatter);
             if (stringDate.isBefore(date) || stringDate.equals(date)) {
-                System.out.println("apres");
                 articlesSelected.add(article);
             }
         }
