@@ -52,7 +52,7 @@ public class ArxivOrgController implements Initializable {
     //Creation XML document
     static Element racine = new Element("user");
     static org.jdom2.Document document = new Document(racine);
-    private Map<String, String> favoritesArticles = new HashMap<>();
+    static Map<String, String> favoritesArticles = new HashMap<>();
 
     public void getPreviousFavorites() {
         //Cette méthode ajoute les favoris de la session précédente à la Map favoritesArticles
@@ -63,12 +63,23 @@ public class ArxivOrgController implements Initializable {
             final DocumentBuilder builder = factory.newDocumentBuilder();
             File file = new File("userData.xml");
             org.w3c.dom.Document document = builder.parse(file);
-            NodeList article = document.getElementsByTagName("article");
+            NodeList article = document.getElementsByTagName("favouriteArticle");
 
             for (int i = 0; i < article.getLength(); i++){
                 org.w3c.dom.Element articlei = (org.w3c.dom.Element) article.item(i);
                 String string = articlei.getElementsByTagName("id").item(0).getTextContent();
                 favoritesArticles.put("id "+i, string);
+            }
+            //On ajoute les articles dans userData.xml au favoris
+            Collection<String> values = favoritesArticles.values();
+            Iterator<String> it = values.iterator();
+            for (; it.hasNext(); ) {
+                String s = it.next();
+                for (int i = 0; i< archive.getSelectedArticles().size(); i++) {
+                    if (archive.getSelectedArticle(i).getId().substring(0, 31).equals(s)) {
+                        archive.getSelectedArticle(i).changeFavoriteItem();
+                    }
+                }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
@@ -84,8 +95,7 @@ public class ArxivOrgController implements Initializable {
     @FXML
     public void updateXMLDocumentUserData(){
         racine.removeContent();
-
-        //The last date connexion
+        //The last connexion date
         LocalDate theDate = LocalDate.now();
 
         //Save the last connection date in the XML file
@@ -93,27 +103,21 @@ public class ArxivOrgController implements Initializable {
         lastConnexionDate.setText(String.valueOf(theDate));
         racine.addContent(lastConnexionDate);
 
-        Collection<String> values = favoritesArticles.values();
-        Iterator<String> it = values.iterator();
-        for (; it.hasNext(); ) {
-            String s = it.next();
-            it.remove();
-            for (int i = 0; i< archive.getSelectedArticles().size(); i++){
-                if (archive.getSelectedArticle(i).getId().substring(0,31).equals(s)){
-                    Element id_articles = new Element("id");
-                    Element article = new Element("article");
-                    Element articleTitle = new Element("title");
-                    Element url_pdf = new Element("link");
+        for (int i = 0; i< archive.getSelectedArticles().size(); i++){
+            if (archive.getSelectedArticle(i).isFavoriteItem()){
+                Element id_articles = new Element("id");
+                Element article = new Element("favouriteArticle");
+                Element articleTitle = new Element("title");
+                Element url_pdf = new Element("link");
 
-                    id_articles.addContent(archive.getSelectedArticle(i).getId().substring(0,31));
-                    articleTitle.addContent(archive.getSelectedArticle(i).getTitle());
-                    url_pdf.addContent(String.valueOf(archive.getSelectedArticle(i).getURL_PDF()));
-                    article.addContent(id_articles);
-                    article.addContent(articleTitle);
-                    article.addContent(url_pdf);
+                id_articles.addContent(archive.getSelectedArticle(i).getId().substring(0,31));
+                articleTitle.addContent(archive.getSelectedArticle(i).getTitle());
+                url_pdf.addContent(String.valueOf(archive.getSelectedArticle(i).getURL_PDF()));
+                article.addContent(id_articles);
+                article.addContent(articleTitle);
+                article.addContent(url_pdf);
 
-                    racine.addContent(article);
-                }
+                racine.addContent(article);
             }
         }
         save();
