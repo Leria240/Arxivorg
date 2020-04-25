@@ -28,6 +28,7 @@ import javafx.stage.DirectoryChooser;
 public class Archive {
 
     private List<Article> articles;
+
     public static List<Article> recentArticles =  getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=100");
 
     public Archive() {
@@ -40,6 +41,10 @@ public class Archive {
 
     public List<Article> getAllArticles() {
         return articles;
+    }
+
+    public Article getArticle(int index) {
+        return articles.get(index);
     }
 
 
@@ -85,65 +90,6 @@ public class Archive {
             System.out.println("Error : " + ex.getMessage());
         }
         return articlesFromAPI;
-    }
-
-
-    /*
-    public void addArticlesDocument(Document document) {
-
-        try {
-
-            final Element racine = document.getDocumentElement();
-            final NodeList entry = racine.getElementsByTagName("entry");
-            final int nbRacineNoeuds = entry.getLength();
-
-
-            for (int i = 0; i < nbRacineNoeuds; i++) {
-                if(entry.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    final Element article = (Element) entry.item(i);
-
-                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            "," ");
-                    final String id = article.getElementsByTagName("id").item(0).getTextContent();
-                    final String updated = article.getElementsByTagName("updated").item(0).getTextContent();
-                    final String published = article.getElementsByTagName("published").item(0).getTextContent();
-                    final String summary = article.getElementsByTagName("summary").item(0).getTextContent();
-
-                    List<String> authorslist = new ArrayList<>();
-                    for(int j = 0; j < article.getElementsByTagName("author").getLength(); j++){
-                        final String author = article.getElementsByTagName("author").item(j).getTextContent();
-                        authorslist.add(author.trim());
-                    }
-
-                    String pdf = "";
-                    String arxiv = "";
-                    for(int k = 0; k < article.getElementsByTagName("link").getLength(); k++){
-                        arxiv = article.getElementsByTagName("link").item(0).getAttributes().item(0).getTextContent();
-                        pdf = article.getElementsByTagName("link").item(1).getAttributes().item(0).getTextContent();
-                    }
-
-                    List<String> categorylist = new ArrayList<>();
-                    for (int l = 0; l < article.getElementsByTagName("category").getLength(); l++){
-                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(1).getTextContent();
-                        categorylist.add(category.trim());
-                    }
-
-                    Authors authors = new Authors(authorslist);
-                    Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
-                    articles.add(article1);
-                }
-            }
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-     */
-
-
-    public Article getArticle(int index) {
-        return articles.get(index);
     }
 
 

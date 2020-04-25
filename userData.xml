@@ -1,31 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <user>
   <LastConnexionDate>2020-04-25</LastConnexionDate>
-  <favouriteArticle>
-    <id>http://arxiv.org/abs/1911.11405</id>
-    <title>A Note on Computational Complexity of Kill-all Go</title>
-    <link>http://arxiv.org/pdf/1911.11405v1</link>
-  </favouriteArticle>
-  <favouriteArticle>
-    <id>http://arxiv.org/abs/1907.06744</id>
-    <title>Almost all Steiner triple systems are almost resolvable</title>
-    <link>http://arxiv.org/pdf/1907.06744v1</link>
-  </favouriteArticle>
-  <favouriteArticle>
-    <id>http://arxiv.org/abs/1210.7708v</id>
-    <title>Landau--Kolmogorov inequality revisited</title>
-    <link>http://arxiv.org/pdf/1210.7708v1</link>
-  </favouriteArticle>
-  <favouriteArticle>
-    <id>http://arxiv.org/abs/1602.00450</id>
-    <title>All-in-all-out magnetic domain wall conduction in pyrochlore iridate
-  heterointerface</title>
-    <link>http://dx.doi.org/10.1103/PhysRevB.93.064419</link>
-  </favouriteArticle>
-  <favouriteArticle>
-    <id>http://arxiv.org/abs/1612.01842</id>
-    <title>An Improved One-to-All Broadcasting in Higher Dimensional
-  Eisenstein-Jacobi Networks</title>
-    <link>http://arxiv.org/pdf/1612.01842v2</link>
-  </favouriteArticle>
 </user>
