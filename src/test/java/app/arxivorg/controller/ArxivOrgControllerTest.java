@@ -1,4 +1,4 @@
-package app.arxivorg.controller;
+package app.arxivorg.Controller;
 
 import app.arxivorg.model.Archive;
 import app.arxivorg.model.Article;
@@ -22,7 +22,7 @@ import java.util.List;
 @ExtendWith(ApplicationExtension.class)
 class ArxivOrgControllerTest {
 
-    Archive archive = Archive.archiveFile2;
+    Archive archive = new Archive();
     int numberOfArticles = archive.getAllArticles().size();
 
 
