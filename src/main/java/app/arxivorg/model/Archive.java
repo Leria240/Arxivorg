@@ -8,7 +8,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.crypto.Data;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,18 +23,7 @@ import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import javafx.application.Application;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 public class Archive {
 
@@ -50,21 +38,11 @@ public class Archive {
         return articles;
     }
 
-    public List<Article> getSelectedArticles() {
-        List<Article> selectedArticles = new ArrayList<>();
-        for (Article article : articles) {
-            if (article.isSelected()) {
-                selectedArticles.add(article);
-            }
-        }
-        return selectedArticles;
-    }
-
 
     public static List<Article> getArticlesFromAPI(String url){
 
         List<Article> articlesFromAPI = new ArrayList<>();
-        URL feedUrl = null;
+        URL feedUrl;
 
         try {
             feedUrl = new URL(url);
@@ -75,11 +53,9 @@ public class Archive {
 
                 final String title = entry.getTitle().replaceAll("\n\t"," ");
                 final String id = entry.getUri();
-                final String updated = entry.getUpdatedDate().toString();
-                final String published = entry.getPublishedDate().toString();
+                final String updated = entry.getUpdatedDate().toInstant().toString();
+                final String published = entry.getPublishedDate().toInstant().toString();
                 final String summary = entry.getDescription().getValue();
-
-
 
                 List<String> authorslist = new ArrayList<>();
                 for(SyndPersonImpl author : (List<SyndPersonImpl>) entry.getAuthors()){
@@ -105,12 +81,6 @@ public class Archive {
             System.out.println("Error : " + ex.getMessage());
         }
         return articlesFromAPI;
-    }
-
-
-
-
-    public void addArticles(File file) {
     }
 
 
@@ -164,25 +134,9 @@ public class Archive {
         }
     }
 
-    public Article getSelectedArticle(int index) {
-        int counter = 0;
-        int i;
-        for (i = -1; counter <= index; i++) {
-            if (articles.get(i + 1).isSelected()) {
-                counter++;
-            }
-        }
-        return (i < 0) ? articles.get(0) : articles.get(i);
-    }
 
     public Article getArticle(int index) {
         return articles.get(index);
-    }
-
-    public void selectAll() {
-        for (Article article : articles) {
-            article.setSelected(true);
-        }
     }
 
 
@@ -197,105 +151,63 @@ public class Archive {
     }
 
 
-
-/*
-
-    public void categoryFilter(String category) {
-        if (category.equals(" All categories")) return;
-        for (Article article : articles) {
-            if (!article.getCategory().contains(category)) {
-                article.setSelected(false);
-            }
+    public void filters(String category, String authors, String titleKeyword, String summaryKeyword){
+        if(category.equals(" All categories") && authors.isEmpty() && titleKeyword.isEmpty() && summaryKeyword.isEmpty())
+            return;
+        String request = "http://export.arxiv.org/api/query?search_query=";
+        if(!category.equals(" All categories")) {
+            request += categoryFilter(category);
         }
+        if(!authors.isEmpty()){
+            if(request.length() > 47) request += "&";
+            request += authorFilter(authors);
+        }
+        if(!titleKeyword.isEmpty()){
+            if(request.length() > 47) request += "&";
+            request += titleKeyWordFilter(titleKeyword);
+        }
+        if(!summaryKeyword.isEmpty()){
+            if(request.length() > 47) request += "&";
+            request += summaryKeyWordFilter(summaryKeyword);
+        }
+        this.articles = getArticlesFromAPI(request + "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
     }
 
 
-    public void authorFilter(String authors) {
-        if (authors.equals("")) return;
-        String[] tabAuthors = authors.split(",");
-        for (Article article : articles) {
-            for (String author : tabAuthors) {
-                if (!article.getAuthors().contains(author)) {
-                    article.setSelected(false);
-                }
-            }
-        }
-    }
-
-    public void keyWordFilter(String keyword, String target) {
-        keyword.replaceAll(",", " ");
-        String[] tabKeyWord = keyword.split(" ");
-        for (Article article : articles) {
-            if (target == "title")
-                titleKeyWordFilter(tabKeyWord, article);
-            if (target == "summary")
-                summaryKeyWordFilter(tabKeyWord, article);
-        }
-    }
-
-    public void titleKeyWordFilter(String[] tabKeyWord, Article article) {
-        for (String word : tabKeyWord) {
-            if (!article.getTitle().toLowerCase().contains(word.toLowerCase())) {
-                article.setSelected(false);
-                break;
-            }
-        }
-    }
-
-    public void summaryKeyWordFilter(String[] tabKeyWord, Article article) {
-        for (String word : tabKeyWord) {
-            if (!article.getSummary().toLowerCase().contains(word.toLowerCase())) {
-                article.setSelected(false);
-                break;
-            }
-        }
-    }
-
- */
-
-
-    public void categoryFilter(String category) {
-        if (!category.equals(" All categories")) {
-            articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=cat:" + category +
-                    "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
-        } else {
-            articles = recentArticles;
-        }
+    public String categoryFilter(String category) {
+        return (!category.equals(" All categories")) ? "cat:" + category : "";
     }
 
 
-    public void authorFilter(String authors) {
-        authors.replaceAll(",", " ");
+    public String authorFilter(String authors) {
+        authors = authors.replaceAll(",", " ");
         String[] tabKeyWord = authors.split(" ");
-        String param = new String();
+        StringBuilder param = new StringBuilder();
         for (String word : tabKeyWord) {
-            param += "au:" + word + "+AND+";
+            param.append("au:").append(word).append("+AND+");
         }
-        articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=" + param.substring(0,param.length()-5) +
-                "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+        return param.substring(0,param.length()-5);
     }
 
 
-    public void titleKeyWordFilter(String keyword) {
-        keyword.replaceAll(",", " ");
+    public String titleKeyWordFilter(String keyword) {
+        keyword = keyword.replaceAll(",", " ");
         String[] tabKeyWord = keyword.split(" ");
-        String param = new String();
+        StringBuilder param = new StringBuilder();
         for (String word : tabKeyWord) {
-            param += "ti:" + word + "+AND+";
+            param.append("ti:").append(word).append("+AND+");
         }
-        articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=" + param.substring(0,param.length()-5) +
-                "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+        return param.substring(0,param.length()-5);
     }
 
-    public void summaryKeyWordFilter(String keyword) {
-        keyword.replaceAll(",", " ");
+    public String summaryKeyWordFilter(String keyword) {
+        keyword = keyword.replaceAll(",", " ");
         String[] tabKeyWord = keyword.split(" ");
-        String param = new String();
+        StringBuilder param = new StringBuilder();
         for (String word : tabKeyWord) {
-            param += "abs:" + word + "+AND+";
+            param.append("abs:").append(word).append("+AND+");
         }
-        articles = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=" + param.substring(0,param.length()-5) +
-                "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+        return param.substring(0,param.length()-5);
     }
 
 
@@ -304,13 +216,14 @@ public class Archive {
             Date date = null;
             Date dateLimit = null;
             try {
-                date = new SimpleDateFormat("yyyy-MM-dd").parse(article.getPublished().substring(0, 10));
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(article.getPublished().substring(0, 11));
                 dateLimit = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            assert dateLimit != null;
             if (dateLimit.after(date) && !dateLimit.equals(date)) {
-                article.setSelected(false);
+                articles.remove(article);
             }
         }
     }
@@ -360,7 +273,7 @@ public class Archive {
         for (Article article : articles) {
             String title_syntaxValid = article.getTitle().replaceAll("\\p{Punct}", " ");
             String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
-            InputStream in = null;
+            InputStream in;
             String urlString = "https://" + article.getURL_PDF().toString().substring(7);
 
             try {

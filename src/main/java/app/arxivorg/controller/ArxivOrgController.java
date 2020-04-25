@@ -65,7 +65,7 @@ public class ArxivOrgController implements Initializable {
         //Save the favorites articles in the XML file
         Element Favorites = new Element("Favorites");
         for(int i = 0; i < archive.getAllArticles().size(); i++){
-            if(archive.getSelectedArticle(i).isFavoriteItem()){
+            if(archive.getArticle(i).isFavoriteItem()){
                 Element article = new Element("article");
                 Element articleTitle = new Element("title");
                 Element url_pdf = new Element("link");
@@ -191,7 +191,7 @@ public class ArxivOrgController implements Initializable {
     @FXML
     public void updateFavoriteItem(){
         int index = listView.getSelectionModel().getSelectedIndex();
-        archive.getSelectedArticle(index).changeFavoriteItem();
+        archive.getArticle(index).changeFavoriteItem();
     }
 
     @FXML
@@ -202,19 +202,17 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void downloadSelectedArticles() throws IOException {
-        archive.downloadArticles(archive.getSelectedArticles());
+        archive.downloadArticles(archive.getAllArticles());
     }
 
     @FXML
     public void applyFilter(){
         metadata.setText("Click on one of the articles above to see more details");
-        archive.selectAll();
-        archive.categoryFilter(categories.getValue());
-        archive.titleKeyWordFilter(TitleKeyword.getText());
-        archive.summaryKeyWordFilter(SummaryKeyword.getText());
-        archive.authorFilter(authors.getText());
-        //archive.dateFilter(period.getValue().toString());
+        archive.filters(categories.getValue(),authors.getText(),
+                TitleKeyword.getText(),SummaryKeyword.getText());
+        archive.dateFilter(period.getValue().toString());
         displayArticles();
+        System.out.println(archive.getAllArticles().size());
     }
 
 }

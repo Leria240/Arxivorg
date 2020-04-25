@@ -58,17 +58,17 @@ public class ArxivOrgCLI extends Application {
                 archive.categoryFilter(category);
             }
             if (args[0].equals("list")) {
-                for (int i = 0; i < archive.getSelectedArticles().size(); i++) {
-                    System.out.println(i + 1 + ". " + archive.getSelectedArticle(i).getTitle());
-                    System.out.println("Authors: " + archive.getSelectedArticle(i).getAuthors().getData().toString()
+                for (int i = 0; i < archive.getAllArticles().size(); i++) {
+                    System.out.println(i + 1 + ". " + archive.getArticle(i).getTitle());
+                    System.out.println("Authors: " + archive.getArticle(i).getAuthors().getData().toString()
                             .replaceAll("\\[", "")
                             .replaceAll("]", ""));
                 }
             }
             if(args[0].equals("download")){
                 launch(ArxivOrgCLI.class);
-                String path = archive.downloadArticles(archive.getSelectedArticles());
-                System.out.println("Download " + archive.getSelectedArticles().size() + " files to " + path);
+                String path = archive.downloadArticles(archive.getAllArticles());
+                System.out.println("Download " + archive.getAllArticles().size() + " files to " + path);
             }
         } catch (Exception e) {
             e.printStackTrace();
