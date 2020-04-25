@@ -40,7 +40,11 @@ public class ArxivOrgController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        displayGUI();
+        try {
+            displayGUI();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         createXMLDocumentUserData();
     }
 
@@ -106,7 +110,7 @@ public class ArxivOrgController implements Initializable {
         }
     }
 
-    public void displayGUI(){
+    public void displayGUI() throws IOException {
         metadata.setText("Click on one of the articles above to see more details");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         categories.setValue(" All categories");

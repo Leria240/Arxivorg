@@ -1,4 +1,4 @@
-package app.arxivorg.controller;
+package app.arxivorg.Controller;
 
 import app.arxivorg.model.Archive;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +11,7 @@ import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
 class ArxivOrgControllerTest {
-
-    Archive archive = Archive.archiveFile2;
+    public Archive archive = new Archive();
     int numberOfArticles = archive.getAllArticles().size();
 
 

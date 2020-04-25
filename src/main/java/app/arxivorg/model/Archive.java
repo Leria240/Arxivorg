@@ -147,13 +147,17 @@ public class Archive {
     }
 
 
-    public Set<String> getAllCategories() {
+    public Set<String> getAllCategories() throws IOException {
         Set<String> categories = new TreeSet<>();
         categories.add(" All categories");
-        List<Article> cat = getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
-        for (Article article : cat) {
-            categories.addAll(article.getCategory());
+        for (String ligne : Files.readAllLines(Paths.get("src/main/resources/arxivCategories"))) {
+            for (String chaine : ligne.split("\n"))
+            {
+                categories.add(chaine);
+
+            }
         }
+        System.out.println(articles.size());
         return categories;
     }
 
