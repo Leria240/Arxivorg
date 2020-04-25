@@ -280,7 +280,7 @@ public class Archive {
             final DocumentBuilder builder = factory.newDocumentBuilder();
             File file = new File("userData.xml");
             Document document = builder.parse(file);
-            NodeList r = document.getElementsByTagName("lastConnexionDate");
+            NodeList r = document.getElementsByTagName("LastConnexionDate");
             String s = r.item(0).getTextContent();
             dateFilter(s);
         } catch (ParserConfigurationException | SAXException e) {

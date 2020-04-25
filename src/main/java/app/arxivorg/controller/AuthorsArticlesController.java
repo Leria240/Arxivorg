@@ -26,6 +26,12 @@ public class AuthorsArticlesController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
+    public void addToFavorites(int i) {
+        if (!ArxivOrgController.favoritesArticles.containsValue(archive.getSelectedArticle(i).getId().substring(0, 31))){
+            ArxivOrgController.favoritesArticles.put("id" + i, archive.getSelectedArticle(i).getId().substring(0, 31));
+        }
+    }
+
     public void displayArticles(String authorName){
         metadata.setText("Click on one of the articles above to see more details");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -47,6 +53,7 @@ public class AuthorsArticlesController implements Initializable {
     public void updateFavoriteItem(){
         int index = listView.getSelectionModel().getSelectedIndex();
         articles.get(index).changeFavoriteItem();
+        addToFavorites(index);
     }
 
     @FXML
