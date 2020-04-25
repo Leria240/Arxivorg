@@ -19,8 +19,8 @@ public class Authors {
 
     public ArrayList<Hyperlink> getDataLink(){
         ArrayList<Hyperlink> links = new ArrayList<>();
-        for(String autor: data){
-            links.add(new Hyperlink(autor));
+        for(String author: data){
+            links.add(new Hyperlink(author));
         }
         return links;
     }
@@ -34,34 +34,11 @@ public class Authors {
 
 
     public boolean contains(String input){
-        String[] name = input.toLowerCase().trim().split(" ");
-        for(String author: data){
-            boolean defaultValue = true;
-            String[] authorName = getNameInTab(author);
-            if(name.length > authorName.length) continue;
-            for(String inputName: name){
-                if(!containsPartName(authorName,inputName)) {
-                    defaultValue = false;
-                    break;
-                }
-            }
-            if (defaultValue) return true;
-        }
-        return false;
-    }
-
-    private boolean containsPartName(String[] authorName, String partNameInput){
-        for(String author: authorName){
-            if(partNameInput.equals(author))
+        for(String author: data) {
+            if(author.toLowerCase().equals(input.toLowerCase()))
                 return true;
         }
         return false;
-    }
-
-
-    private String[] getNameInTab(String fullname) {
-        String name = fullname.toLowerCase().trim();
-        return name.split(" ");
     }
 
 
