@@ -17,11 +17,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.Date;
 import java.util.List;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 
 import javafx.stage.DirectoryChooser;
 
@@ -32,6 +32,10 @@ public class Archive {
 
     public Archive() {
         this.articles = recentArticles;
+    }
+
+    public Archive(String url){
+        articles = getArticlesFromAPI(url);
     }
 
     public List<Article> getAllArticles() {
@@ -84,6 +88,7 @@ public class Archive {
     }
 
 
+    /*
     public void addArticlesDocument(Document document) {
 
         try {
@@ -134,6 +139,8 @@ public class Archive {
         }
     }
 
+     */
+
 
     public Article getArticle(int index) {
         return articles.get(index);
@@ -155,7 +162,7 @@ public class Archive {
         if(category.equals(" All categories") && authors.isEmpty() && titleKeyword.isEmpty() && summaryKeyword.isEmpty())
             return;
         String request = "http://export.arxiv.org/api/query?search_query=";
-        if(!category.equals(" All categories")) {
+        if(!category.equals(" All categories")){
             request += categoryFilter(category);
         }
         if(!authors.isEmpty()){
@@ -170,7 +177,8 @@ public class Archive {
             if(request.length() > 47) request += "&";
             request += summaryKeyWordFilter(summaryKeyword);
         }
-        this.articles = getArticlesFromAPI(request + "&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending");
+        this.articles = getArticlesFromAPI(request + "&start=0&max_results=100&sortBy=" +
+                "submittedDate&sortOrder=descending");
     }
 
 
@@ -211,24 +219,20 @@ public class Archive {
     }
 
 
-    public void dateFilter(String stringDate) {
+    public void dateFilter(LocalDate stringDate) {
+        List<Article> articlesSelected = new ArrayList<>();
         for (Article article : articles) {
-            Date date = null;
-            Date dateLimit = null;
-            try {
-                date = new SimpleDateFormat("yyyy-MM-dd").parse(article.getPublished().substring(0, 11));
-                dateLimit = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            assert dateLimit != null;
-            if (dateLimit.after(date) && !dateLimit.equals(date)) {
-                articles.remove(article);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(article.getPublished().substring(0, 10),formatter);
+            if (stringDate.isBefore(date) || stringDate.equals(date)) {
+                System.out.println("apres");
+                articlesSelected.add(article);
             }
         }
+        articles = articlesSelected;
     }
 
-    public void nonListedFilter() throws IOException {
+    public void nonListedFilter(){
 
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -244,21 +248,15 @@ public class Archive {
 
             if (entry.item(0).getNodeType() == Node.ELEMENT_NODE) {
                 final Element user = (Element) entry.item(0);
-                final String lastConnexionDate = user.getElementsByTagName("LastConnexionDate").item(0).getTextContent();
+                final String lastConnexion = user.getElementsByTagName("LastConnexionDate").item(0).getTextContent();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate lastConnexionDate = LocalDate.parse(lastConnexion,formatter);
                 dateFilter(lastConnexionDate);
             }
 
-            /*
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String s = br.readLine();
-            dateFilter();
-            br.close();
-             */
-
-        } catch (ParserConfigurationException | SAXException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public String downloadArticles(List<Article> articles) {

@@ -34,7 +34,6 @@
                             <children>
                                 <Label text=" Period :" />
                                 <DatePicker fx:id="period" />
-                                <Label layoutX="10.0" layoutY="62.0" text="By default, articles published during the last 50 years are listed." />
                                 <Label text="After applying the filter," />
                                 <Label prefHeight="17.0" prefWidth="364.0" text="only articles published after the date indicated will be published" />
                             </children>

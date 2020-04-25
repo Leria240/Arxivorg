@@ -6,6 +6,8 @@ import javafx.stage.Stage;
 import org.apache.commons.cli.*;
 import org.w3c.dom.Document;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class ArxivOrgCLI extends Application {
@@ -41,15 +43,12 @@ public class ArxivOrgCLI extends Application {
         try {
 
             final CommandLine line = parser.parse(options, args);
-            Archive archive = new Archive();
-            //File file = new File("atomFile1.xml");
-            //archive.addArticles(file);
-            HttpURLConnectionArxivorg http = new HttpURLConnectionArxivorg();
-            Document document = http.sendGet("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending");
-            archive.addArticlesDocument(document);
+            Archive archive = new Archive("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending");
 
             if (line.hasOption("p")) {
-                final String date = line.getOptionValue("p");
+                final String dateString = line.getOptionValue("p");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(dateString,formatter);
                 archive.dateFilter(date);
             }
 

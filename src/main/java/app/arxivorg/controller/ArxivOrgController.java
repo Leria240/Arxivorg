@@ -111,9 +111,10 @@ public class ArxivOrgController implements Initializable {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         categories.setValue(" All categories");
         categories.getItems().addAll(archive.getAllCategories());
-        period.setValue(LocalDate.now().minusYears(50));
+        period.setValue(LocalDate.now().minusYears(2));
         displayArticles();
     }
+
 
     public void displayArticles(){
         listView.getItems().clear();
@@ -201,7 +202,7 @@ public class ArxivOrgController implements Initializable {
     }
 
     @FXML
-    public void downloadSelectedArticles() throws IOException {
+    public void downloadSelectedArticles(){
         archive.downloadArticles(archive.getAllArticles());
     }
 
@@ -210,9 +211,8 @@ public class ArxivOrgController implements Initializable {
         metadata.setText("Click on one of the articles above to see more details");
         archive.filters(categories.getValue(),authors.getText(),
                 TitleKeyword.getText(),SummaryKeyword.getText());
-        archive.dateFilter(period.getValue().toString());
+        archive.dateFilter(period.getValue());
         displayArticles();
         System.out.println(archive.getAllArticles().size());
     }
-
 }
