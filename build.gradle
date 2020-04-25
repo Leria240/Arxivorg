@@ -59,6 +59,7 @@ dependencies {
     compile 'commons-cli:commons-cli:1.4'
     compile 'commons-io:commons-io:2.5'
     compile 'org.jdom:jdom:2.0.2'
+    compile 'xerces:xercesImpl:2.11.0'
 
     compile group: 'net.java.dev.rome' , name:'rome-fetcher', version: '1.0.0'
 

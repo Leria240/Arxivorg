@@ -40,6 +40,8 @@ public class ArxivOrgController implements Initializable {
     @FXML private TextArea TitleKeyword;
     @FXML private TextArea SummaryKeyword;
     private Archive archive = new Archive();
+    static Element racine = new Element("user");
+    static org.jdom2.Document document = new Document(racine);
     static Map<String, String> favoritesArticles = new HashMap<>();
 
 
@@ -47,7 +49,7 @@ public class ArxivOrgController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         displayGUI();
-        //getPreviousFavorites();
+        getPreviousFavorites();
 
     }
 
@@ -169,8 +171,6 @@ public class ArxivOrgController implements Initializable {
 
     @FXML
     public void updateXMLDocumentUserData(){
-        Element racine = new Element("user");
-        org.jdom2.Document document = new Document(racine);
         racine.removeContent();
         //The last connexion date
         LocalDate theDate = LocalDate.now();
@@ -197,6 +197,10 @@ public class ArxivOrgController implements Initializable {
                 racine.addContent(article);
             }
         }
+        save();
+    }
+
+    static void save() {
         try {
             XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
             sortie.output(document, new FileOutputStream("userData.xml"));

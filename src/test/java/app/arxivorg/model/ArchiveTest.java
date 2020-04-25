@@ -1,9 +1,6 @@
 package app.arxivorg.model;
 
-import app.arxivorg.HttpURLConnectionArxivorg;
-import app.arxivorg.controller.ArxivOrgController;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,13 +1,23 @@
 package app.arxivorg.controller;
 
 import app.arxivorg.model.Archive;
+import app.arxivorg.model.Article;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.assertj.core.api.Assert;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
+import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @ExtendWith(ApplicationExtension.class)
 class ArxivOrgControllerTest {
