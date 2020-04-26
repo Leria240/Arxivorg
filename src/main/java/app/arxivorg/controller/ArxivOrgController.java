@@ -54,7 +54,7 @@ public class ArxivOrgController implements Initializable {
     }
 
 
-    public void displayGUI(){
+    public void displayGUI() throws IOException {
         metadata.setText("Click on one of the articles above to see more details");
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         categories.setValue(" All categories");

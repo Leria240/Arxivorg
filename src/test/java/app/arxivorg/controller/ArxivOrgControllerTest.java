@@ -32,8 +32,7 @@ import java.util.List;
 
 @ExtendWith(ApplicationExtension.class)
 class ArxivOrgControllerTest {
-
-    Archive archive = new Archive();
+    public Archive archive = new Archive();
     int numberOfArticles = archive.getAllArticles().size();
 
 
