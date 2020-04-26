@@ -28,16 +28,11 @@ public class StatisticController implements Initializable {
     @FXML public VBox authorStatistic;
     @FXML public VBox expressionStatistic;
     @FXML public VBox dateStatistic;
-
     @FXML public LineChart<String,Integer> dateLineChart;
 
     @FXML public StackedBarChart<String, Integer> expressionStackedBarChart;
     @FXML public TextArea textAreaExpression;
     @FXML public ListView<String> listExpressions;
-
-
-
-
 
 
 

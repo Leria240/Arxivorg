@@ -29,6 +29,7 @@ import javafx.stage.DirectoryChooser;
 public class Archive {
 
     private List<Article> articles;
+
     public static List<Article> recentArticles =  getArticlesFromAPI("http://export.arxiv.org/api/query?search_query=all&start=0&max_results=100");
 
     public Archive() {
@@ -41,6 +42,10 @@ public class Archive {
 
     public List<Article> getAllArticles() {
         return articles;
+    }
+
+    public Article getArticle(int index) {
+        return articles.get(index);
     }
 
 

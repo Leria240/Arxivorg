@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController" onMouseExited="#updateXMLDocumentUserData">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseExited="#updateXMLDocumentUserData" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.arxivorg.controller.ArxivOrgController">
     <SplitPane dividerPositions="0.29797979797979796" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
             <children>
@@ -33,7 +33,7 @@
                         <VBox prefHeight="54.0" prefWidth="354.0" spacing="5.0">
                             <children>
                                 <Label text=" Period :" />
-                                <DatePicker fx:id="period" />
+                                <DatePicker fx:id="period" editable="false" />
                                 <Label text="After applying the filter," />
                                 <Label prefHeight="17.0" prefWidth="364.0" text="only articles published after the date indicated will be published" />
                             </children>
@@ -100,4 +100,5 @@
             </VBox>
         </AnchorPane>
     </SplitPane>
+   <TextField />
 </AnchorPane>

@@ -66,18 +66,18 @@
                         <TextArea fx:id="textAreaExpression" prefHeight="200.0" prefWidth="200.0" />
                         <StackPane prefHeight="127.0" prefWidth="190.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#addExpression" prefHeight="25.0" prefWidth="160.0" text="Save the expression" />
+                              <Button fx:id="save" mnemonicParsing="false" onAction="#addExpression" prefHeight="25.0" prefWidth="160.0" text="Save the expression" />
                            </children>
                         </StackPane>
                         <VBox prefHeight="127.0" prefWidth="298.0">
                            <children>
                               <ListView fx:id="listExpressions" prefHeight="200.0" prefWidth="200.0" />
-                              <Button mnemonicParsing="false" onAction="#deleteExpression" prefHeight="25.0" prefWidth="332.0" text="Delete expression" />
+                              <Button fx:id="delete" mnemonicParsing="false" onAction="#deleteExpression" prefHeight="25.0" prefWidth="332.0" text="Delete expression" />
                            </children>
                         </VBox>
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#displayExpressionsStatistic" text="Expressions statistic" />
+                              <Button fx:id="expression" mnemonicParsing="false" onAction="#displayExpressionsStatistic" text="Expressions statistic" />
                            </children>
                         </StackPane>
                      </children>

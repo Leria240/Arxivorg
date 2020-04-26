@@ -1,16 +1,5 @@
 package app.arxivorg.model;
 
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class ArticleTest {
 
     static String title1 = "ReZero is All You Need: Fast Convergence at Large Depth";
