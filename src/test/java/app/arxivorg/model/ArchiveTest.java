@@ -23,7 +23,7 @@ public class ArchiveTest {
 
 
     @Test
-    public void testAllCategory() {
+    public void testGetAllCategories() {
         assert (archive.getAllCategories().contains(archive.getArticle(0).getCategory().toString()));
         assert (archive.getAllCategories().contains(archive.getArticle(50).getCategory().toString()));
         assert (archive.getAllCategories().contains(archive.getArticle(51).getCategory().toString()));
