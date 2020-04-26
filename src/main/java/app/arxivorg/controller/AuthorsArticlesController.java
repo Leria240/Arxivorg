@@ -27,8 +27,8 @@ public class AuthorsArticlesController implements Initializable {
     }
 
     public void addToFavorites(int i) {
-        if (!ArxivOrgController.favoritesArticles.containsValue(archive.getArticle(i).getId().substring(0, 31))){
-            ArxivOrgController.favoritesArticles.put("id" + i, archive.getArticle(i).getId().substring(0, 31));
+        if (!ArxivOrgController.favoriteArticles.containsValue(archive.getArticle(i).getId().substring(0, 31))){
+            ArxivOrgController.favoriteArticles.put("id" + i, archive.getArticle(i).getId().substring(0, 31));
         }
     }
 

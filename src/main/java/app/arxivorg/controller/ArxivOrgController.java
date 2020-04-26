@@ -42,7 +42,7 @@ public class ArxivOrgController implements Initializable {
     private Archive archive = new Archive();
     static Element racine = new Element("user");
     static org.jdom2.Document document = new Document(racine);
-    static Map<String, String> favoritesArticles = new HashMap<>();
+    public static Map<String, String> favoriteArticles = new HashMap<>();
 
 
 
@@ -225,10 +225,10 @@ public class ArxivOrgController implements Initializable {
             for (int i = 0; i < article.getLength(); i++){
                 org.w3c.dom.Element article_i = (org.w3c.dom.Element) article.item(i);
                 String string = article_i.getElementsByTagName("id").item(0).getTextContent();
-                favoritesArticles.put("id "+i, string);
+                favoriteArticles.put("id "+ i, string);
             }
             //On ajoute les articles dans userData.xml au favoris
-            Collection<String> values = favoritesArticles.values();
+            Collection<String> values = favoriteArticles.values();
             Iterator<String> it = values.iterator();
             for (; it.hasNext(); ) {
                 String s = it.next();
@@ -245,8 +245,8 @@ public class ArxivOrgController implements Initializable {
     }
 
     public void addToFavorites(int i) {
-        if (!favoritesArticles.containsValue(archive.getArticle(i).getId().substring(0, 31))){
-            favoritesArticles.put("id" + i, archive.getArticle(i).getId().substring(0, 31));
+        if (!favoriteArticles.containsValue(archive.getArticle(i).getId().substring(0, 31))){
+            favoriteArticles.put("id" + i, archive.getArticle(i).getId().substring(0, 31));
         }
     }
 
