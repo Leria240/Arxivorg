@@ -106,7 +106,7 @@ public class Article {
         File dir = directoryChooser.showDialog(null);
 
         if (dir == null) return;
-        String title_syntaxValid = getTitle().replaceAll(":", " ");
+        String title_syntaxValid = getTitle().replaceAll(":", " ").replaceAll("\\s", "");
         String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + "article.pdf";
 
         InputStream in = null;
