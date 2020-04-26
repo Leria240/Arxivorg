@@ -94,10 +94,6 @@ public class Article {
         return favoriteItem;
     }
 
-    public void addToFavorites(){
-        favoriteItem = true;
-    }
-
     public void changeFavoriteItem() {
         favoriteItem = !favoriteItem;
     }

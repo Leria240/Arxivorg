@@ -1,5 +1,6 @@
 package app.arxivorg.Controller;
 
+import app.arxivorg.controller.ArxivOrgController;
 import app.arxivorg.model.Archive;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +14,16 @@ import org.testfx.api.FxRobot;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 
 @ExtendWith(ApplicationExtension.class)
@@ -105,4 +115,50 @@ class ArxivOrgControllerTest {
         Assertions.assertThat(metadata).hasText("Click on one of the articles above to see more details");
         //Assertions.assertThat(listView).hasExactlyNumItems(17);
     }
+
+ */
+
+    @Test
+    public void updateXMLDocumentUserDataTest(FxRobot robot) {
+        ArxivOrgController arxivOrgController = new ArxivOrgController();
+        arxivOrgController.addToFavorites(0);
+        arxivOrgController.addToFavorites(10);
+        arxivOrgController.getPreviousFavorites();
+        arxivOrgController.updateXMLDocumentUserData();
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            final Document document = builder.parse(new File("userData.xml"));
+            final Element racine = document.getDocumentElement();
+            final String favoriteArticle = racine.getElementsByTagName("favouriteArticle").item(0).getTextContent().trim();
+            Assertions.assertThat (favoriteArticle).isEqualTo(archive.getArticle(0).getId().substring(0,31) +"\n"
+                                            + archive.getArticle(0).getTitle() + "\n"
+                                            + archive.getArticle(0).getURL_PDF());
+
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getPreviousFavouritesTest(){
+        ArxivOrgController arxivOrgController = new ArxivOrgController();
+        arxivOrgController.addToFavorites(0);
+        arxivOrgController.addToFavorites(10);
+        arxivOrgController.getPreviousFavorites();
+        assert (archive.getArticle(0).isFavoriteItem());
+        assert (archive.getArticle(10).isFavoriteItem());
+        assert (!archive.getArticle(2).isFavoriteItem());
+    }
+
+    @Test
+    public void addToFavoritesTest(){
+        ArxivOrgController arxivOrgController = new ArxivOrgController();
+        arxivOrgController.addToFavorites(0);
+        arxivOrgController.addToFavorites(10);
+        assert (ArxivOrgController.favoriteArticles.containsValue(archive.getArticle(0).getId().substring(0,31)));
+        assert (ArxivOrgController.favoriteArticles.containsValue(archive.getArticle(10).getId().substring(0,31)));
+    }
+
+
 }
