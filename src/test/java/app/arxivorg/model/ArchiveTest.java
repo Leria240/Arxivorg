@@ -1,9 +1,16 @@
 package app.arxivorg.model;
 
-import app.arxivorg.HttpURLConnectionArxivorg;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Document;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,148 +19,94 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ArchiveTest {
 
-    Archive archive1 = Archive.archiveFile1;
-    Archive archive2 = Archive.archiveFile2;
-    Archive archive3 = Archive.archiveFile3;
-
-
+    static Archive archive = new Archive();
 
 
     @Test
-    public void testAddArticles() {
-
-        assertNotNull(archive1.getAllArticles(), "L'article est vide");
-
-        List<String> authorlist = new ArrayList<>();
-        authorlist.add("Thomas Bachlechner");
-        authorlist.add("Bodhisattwa Prasad Majumder");
-        authorlist.add("Huanru Henry Mao");
-        authorlist.add("Garrison W. Cottrell");
-        authorlist.add("Julian McAuley");
-        Authors authors = new Authors(authorlist);
-
-        List<String> categorylist = new ArrayList<>();
-        categorylist.add("cs.LG");
-        categorylist.add("cs.CL");
-        categorylist.add("stat.ML");
-
-
-        assertEquals(archive1.getAllArticles().get(0).getId(), ArticleTest.article1.getId());
-        assertEquals(archive1.getAllArticles().get(0).getUpdated(), ArticleTest.article1.getUpdated());
-        assertEquals(archive1.getAllArticles().get(0).getPublished(), ArticleTest.article1.getPublished());
-        assertEquals(archive1.getAllArticles().get(0).getTitle(),ArticleTest.article1.getTitle());
-        assertEquals(archive1.getAllArticles().get(0).getSummary(), ArticleTest.article1.getSummary());
-        assertEquals(archive1.getAllArticles().get(0).getAuthors().getData(),ArticleTest.article1.getAuthors().getData());
-        assertEquals(archive1.getAllArticles().get(0).getURL_pageArxiv(), ArticleTest.article1.getURL_pageArxiv());
-        assertEquals(archive1.getAllArticles().get(0).getURL_PDF(), ArticleTest.article1.getURL_PDF());
-        assertEquals(archive1.getAllArticles().get(0).getCategory(),ArticleTest.article1.getCategory());
-
-        assertEquals(archive1.getAllArticles().get(9).getId(), ArticleTest.article10.getId());
-        assertEquals(archive1.getAllArticles().get(9).getUpdated(), ArticleTest.article10.getUpdated());
-        assertEquals(archive1.getAllArticles().get(9).getPublished(), ArticleTest.article10.getPublished());
-        assertEquals(archive1.getAllArticles().get(9).getTitle(),ArticleTest.article10.getTitle());
-        assertEquals(archive1.getAllArticles().get(9).getSummary(), ArticleTest.article10.getSummary());
-        assertEquals(archive1.getAllArticles().get(9).getAuthors().getData(),ArticleTest.article10.getAuthors().getData());
-        assertEquals(archive1.getAllArticles().get(9).getURL_pageArxiv(), ArticleTest.article10.getURL_pageArxiv());
-        assertEquals(archive1.getAllArticles().get(9).getURL_PDF(), ArticleTest.article10.getURL_PDF());
-        assertEquals(archive1.getAllArticles().get(9).getCategory(),ArticleTest.article10.getCategory());
+    public void testGetAllCategories() {
+        assert (archive.getAllCategories().contains(archive.getArticle(0).getCategory().toString()));
+        assert (archive.getAllCategories().contains(archive.getArticle(50).getCategory().toString()));
+        assert (archive.getAllCategories().contains(archive.getArticle(51).getCategory().toString()));
+        assert (archive.getAllCategories().contains(archive.getArticle(40).getCategory().toString()));
     }
 
-
-
-
-    @Test
+        @Test
     public void testCategoryFilter(){
-        archive1.categoryFilter("cs.LG");
-        assert (archive1.getArticle(0).isSelected());
-        assert (!archive1.getArticle(1).isSelected());
-
-        archive1.selectAll();
+        assertEquals(archive.categoryFilter("cs.LG"), "cat:cs.LG");
+        assertEquals(archive.categoryFilter("astro-ph.GA"), "cat:astro-ph.GA");
+        assertEquals(archive.categoryFilter("math.CO"), "cat:math.CO");
+        assertEquals(archive.categoryFilter("stat.CO"), "cat:stat.CO");
     }
 
     @Test
     public void testAuthorFilter(){
-
-        archive3.authorFilter("Thomas Bachlechner");
-        assert (archive3.getArticle(0).isSelected());
-        assert (!archive3.getArticle(1).isSelected());
-        assertEquals(1, archive3.getSelectedArticles().size());
-
-        archive2.authorFilter("xiaoya LI , han");
-        assertEquals(2,archive2.getSelectedArticles().size());
-        assert (archive2.getArticle(933).isSelected());
-        assert (archive2.getArticle(747).isSelected());
-
-        archive2.selectAll();
-        archive3.selectAll();
+        assertEquals(archive.authorFilter("Matthew Kwan"), "au:Matthew+AND+au:Kwan");
+        assertEquals(archive.authorFilter("Alexei Shadrin"), "au:Alexei+AND+au:Shadrin");
+        assertEquals(archive.authorFilter("M. Kawasaki"), "au:M.+AND+au:Kawasaki");
+        assertEquals(archive.authorFilter("Zaid Hussain"), "au:Zaid+AND+au:Hussain");
     }
 
 
     @Test
     public void testTitleKeyWordFilter() {
-        String titleKeyword = "cross-lingual";
-        String titleKeyword2 = "Video Caption Dataset";
-        String titleKeyword3 = "void";
-
-        archive1.keyWordFilter(titleKeyword,"title");
-        assertEquals(1, archive1.getSelectedArticles().size());
-        assert (archive1.getArticle(1).isSelected());
-        assert (!archive1.getArticle(2).isSelected());
-
-        archive1.selectAll();
-
-        archive1.keyWordFilter(titleKeyword2,"title");
-        assertEquals(1, archive1.getSelectedArticles().size());
-        assert (archive1.getArticle(2).isSelected());
-        assert (!archive1.getArticle(0).isSelected());
-
-        Archive.archiveFile2.keyWordFilter(titleKeyword3,"title");
-        assertEquals(2,Archive.archiveFile2.getSelectedArticles().size());
-        assert (Archive.archiveFile2.getArticle(34).isSelected());
-        assert (Archive.archiveFile2.getArticle(622).isSelected());
-
-        Archive.archiveFile2.selectAll();
-        archive1.selectAll();
-
+        assertEquals(archive.titleKeyWordFilter("Complexity"), "ti:Complexity");
+        assertEquals(archive.titleKeyWordFilter("Higher Dimensional"), "ti:Higher+AND+ti:Dimensional");
+        assertEquals(archive.titleKeyWordFilter("Integer symmetric matrices"), "ti:Integer+AND+ti:symmetric+AND+ti:matrices");
+        assertEquals(archive.titleKeyWordFilter("On surjunctive monoids"), "ti:On+AND+ti:surjunctive+AND+ti:monoids");
     }
 
     @Test
     public void testSummaryKeyWordFilter() {
-        String summaryKeyword = "semantic";
-        String summaryKeyword2 = "Rezero-transformer networks faster";
-
-        archive1.keyWordFilter(summaryKeyword,"summary");
-        assertEquals(3, archive1.getSelectedArticles().size());
-        assert (archive1.getArticle(1).isSelected());
-        assert (archive1.getArticle(5).isSelected());
-        assert (archive1.getArticle(7).isSelected());
-
-        archive1.selectAll();
-
-        archive1.keyWordFilter(summaryKeyword2,"summary");
-        assertEquals(1, archive1.getSelectedArticles().size());
-        assert (archive1.getArticle(0).isSelected());
-
-        archive1.selectAll();
+        assertEquals(archive.summaryKeyWordFilter("Kill-all"), "abs:Kill-all");
+        assertEquals(archive.summaryKeyWordFilter("Japanese rules"), "abs:Japanese+AND+abs:rules");
+        assertEquals(archive.summaryKeyWordFilter("complete geometric graph"), "abs:complete+AND+abs:geometric+AND+abs:graph");
+        assertEquals(archive.summaryKeyWordFilter("Rezero-transformer networks faster"), "abs:Rezero-transformer+AND+abs:networks+AND+abs:faster");
     }
 
     @Test
-    public void testDateFilter(){
-        archive1.dateFilter("2020-03-10");
-        assert (archive1.getArticle(0).isSelected());
-        assert (!archive1.getArticle(9).isSelected());
-
-        archive1.selectAll();
+    public void testDateFilter() throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse("2015-05-06",formatter);
+        archive.dateFilter(date);
+        LocalDate datePublished1 = LocalDate.parse(archive.getArticle(0).getPublished().substring(0,10),formatter);
+        LocalDate datePublished2 = LocalDate.parse(archive.getArticle(5).getPublished().substring(0,10),formatter);
+        assert (datePublished1.isAfter(date));
+        assert (datePublished2.isAfter(date));
     }
 
     @Test
     public void testNonListedFilter() throws Exception {
-        archive1.nonListedFilter();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        archive.nonListedFilter();
 
-        HttpURLConnectionArxivorg http = new HttpURLConnectionArxivorg();
-        Document document = http.sendGet("http://export.arxiv.org/api/query?search_query=all&title=computers&date_range:from2020-04-22to2020-04-23&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending");
+        if (!archive.getAllArticles().isEmpty()){
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            try {
+                File file = new File("userData.xml");
 
+                final DocumentBuilder builder = factory.newDocumentBuilder();
+                final Document document = builder.parse(file);
+                final Element racine = document.getDocumentElement();
 
+                final String lastConnexion = racine.getElementsByTagName("LastConnexionDate").item(0).getTextContent();
+                LocalDate lastConnexionDate = LocalDate.parse(lastConnexion, formatter);
+
+                LocalDate datePublished1 = LocalDate.parse(archive.getArticle(0).getPublished().substring(0, 10), formatter);
+                assert (datePublished1.isAfter(lastConnexionDate));
+
+            } catch (ParserConfigurationException | SAXException | IOException | DOMException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    @Test
+    public void testArticlesPublishedBy() {
+        assert (archive.articlesPublishedBy("Zhujun Zhang").get(0).getAuthors().contains("Zhujun Zhang"));
+        assert (archive.articlesPublishedBy("Asaf Ferber").get(0).getAuthors().contains("Asaf Ferber"));
+        assert (archive.articlesPublishedBy("Matthew Kwan").get(0).getAuthors().contains("Matthew Kwan"));
+        assert (archive.articlesPublishedBy("T. C. Fujita").get(0).getAuthors().contains("T. C. Fujita"));
     }
 
 }

@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
@@ -88,60 +89,6 @@ public class Archive {
     }
 
 
-    /*
-    public void addArticlesDocument(Document document) {
-
-        try {
-
-            final Element racine = document.getDocumentElement();
-            final NodeList entry = racine.getElementsByTagName("entry");
-            final int nbRacineNoeuds = entry.getLength();
-
-
-            for (int i = 0; i < nbRacineNoeuds; i++) {
-                if(entry.item(i).getNodeType() == Node.ELEMENT_NODE) {
-                    final Element article = (Element) entry.item(i);
-
-                    final String title = article.getElementsByTagName("title").item(0).getTextContent().replaceAll("\n            "," ");
-                    final String id = article.getElementsByTagName("id").item(0).getTextContent();
-                    final String updated = article.getElementsByTagName("updated").item(0).getTextContent();
-                    final String published = article.getElementsByTagName("published").item(0).getTextContent();
-                    final String summary = article.getElementsByTagName("summary").item(0).getTextContent();
-
-                    List<String> authorslist = new ArrayList<>();
-                    for(int j = 0; j < article.getElementsByTagName("author").getLength(); j++){
-                        final String author = article.getElementsByTagName("author").item(j).getTextContent();
-                        authorslist.add(author.trim());
-                    }
-
-                    String pdf = "";
-                    String arxiv = "";
-                    for(int k = 0; k < article.getElementsByTagName("link").getLength(); k++){
-                        arxiv = article.getElementsByTagName("link").item(0).getAttributes().item(0).getTextContent();
-                        pdf = article.getElementsByTagName("link").item(1).getAttributes().item(0).getTextContent();
-                    }
-
-                    List<String> categorylist = new ArrayList<>();
-                    for (int l = 0; l < article.getElementsByTagName("category").getLength(); l++){
-                        final String category = article.getElementsByTagName("category").item(l).getAttributes().item(1).getTextContent();
-                        categorylist.add(category.trim());
-                    }
-
-                    Authors authors = new Authors(authorslist);
-                    Article article1 = new Article(id,updated,published,title,summary,authors,new URL(arxiv),new URL(pdf),categorylist);
-                    articles.add(article1);
-                }
-            }
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-     */
-
-
     public Article getArticle(int index) {
         return articles.get(index);
     }
@@ -166,7 +113,7 @@ public class Archive {
         if(category.equals(" All categories") && authors.isEmpty() && titleKeyword.isEmpty() && summaryKeyword.isEmpty())
             return;
         String request = "http://export.arxiv.org/api/query?search_query=";
-        if(!category.equals(" All categories")){
+        if(!category.equals(" All categories") && !category.isEmpty()){
             request += categoryFilter(category);
         }
         if(!authors.isEmpty()){
@@ -229,7 +176,6 @@ public class Archive {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(article.getPublished().substring(0, 10),formatter);
             if (stringDate.isBefore(date) || stringDate.equals(date)) {
-                System.out.println("apres");
                 articlesSelected.add(article);
             }
         }
@@ -246,17 +192,13 @@ public class Archive {
 
             final DocumentBuilder builder = factory.newDocumentBuilder();
             final Document document = builder.parse(file);
-
             final Element racine = document.getDocumentElement();
-            final NodeList entry = racine.getElementsByTagName("user");
 
-            if (entry.item(0).getNodeType() == Node.ELEMENT_NODE) {
-                final Element user = (Element) entry.item(0);
-                final String lastConnexion = user.getElementsByTagName("LastConnexionDate").item(0).getTextContent();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate lastConnexionDate = LocalDate.parse(lastConnexion,formatter);
-                dateFilter(lastConnexionDate);
-            }
+            final String lastConnexion = racine.getElementsByTagName("LastConnexionDate").item(0).getTextContent();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate lastConnexionDate = LocalDate.parse(lastConnexion,formatter);
+            dateFilter(lastConnexionDate);
+
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
@@ -273,7 +215,7 @@ public class Archive {
         if (dir == null) return " ";
 
         for (Article article : articles) {
-            String title_syntaxValid = article.getTitle().replaceAll("\\p{Punct}", " ");
+            String title_syntaxValid = article.getTitle().replaceAll(":", " ").replaceAll("\\s","");
             String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
             InputStream in;
             String urlString = "https://" + article.getURL_PDF().toString().substring(7);
@@ -289,6 +231,31 @@ public class Archive {
         return dir.getAbsolutePath();
     }
 
+    public String downloadArticlesCLI(List<Article> articles, String path) throws IOException {
+
+        for (Article article : articles) {
+            String title_syntaxValid = article.getTitle().replaceAll(":", "").replaceAll("\\s","");
+            String destination = path + "\\" + title_syntaxValid + ".pdf";
+            InputStream in;
+            String urlString = "https://" + article.getURL_PDF().toString().substring(7);
+            Path path1 = Paths.get(path);
+            if (!Files.exists(path1)){
+                Files.createDirectory(path1);
+            }
+
+            try {
+                in = new URL(urlString).openStream();
+                Files.copy(in, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("done");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return path;
+    }
+
+
 
     public List<Article> articlesPublishedBy(String authorNAme) {
         List<Article> articleList = new ArrayList<>();
@@ -298,4 +265,5 @@ public class Archive {
         }
         return articleList;
     }
+
 }

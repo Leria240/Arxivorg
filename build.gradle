@@ -51,14 +51,10 @@ repositories {
 dependencies {
     compile "com.github.penemue:keap:0.3.0"
 
-    compile 'org.kordamp.ikonli:ikonli-javafx:11.1.0'
-    compile 'org.kordamp.ikonli:ikonli-fontawesome5-pack:11.1.0'
-    compile 'org.kordamp.ikonli:ikonli-material-pack:11.1.0'
-    compile 'org.codehaus.griffon:griffon-javafx:2.15.1'
-    compile 'org.controlsfx:controlsfx:11.0.0-RC2'
     compile 'commons-cli:commons-cli:1.4'
     compile 'commons-io:commons-io:2.5'
     compile 'org.jdom:jdom:2.0.2'
+    compile 'xerces:xercesImpl:2.11.0'
 
     compile group: 'net.java.dev.rome' , name:'rome-fetcher', version: '1.0.0'
 

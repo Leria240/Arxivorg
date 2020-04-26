@@ -82,14 +82,13 @@ class ArticleTest {
     @Test
     public void testToString(){
         Archive archive = new Archive();
-        archive.addArticles(new File("atomFile1.xml"));
 
         String expected = "Title: " + title1 + "\n\t" +
                 "Authors: " + authors1.toString() + "\n\n" +
                 "Summary: " + summary1 + "\n\n" +
                 "A link to the ArXiv page: " + page1;
 
-        assertEquals(expected,archive.getAllArticles().get(0).toString());
+        assertEquals(expected,article1.toString());
     }
 
     @Test
@@ -111,9 +110,4 @@ class ArticleTest {
         assertFalse(article1.isFavoriteItem());
         assertFalse(article10.isFavoriteItem());
     }
-
-
-
-
-
 }
