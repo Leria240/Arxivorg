@@ -100,4 +100,5 @@
             </VBox>
         </AnchorPane>
     </SplitPane>
+   <TextField />
 </AnchorPane>

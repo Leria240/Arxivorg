@@ -22,14 +22,17 @@ class StatisticTest {
         assertEquals(85,nbArticlesByCategory.size());
         assert(nbArticlesByCategory.containsKey("cs.DM"));
         assertEquals(6,nbArticlesByCategory.get("math.AG"));
-        assertEquals(5,nbArticlesByCategory.get("math.RA"));
+        assertEquals(6,nbArticlesByCategory.get("math.RA"));
+        // Ce test passe au moment où j'implemente cette méthode mais les chiffres change en fonction des articles de l'API
+
     }
 
 
     @Test
     void mostProductiveAuthorsTest() {
         Map<String, Integer> nbArticlesByAuthors = statistic.mostProductiveAuthors(archive);
-        assertEquals(182,nbArticlesByAuthors.size());
+        assertEquals(175,nbArticlesByAuthors.size());
+        // Ce test passe au moment où j'implemente cette méthode mais les chiffres change en fonction des articles de l'API
         assert(nbArticlesByAuthors.containsKey("Matthew Kwan"));
         assert(!nbArticlesByAuthors.containsKey("Jean"));
         assertEquals(2,nbArticlesByAuthors.get("James McKee"));

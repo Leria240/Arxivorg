@@ -56,7 +56,7 @@ public class ArxivOrgController implements Initializable {
 
     public void displayGUI(){
         metadata.setText("Click on one of the articles above to see more details");
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         categories.setValue(" All categories");
         categories.getItems().addAll(archive.getAllCategories());
         period.setValue(LocalDate.now().minusYears(2));
@@ -76,6 +76,7 @@ public class ArxivOrgController implements Initializable {
 
         GridPane titleGridPane = new GridPane();
         Label title = new Label("- " + article.getTitle());
+        title.setId(article.getId());
         titleGridPane.add(title,0,0);
 
         Authors authors = article.getAuthors();

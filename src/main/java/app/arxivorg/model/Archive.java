@@ -214,7 +214,7 @@ public class Archive {
         if (dir == null) return " ";
 
         for (Article article : articles) {
-            String title_syntaxValid = article.getTitle().replaceAll(":", " ");
+            String title_syntaxValid = article.getTitle().replaceAll("\\p{Punct}", " ");
             String destination = dir.getAbsolutePath() + "\\" + title_syntaxValid + ".pdf";
             InputStream in;
             String urlString = "https://" + article.getURL_PDF().toString().substring(7);
