@@ -7,12 +7,15 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -23,11 +26,11 @@ public class ArchiveTest {
 
 
     @Test
-    public void testGetAllCategories() {
-        assert (archive.getAllCategories().contains(archive.getArticle(0).getCategory().toString()));
-        assert (archive.getAllCategories().contains(archive.getArticle(50).getCategory().toString()));
-        assert (archive.getAllCategories().contains(archive.getArticle(51).getCategory().toString()));
-        assert (archive.getAllCategories().contains(archive.getArticle(40).getCategory().toString()));
+    public void testGetAllCategories() throws IOException {
+        List<String> list = Files.readAllLines(Paths.get("src/main/resources/arxivCategories"));
+        for (String string: list){
+            assert(archive.getAllCategories().contains(string));
+        }
     }
 
         @Test

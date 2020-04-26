@@ -48,7 +48,11 @@ public class ArxivOrgController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
-        displayGUI();
+        try {
+            displayGUI();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         getPreviousFavorites();
 
     }
