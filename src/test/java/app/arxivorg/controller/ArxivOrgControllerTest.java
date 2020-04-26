@@ -47,7 +47,7 @@ class ArxivOrgControllerTest {
 
 
     @Test
-    public void displayGUITest(FxRobot robot){
+    public void displayGUITest(FxRobot robot) throws IOException {
 
         ListView<VBox> listView = robot.lookup("#listView").query();
         TextArea metadata = robot.lookup("#metadata").query();
@@ -116,7 +116,6 @@ class ArxivOrgControllerTest {
         //Assertions.assertThat(listView).hasExactlyNumItems(17);
     }
 
- */
 
     @Test
     public void updateXMLDocumentUserDataTest(FxRobot robot) {

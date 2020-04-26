@@ -93,12 +93,6 @@ public class Archive {
         return articlesFromAPI;
     }
 
-
-    public Article getArticle(int index) {
-        return articles.get(index);
-    }
-
-
     public Set<String> getAllCategories() throws IOException {
         Set<String> categories = new TreeSet<>();
         categories.add(" All categories");
