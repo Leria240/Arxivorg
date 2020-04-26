@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
@@ -108,7 +109,7 @@ public class Archive {
         if(category.equals(" All categories") && authors.isEmpty() && titleKeyword.isEmpty() && summaryKeyword.isEmpty())
             return;
         String request = "http://export.arxiv.org/api/query?search_query=";
-        if(!category.equals(" All categories")){
+        if(!category.equals(" All categories") && !category.isEmpty()){
             request += categoryFilter(category);
         }
         if(!authors.isEmpty()){
@@ -225,6 +226,31 @@ public class Archive {
         }
         return dir.getAbsolutePath();
     }
+
+    public String downloadArticlesCLI(List<Article> articles, String path) throws IOException {
+
+        for (Article article : articles) {
+            String title_syntaxValid = article.getTitle().replaceAll(":", "").replaceAll("\\s","");
+            String destination = path + "\\" + title_syntaxValid + ".pdf";
+            InputStream in;
+            String urlString = "https://" + article.getURL_PDF().toString().substring(7);
+            Path path1 = Paths.get(path);
+            if (!Files.exists(path1)){
+                Files.createDirectory(path1);
+            }
+
+            try {
+                in = new URL(urlString).openStream();
+                Files.copy(in, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("done");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return path;
+    }
+
 
 
     public List<Article> articlesPublishedBy(String authorNAme) {

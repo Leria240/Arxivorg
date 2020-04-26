@@ -24,7 +24,10 @@ public class ArchiveTest {
 
     @Test
     public void testAllCategory() {
-        //assertEquals(archive.getAllCategories(), "cat:cs.LG");
+        assert (archive.getAllCategories().contains(archive.getArticle(0).getCategory().toString()));
+        assert (archive.getAllCategories().contains(archive.getArticle(50).getCategory().toString()));
+        assert (archive.getAllCategories().contains(archive.getArticle(51).getCategory().toString()));
+        assert (archive.getAllCategories().contains(archive.getArticle(40).getCategory().toString()));
     }
 
         @Test
